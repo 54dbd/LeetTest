@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>shu.java</groupId>
-        <artifactId>csky</artifactId>
+        <artifactId>LeetTest_server</artifactId>
         <version>1.0.1</version>
     </parent>
 
