@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8001
   tomcat:
     max-swallow-size: -1
   max-http-header-size: 4048576
