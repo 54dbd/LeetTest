@@ -9,9 +9,9 @@ server:
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://81.68.217.240:3306/csky
-      username: liuyuan
-      password: lhr20011228
+      url: jdbc:mysql://circle.shawnhuangyh.com:3306/LeetTest
+      username: shawn
+      password: zocBNabK*2XNZUUBVxvh
       driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
