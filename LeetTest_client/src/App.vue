@@ -1,54 +1,21 @@
-<template>
-  <div id="outer">
-    <el-backtop>
-      <i class="el-icon-caret-top"></i>
-    </el-backtop>
-    <Header></Header>
-    <router-view></router-view>
+<script setup>
+/*
+=========================================================
+* Vue Material Kit 2 - v2.0.0
+=========================================================
 
-  </div>
-</template>
+* Product Page: https://www.creative-tim.com/product/vue-material-kit
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
 
-<script>
-import Header from "@/components/Header/Header";
+Coded by www.creative-tim.com
 
-export default {
-  name: 'App',
-  components: {
-    Header
-  },
-}
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*/
+import { RouterView } from "vue-router";
 </script>
 
-<style>
-bread {
-  margin: 0 20px;
-}
-.all {
-  margin: 20px 30px;
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  background: #99a9bf;
-}
-.bg-purple {
-  background: transparent;
-}
-.bg-purple-light {
-  background: transparent;
-}
-.grid-content {
-  border-radius: 4px;
-  min-height: 36px;
-}
-
-.text-view {
-  display: inline-block;
-  white-space: nowrap;
-  width: 100%;
-  overflow: hidden;
-  text-overflow:ellipsis;
-}
-</style>
+<template>
+  <router-view />
+</template>
