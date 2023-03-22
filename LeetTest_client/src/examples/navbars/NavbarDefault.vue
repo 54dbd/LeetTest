@@ -134,12 +134,14 @@ watch(
         title="Designed and Coded by Creative Tim"
         data-placement="bottom"
       >
-        Material Design
+        LeetTest考研刷题网
       </RouterLink>
       <a
-        href="https://www.creative-tim.com/product/vue-material-kit-pro"
         class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >Buy Now</a
+        :class="action.color"
+        onclick="smoothToPricing('pricing-soft-ui')"
+        style="font-size: 15px"
+      >开刷！</a
       >
       <button
         class="navbar-toggler shadow-none ms-2"
