@@ -1,244 +1,159 @@
-//配置路由文件
-import Vue from 'vue'
-import VueRouter from "vue-router"
-import store from '@/store'
-//使用创建
-Vue.use(VueRouter)
+import { createRouter, createWebHistory } from "vue-router";
+import PresentationView from "../views/Presentation/PresentationView.vue";
+import AboutView from "../views/LandingPages/AboutUs/AboutView.vue";
+import ContactView from "../views/LandingPages/ContactUs/ContactView.vue";
+import AuthorView from "../views/LandingPages/Author/AuthorView.vue";
+import SignInBasicView from "../views/LandingPages/SignIn/BasicView.vue";
+import SignUpBasicView from "../views/LandingPages/SignUp/SingUpView.vue";
 
-// vue-router在3.0版本以上重复点菜单报错问题
-const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
-}
-const originalReplace = VueRouter.prototype.replace
-VueRouter.prototype.replace = function replace(location) {
-    return originalReplace.call(this, location).catch(err => err)
-}
+import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
+import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
+import NavigationNavbars from "../layouts/sections/navigation/navbars/NavbarsView.vue";
+import NavigationNavTabs from "../layouts/sections/navigation/nav-tabs/NavTabsView.vue";
+import NavigationPagination from "../layouts/sections/navigation/pagination/PaginationView.vue";
+import InputAreasInputs from "../layouts/sections/input-areas/inputs/InputsView.vue";
+import InputAreasForms from "../layouts/sections/input-areas/forms/FormsView.vue";
+import ACAlerts from "../layouts/sections/attention-catchers/alerts/AlertsView.vue";
+import ACModals from "../layouts/sections/attention-catchers/modals/ModalsView.vue";
+import ACTooltipsPopovers from "../layouts/sections/attention-catchers/tooltips-popovers/TooltipsPopoversView.vue";
+import ElAvatars from "../layouts/sections/elements/avatars/AvatarsView.vue";
+import ElBadges from "../layouts/sections/elements/badges/BadgesView.vue";
+import ElBreadcrumbs from "../layouts/sections/elements/breadcrumbs/BreadcrumbsView.vue";
+import ElButtons from "../layouts/sections/elements/buttons/ButtonsView.vue";
+import ElButtonGroups from "../layouts/sections/elements/button-groups/ButtonGroupsView.vue";
+import ElDropdowns from "../layouts/sections/elements/dropdowns/DropdownsView.vue";
+import ElProgressBars from "../layouts/sections/elements/progress-bars/ProgressBarsView.vue";
+import ElToggles from "../layouts/sections/elements/toggles/TogglesView.vue";
+import ElTypography from "../layouts/sections/elements/typography/TypographyView.vue";
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: "/",
+      name: "presentation",
+      component: PresentationView,
+    },
+    {
+      path: "/pages/landing-pages/about-us",
+      name: "about",
+      component: AboutView,
+    },
+    {
+      path: "/pages/landing-pages/contact-us",
+      name: "contactus",
+      component: ContactView,
+    },
+    {
+      path: "/pages/landing-pages/author",
+      name: "author",
+      component: AuthorView,
+    },
+    {
+      path: "/pages/landing-pages/login",
+      name: "signin-basic",
+      component: SignInBasicView,
+    },
+    {
+      path: "/pages/landing-pages/register",
+      name: "signup-basic",
+      component: SignUpBasicView,
+    },
+    {
+      path: "/sections/page-sections/page-headers",
+      name: "page-headers",
+      component: PageHeaders,
+    },
+    {
+      path: "/sections/page-sections/features",
+      name: "page-features",
+      component: PageFeatures,
+    },
+    {
+      path: "/sections/navigation/navbars",
+      name: "navigation-navbars",
+      component: NavigationNavbars,
+    },
+    {
+      path: "/sections/navigation/nav-tabs",
+      name: "navigation-navtabs",
+      component: NavigationNavTabs,
+    },
+    {
+      path: "/sections/navigation/pagination",
+      name: "navigation-pagination",
+      component: NavigationPagination,
+    },
+    {
+      path: "/sections/input-areas/inputs",
+      name: "inputareas-inputs",
+      component: InputAreasInputs,
+    },
+    {
+      path: "/sections/input-areas/forms",
+      name: "inputareas-forms",
+      component: InputAreasForms,
+    },
+    {
+      path: "/sections/attention-catchers/alerts",
+      name: "ac-alerts",
+      component: ACAlerts,
+    },
+    {
+      path: "/sections/attention-catchers/modals",
+      name: "ac-modals",
+      component: ACModals,
+    },
+    {
+      path: "/sections/attention-catchers/tooltips-popovers",
+      name: "ac-tooltips-popovers",
+      component: ACTooltipsPopovers,
+    },
+    {
+      path: "/sections/elements/avatars",
+      name: "el-avatars",
+      component: ElAvatars,
+    },
+    {
+      path: "/sections/elements/badges",
+      name: "el-badges",
+      component: ElBadges,
+    },
+    {
+      path: "/sections/elements/breadcrumbs",
+      name: "el-breadcrumbs",
+      component: ElBreadcrumbs,
+    },
+    {
+      path: "/sections/elements/buttons",
+      name: "el-buttons",
+      component: ElButtons,
+    },
+    {
+      path: "/sections/elements/button-groups",
+      name: "el-button-groups",
+      component: ElButtonGroups,
+    },
+    {
+      path: "/sections/elements/dropdowns",
+      name: "el-dropdowns",
+      component: ElDropdowns,
+    },
+    {
+      path: "/sections/elements/progress-bars",
+      name: "el-progress-bars",
+      component: ElProgressBars,
+    },
+    {
+      path: "/sections/elements/toggles",
+      name: "el-toggles",
+      component: ElToggles,
+    },
+    {
+      path: "/sections/elements/typography",
+      name: "el-typography",
+      component: ElTypography,
+    },
+  ],
+});
 
-//配置路由
-let router = new VueRouter({
-    //配置路由
-    routes: [
-        {
-            path: '/home',
-            component: () => import('@/pages/Home/Home'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            path: '/login',
-            component: () => import('@/pages/Login/Login'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        {
-            path: '/register',
-            component: () => import('@/pages/Register/Register'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        {
-            name: 'timeLine',
-            path: '/timeLine',
-            component: () => import('@/pages/TimeLine/TimeLine'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'article',
-            path: '/article',
-            component: () => import('@/pages/Article/Article'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'schoolList',
-            path: '/schoolList',
-            component: () => import('@/pages/SchoolList/SchoolList'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'upload',
-            path: '/upload',
-            component: () => import('@/pages/Upload/Upload'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'teacherDetail',
-            path: '/teacherDetail',
-            component: () => import('@/pages/TeacherDetail/TeacherDetail'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'md',
-            path: '/md',
-            component: () => import('@/pages/MarkDownEditor/index'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        {
-            name: 'schoolDetail',
-            path: '/schoolDetail',
-            component: () => import('@/pages/SchoolDetail/SchoolDetail'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'scoreLine',
-            path: '/scoreLine',
-            component: () => import('@/pages/ScoreLineList/ScoreLine/ScoreLine'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'scoreLineList',
-            path: '/scoreLineList',
-            component: () => import('@/pages/ScoreLineList/ScoreLineList'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: true
-            }
-        },
-        {
-            name: 'search',
-            path: '/search',
-            component: () => import('@/pages/Search/Search'),
-            meta: {
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        {
-            name: '404',
-            path: '/404',
-            component: () => import('@/pages/404/NotFound'),
-            meta: {
-                isShowHeader: false,
-                isShowSearch: false
-            }
-        },
-        {
-            name:'test',
-            path:'/test',
-            component:()=>import('@/pages/Test/Test'),
-            meta:{
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        {
-            name:'testList',
-            path:'/testList',
-            component:()=>import('@/pages/TestList/TestList'),
-            meta:{
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        {
-            name:'user',
-            path:'/user',
-            component:()=>import('@/pages/User/User'),
-            meta:{
-                isShowHeader: true,
-                isShowSearch: false
-            }
-        },
-        //配置重定向：项目开始运行时立马定向到首页
-        {
-            path: '*',
-            redirect: '/home'
-        }
-    ],
-    //进行路由跳转时重新回到顶上
-    scrollBehavior(to, from, savedPosition) {
-        if (to.hash) {
-            return {
-                selector: to.hash,
-                behavior: 'smooth',
-            }
-        }
-        return {x: 0, y: 0}
-    }
-})
-import {getToken} from "@/utils/token"
-//配置全局前置路由守卫
-router.beforeEach(async (to, from, next) => {
-    const loading = Vue.prototype.$loading({
-        lock: true, // 是否锁屏
-        text: '拼命加载中', // 加载动画的文字
-        spinner: 'el-icon-loading', // 引入的loading图标
-        background: 'hsla(0,0%,100%,.9)' // 背景颜色
-    });
-    setTimeout(()=>{
-    }, 5000)
-    loading.close();
-    if (getToken()) {
-        //用户登录了还想去login组件
-        if (to.path === '/login') {
-            Vue.prototype.$message.warning({
-                duration: 1000,
-                message: '已经登录，不能再重复登录~'
-            })
-            next(from.path)
-        } else {
-            //判断
-            if (store.state.user.userInfo.username) {
-                next()
-            } else {
-                //用户登录后获取用户信息
-                try {
-                    const result = await store.dispatch('user/getUserInfo')
-                    if (result) {
-                        next()
-                    }
-                } catch (e) {
-                    //token异常了，就清除token
-                    await store.dispatch('user/logout')
-                    console.log(e.message)
-                    next('/login')
-                }
-            }
-        }
-    } else {
-        //未登录状态下
-        if (to.path.indexOf('/md') !== -1) {
-            Vue.prototype.$message.warning({
-                duration: 1000,
-                message: '当前尚未登录，请先登录'
-            })
-            next('/login?redirect=' + to.path)
-        } else {
-            next()
-        }
-    }
-})
-
-
-//暴露router
-export default router
+export default router;
