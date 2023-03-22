@@ -96,7 +96,7 @@ onMounted(() => {
                   <p class="mt-4 text-sm text-center">
                     还没有账号?
                     <a
-                      href="#"
+                      href="register"
                       class="text-success text-gradient font-weight-bold"
                       >注册</a
                     >
