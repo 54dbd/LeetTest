@@ -11,11 +11,10 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
             <div class="col-md-4 position-relative">
               <DefaultCounterCard
                 color="success"
-                title="Coded Elements"
-                description="From buttons, to inputs, navbars, alerts or cards, you are
-                  covered"
-                :count="70"
-                suffix="+"
+                title="招生资料"
+                description="涵括各大院校的招生考试信息"
+                :count="750"
+                suffix="+篇"
                 :duration="3000"
                 divider="vertical"
               />
@@ -23,11 +22,10 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
             <div class="col-md-4 position-relative">
               <DefaultCounterCard
                 color="success"
-                title="Design Blocks"
-                description="Mix the sections, change the colors and unleash your
-                  creativity"
-                :count="15"
-                suffix="+"
+                title="考研真题"
+                description="历年真题，一网打尽"
+                :count="200"
+                suffix="+题"
                 :duration="3000"
                 divider="vertical"
               />
@@ -35,10 +33,10 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
             <div class="col-md-4">
               <DefaultCounterCard
                 color="success"
-                title="Pages"
-                description="Save 3-4 weeks of work when you use our pre-made pages for
-                  your website"
-                :count="4"
+                title="大学介绍"
+                description="目标院校，清晰明了"
+                :count="34"
+                suffix="所"
                 :duration="3000"
               />
             </div>

@@ -6,7 +6,9 @@ import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
 import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 import Header from "../../examples/Header.vue";
 import FilledInfoCard from "../../examples/cards/infoCards/FilledInfoCard.vue";
-
+import RotatingCard from "../../examples/cards/rotatingCards/RotatingCard.vue";
+import RotatingCardFront from "../../examples/cards/rotatingCards/RotatingCardFront.vue";
+import RotatingCardBack from "../../examples/cards/rotatingCards/RotatingCardBack.vue";
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 
@@ -20,7 +22,7 @@ import PresentationTestimonials from "./Sections/PresentationTestimonials.vue";
 import PresentationInformation from "./Sections/PresentationInformation.vue";
 
 //images
-import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
+import vueMkHeader from "@/assets/img/vue-mk-header.png";
 import wavesWhite from "@/assets/img/waves-white.svg";
 import logoBootstrap from "@/assets/img/logos/bootstrap5.jpg";
 import logoTailwind from "@/assets/img/logos/icon-tailwind.jpg";
@@ -75,9 +77,83 @@ onUnmounted(() => {
 
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
     <PresentationCounter />
-    <PresentationInformation />
-    <PresentationExample :data="data" />
-    <PresentationPages />
+    <!--    <PresentationInformation />-->
+    <!--    <PresentationExample :data="data" />-->
+    <!--    <PresentationPages />-->
+    <div class="row align-items-center">
+      <div class="col-lg-3 ms-auto me-auto p-lg-3 mt-lg-0 mt-3">
+        <RotatingCard>
+          <RotatingCardFront
+            image="https://images.unsplash.com/photo-1569683795645-b62e50fbf103?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+            icon="touch_app"
+            title="Feel the <br /> Material Kit"
+            description="All the Bootstrap components that you need in a development have been
+        re-design with the new look."
+          />
+
+          <RotatingCardBack
+            image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
+            title="Discover More"
+            description="You will save a lot of time going from prototyping to full-functional
+                code because all elements are implemented."
+            :action="[
+              {
+                route: './/sections/page-sections/hero-sections.html',
+                label: 'Start with Headers',
+              },
+            ]"
+          />
+        </RotatingCard>
+      </div>
+      <div class="col-lg-3 ms-auto me-auto p-lg-3 mt-lg-0 mt-3">
+        <RotatingCard>
+          <RotatingCardFront
+              image="https://images.unsplash.com/photo-1569683795645-b62e50fbf103?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+              icon="touch_app"
+              title="Feel the <br /> Material Kit"
+              description="All the Bootstrap components that you need in a development have been
+        re-design with the new look."
+          />
+
+          <RotatingCardBack
+              image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
+              title="Discover More"
+              description="You will save a lot of time going from prototyping to full-functional
+                code because all elements are implemented."
+              :action="[
+              {
+                route: './/sections/page-sections/hero-sections.html',
+                label: 'Start with Headers',
+              },
+            ]"
+          />
+        </RotatingCard>
+      </div>
+      <div class="col-lg-3 ms-auto me-auto p-lg-3 mt-lg-0 mt-3">
+        <RotatingCard>
+          <RotatingCardFront
+              image="https://images.unsplash.com/photo-1569683795645-b62e50fbf103?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+              icon="touch_app"
+              title="Feel the <br /> Material Kit"
+              description="All the Bootstrap components that you need in a development have been
+        re-design with the new look."
+          />
+
+          <RotatingCardBack
+              image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
+              title="Discover More"
+              description="You will save a lot of time going from prototyping to full-functional
+                code because all elements are implemented."
+              :action="[
+              {
+                route: './/sections/page-sections/hero-sections.html',
+                label: 'Start with Headers',
+              },
+            ]"
+          />
+        </RotatingCard>
+      </div>
+    </div>
     <BuiltByDevelopers />
 
     <div class="container">
@@ -92,7 +168,7 @@ onUnmounted(() => {
             :action="{
               route:
                 'https://www.creative-tim.com/learning-lab/vue/overview/material-kit/',
-              label: { text: 'Let\'s start', color: 'white' }
+              label: { text: 'Let\'s start', color: 'white' },
             }"
           />
         </div>
@@ -107,7 +183,7 @@ onUnmounted(() => {
             :action="{
               route:
                 'https://www.creative-tim.com/learning-lab/vue/input/material-kit/',
-              label: { text: 'Read more' }
+              label: { text: 'Read more' },
             }"
           />
         </div>
@@ -121,7 +197,7 @@ onUnmounted(() => {
             :action="{
               route:
                 'https://www.creative-tim.com/learning-lab/vue/utilities/material-kit/',
-              label: { text: 'Read more' }
+              label: { text: 'Read more' },
             }"
           />
         </div>
@@ -132,13 +208,13 @@ onUnmounted(() => {
     <div
       class="container-fluid mt-sm-5 border-radius-xl"
       :style="{
-        background: 'linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25))'
+        background: 'linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25))',
       }"
     >
       <div
         class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
         :style="{
-          backgroundImage: `url(${wavesWhite})`
+          backgroundImage: `url(${wavesWhite})`,
         }"
         loading="lazy"
       >
