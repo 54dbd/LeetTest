@@ -41,48 +41,69 @@ onMounted(() => {
                   <h4
                     class="text-white font-weight-bolder text-center mt-2 mb-0"
                   >
-                    登录
+                    注册
                   </h4>
-                  <div class="row mt-3">
-                    <div class="col-2 text-center ms-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-facebook text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center px-1">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-github text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center me-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-google text-white text-lg"></i>
-                      </a>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="card-body">
                 <form role="form" class="text-start">
                   <MaterialInput
-                    id="email"
-                    class="input-group-outline my-3"
-                    :label="{ text: '邮箱', class: 'form-label' }"
-                    type="email"
+                    class="input-group-static mb-4"
+                    label="用户名称"
+                    type="text"
+                    placeholder="请输入你的用户名"
+                  />
+                  <div class="row">
+                    <div class="col-8 text-center ms-auto">
+                      <MaterialInput
+                        class="input-group-static mb-4"
+                        label="邮箱账号"
+                        type="text"
+                        placeholder="请输入你的邮箱账号"
+                      />
+                    </div>
+                    <div class="col-4 text-center mt-4">
+                      <MaterialButton
+                        variant="gradient"
+                        color="success"
+                        size="sm"
+                        style="width: 100%"
+                      >发送验证码</MaterialButton
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-8 text-center ms-auto">
+                      <MaterialInput
+                        class="input-group-static mb-4"
+                        label="验证码"
+                        type="text"
+                        placeholder="请输入你的邮箱验证码"
+                      />
+                    </div>
+                    <div class="col-4 text-center mt-4">
+                      <MaterialButton
+                        variant="gradient"
+                        color="success"
+                        size="sm"
+                        style="width: 100%"
+                        >点击验证</MaterialButton
+                      >
+                    </div>
+                  </div>
+
+                  <MaterialInput
+                    class="input-group-static mb-4"
+                    label="登陆密码"
+                    type="text"
+                    placeholder="请输入你的密码"
                   />
                   <MaterialInput
-                    id="password"
-                    class="input-group-outline mb-3"
-                    :label="{ text: '密码', class: 'form-label' }"
-                    type="password"
+                    class="input-group-static mb-4"
+                    label="确认密码"
+                    type="text"
+                    placeholder="请输入你的密码"
                   />
-                  <MaterialSwitch
-                    class="d-flex align-items-center mb-3"
-                    id="rememberMe"
-                    labelClass="mb-0 ms-3"
-                    checked
-                    >记住我</MaterialSwitch
-                  >
 
                   <div class="text-center">
                     <MaterialButton
@@ -90,17 +111,9 @@ onMounted(() => {
                       variant="gradient"
                       color="success"
                       fullWidth
-                      >登录</MaterialButton
+                      >完成登录</MaterialButton
                     >
                   </div>
-                  <p class="mt-4 text-sm text-center">
-                    还没有账号?
-                    <a
-                      href="#"
-                      class="text-success text-gradient font-weight-bold"
-                      >注册</a
-                    >
-                  </p>
                 </form>
               </div>
             </div>
