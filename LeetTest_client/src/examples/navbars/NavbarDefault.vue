@@ -139,7 +139,7 @@ watch(
       <a
         href="https://www.creative-tim.com/product/vue-material-kit-pro"
         class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >Buy Now</a
+        >刷题!</a
       >
       <button
         class="navbar-toggler shadow-none ms-2"
