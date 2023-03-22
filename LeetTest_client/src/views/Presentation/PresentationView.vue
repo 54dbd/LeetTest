@@ -121,7 +121,8 @@ onUnmounted(() => {
     <!--    <PresentationInformation />-->
     <!--    <PresentationExample :data="data" />-->
     <!--    <PresentationPages />-->
-    <div class="container-fluid row">
+    <div class="row"
+    style="margin-left: 10%;margin-right: 10%">
       <div class="col-lg-3 ms-auto me-auto p-lg-3 mt-lg-0 mt-3">
         <RotatingCard>
           <RotatingCardFront
