@@ -1,0 +1,22 @@
+server:
+  port: 8001
+  tomcat:
+    max-swallow-size: -1
+  max-http-header-size: 4048576
+  servlet:
+    context-path: /csky
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://circle.shawnhuangyh.com:3306/LeetTest
+      username: shawn
+      password: zocBNabK*2XNZUUBVxvh
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  servlet:
+    multipart:
+      max-request-size: 2000MB
+      max-file-size: 2000MB
