@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUnmounted, reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive} from "vue";
 
 //example components
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
@@ -24,7 +24,6 @@ import logo from "@/assets/img/logo_Text.png";
 
 // Backend
 import {reqGetArticleByTid} from "@/api";
-import {ElLoading} from "element-plus";
 
 const getArticleByTid = async (tid) => {
   const result = await reqGetArticleByTid(tid);
