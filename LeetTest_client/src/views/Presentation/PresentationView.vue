@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, reactive } from "vue";
+import { onMounted, onUnmounted, reactive, ref } from "vue";
 
 //example components
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
@@ -180,8 +180,18 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <BuiltByDevelopers title="研招答疑" subtitle="详细内容" :links="list4" url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"/>
-    <BuiltByDevelopers title="考研大纲" subtitle="详细内容" :links="list5" url="https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80" />
+    <BuiltByDevelopers
+      title="研招答疑"
+      subtitle="详细内容"
+      :links="list4"
+      url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"
+    />
+    <BuiltByDevelopers
+      title="考研大纲"
+      subtitle="详细内容"
+      :links="list5"
+      url="https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80"
+    />
 
     <PresentationTestimonials />
 

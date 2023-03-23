@@ -9,8 +9,8 @@ defineProps({
     default: () => ({
       name: "LeetTest",
       logo: logo,
-      route: "/"
-    })
+      route: "/",
+    }),
   },
   socials: {
     type: Array,
@@ -19,9 +19,9 @@ defineProps({
     default: () => [
       {
         icon: '<i class="fab fa-github text-lg opacity-8"></i>',
-        link: "https://github.com/creativetimofficial"
+        link: "https://github.com/creativetimofficial",
       },
-    ]
+    ],
   },
   menus: {
     type: Array,
@@ -29,7 +29,7 @@ defineProps({
     items: {
       type: Array,
       name: String,
-      href: String
+      href: String,
     },
     default: () => [
       {
@@ -37,27 +37,26 @@ defineProps({
         items: [
           {
             name: "Github",
-            href: "https://github.com/54dbd/LeetTest"
+            href: "https://github.com/54dbd/LeetTest",
           },
           {
             name: "JavaEE课程网站",
             href: "https://scdm.shu.edu.cn/javaee/"
           },
-        ]
-      },]
-  }
+        ],
+      },
+    ],
+  },
 });
 </script>
 <template>
   <footer class="footer pt-5 mt-5">
     <div class="container">
-      <div class="row"
-      >
-        <div class="col-md-10 mb-4"
-        style="width: 30%">
+      <div class="row">
+        <div class="col-md-10 mb-4" style="width: 30%">
           <div>
             <a :href="brand.route">
-              <img :src="brand.logo" class="mb-3 footer-logo" alt="main_logo"/>
+              <img :src="brand.logo" class="mb-3 footer-logo" alt="main_logo" />
             </a>
             <h6 class="font-weight-bolder mb-4">{{ brand.name }}</h6>
           </div>

@@ -4,6 +4,7 @@ import nprogress from "nprogress";
 import "nprogress/nprogress.css";
 
 import { getToken } from "@/utils/token";
+import { ElMessage } from "element-plus";
 
 //1.利用axios对象的方法create插件一个axios对象实例
 //2.requests其实就是axios
@@ -23,10 +24,10 @@ requests.interceptors.request.use(
     }
     nprogress.start();
     return config;
+  },
+  (error) => {
+    ElMessage.error(error);
   }
-  // (error) => {
-  //   Vue.$message.error(error.messages);
-  // }
 );
 //响应拦截器
 requests.interceptors.response.use(
@@ -35,10 +36,10 @@ requests.interceptors.response.use(
     // 对响应数据做点什么
     nprogress.done();
     return response;
+  },
+  (error) => {
+    ElMessage.error(error);
   }
-  // (error) => {
-  //   Vue.$message.error(error.messages);
-  // }
 );
 
 //暴露axios

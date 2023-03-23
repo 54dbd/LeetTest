@@ -26,7 +26,7 @@ import ElProgressBars from "../layouts/sections/elements/progress-bars/ProgressB
 import ElToggles from "../layouts/sections/elements/toggles/TogglesView.vue";
 import ElTypography from "../layouts/sections/elements/typography/TypographyView.vue";
 import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
-import Elmessage from 'element-plus';
+import { ElMessage } from "element-plus";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -69,7 +69,7 @@ const router = createRouter({
       component: PostArticleView,
     },
     {
-      path: "/pages/landing-pages/login",
+      path: "/login",
       name: "signin-basic",
       component: SignInBasicView,
       meta: {
@@ -77,7 +77,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/pages/landing-pages/register",
+      path: "/register",
       name: "signup-basic",
       component: SignUpBasicView,
       meta: {
@@ -274,7 +274,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     //未登录状态下
     if (to.path.indexOf("/post-article") !== -1) {
-      this.$message({
+      ElMessage({
         duration: 1000,
         message: "当前尚未登录，请先登录",
       });
