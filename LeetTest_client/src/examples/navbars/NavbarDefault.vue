@@ -487,12 +487,12 @@ watch(
           </li>
           <!--          发布文章-->
           <li class="nav-item dropdown dropdown-hover mx-2">
-            <a
-              href="#"
+            <RouterLink
+              :to="{ name: 'post-article' }"
               class="nav-link d-flex cursor-pointer align-items-center"
             >
               发布文章
-            </a>
+            </RouterLink>
           </li>
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
