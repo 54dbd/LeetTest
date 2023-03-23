@@ -4,6 +4,14 @@ defineProps({
     type: Array,
     required: true,
   },
+  title: {
+    type: String,
+    required: true,
+  },
+  subtitle: {
+    type: String,
+    required: true,
+  },
 });
 </script>
 <template>
@@ -20,8 +28,8 @@ defineProps({
       <div class="container">
         <div class="row">
           <div class="col-lg-6 ms-lg-5">
-            <h4 class="text-white">最近现状</h4>
-            <h1 class="text-white">研招答疑</h1>
+            <h4 class="text-white">{{ subtitle }}</h4>
+            <h1 class="text-white">{{ title }}</h1>
             <ul style="text-align: left" id="myList">
               <li
                 v-for="item in displayedLinks"

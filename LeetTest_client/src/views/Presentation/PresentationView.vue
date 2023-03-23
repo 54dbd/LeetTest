@@ -117,10 +117,12 @@ onUnmounted(() => {
   </Header>
 
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+
     <PresentationCounter />
     <!--    <PresentationInformation />-->
     <!--    <PresentationExample :data="data" />-->
     <!--    <PresentationPages />-->
+
     <div class="row"
     style="margin-left: 10%;margin-right: 10%">
       <div class="col-lg-3 ms-auto me-auto p-lg-3 mt-lg-0 mt-3">
@@ -149,6 +151,7 @@ onUnmounted(() => {
           </RotatingCardBack>
         </RotatingCard>
       </div>
+
       <div class="col-lg-3 ms-auto me-auto p-lg-3 mt-lg-0 mt-3">
         <RotatingCard>
           <RotatingCardFront
@@ -183,190 +186,55 @@ onUnmounted(() => {
         </RotatingCard>
       </div>
     </div>
-    <BuiltByDevelopers
-    :links="DEBUG_array"/>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <FilledInfoCard
-            class="p-4"
-            :color="{ text: 'white', background: 'bg-gradient-success' }"
-            :icon="{ component: 'flag', color: 'white' }"
-            title="Getting Started"
-            description="Check the possible ways of working with our product and the necessary files for building your own project."
-            :action="{
-              route:
-                'https://www.creative-tim.com/learning-lab/vue/overview/material-kit/',
-              label: { text: 'Let\'s start', color: 'white' },
-            }"
-          />
-        </div>
-        <div class="col-lg-4">
-          <FilledInfoCard
-            class="px-lg-1 mt-lg-0 mt-4 p-4"
-            height="h-100"
-            :icon="{ component: 'precision_manufacturing', color: 'success' }"
-            title="Plugins"
-            description="Get inspiration and have an overview about the plugins that we
-                used to create the Material Kit."
-            :action="{
-              route:
-                'https://www.creative-tim.com/learning-lab/vue/input/material-kit/',
-              label: { text: 'Read more' },
-            }"
-          />
-        </div>
-        <div class="col-lg-4">
-          <FilledInfoCard
-            class="px-lg-1 mt-lg-0 mt-4 p-4"
-            :icon="{ component: 'receipt_long', color: 'success' }"
-            title="Utility Classes"
-            description="Material Kit is giving you a lot of pre-made elements. For those
-                who want flexibility, we included many utility classes."
-            :action="{
-              route:
-                'https://www.creative-tim.com/learning-lab/vue/utilities/material-kit/',
-              label: { text: 'Read more' },
-            }"
-          />
-        </div>
-      </div>
-    </div>
-    <PresentationTestimonials />
-
-    <div
-      class="container-fluid mt-sm-5 border-radius-xl"
-      :style="{
-        background: 'linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25))',
-      }"
-    >
+    <div class="container mt-5">
       <div
-        class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
-        :style="{
+          class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
+          :style="{
           backgroundImage: `url(${wavesWhite})`,
         }"
-        loading="lazy"
+          loading="lazy"
       >
+
         <span class="mask bg-gradient-dark"></span>
         <div class="container">
           <div class="row">
             <div class="d-flex justify-content-center p-5">
               <div class="col-lg-8 ms-lg-5 text-center">
                 <h3 class="text-white">
-                  Do you love this awesome UI Kit from Vuejs & Bootstrap?
+                  至今为止，从未出现过的刷题工具
                 </h3>
                 <p class="text-white text-md">
-                  Cause if you do, it can be yours for FREE. Hit the button
-                  below to navigate to Creative Tim where you can <br />
-                  find the Design System in HTML. Start a new project or give an
-                  old Bootstrap project a new look!
+                  在LeetTest上，你可以通过各种题型和难度级别的练习，快速提升自己的考研能力。LeetTest的刷题功能非常强大，它提供了大量的高质量考研题目，涵盖了研究生考试各科目的重点考点，包括数学、英语、政治等。除此之外，LeetTest还为用户提供了个性化的题目推荐和智能错题本功能，帮助用户更加高效地复习和巩固知识点。不论你是初学者还是已经具有一定考研基础的考生，LeetTest都能为你提供切实可行的刷题方案和优质的学习资源，帮助你取得更好的考研成绩。
                 </p>
 
                 <a
-                  href="https://www.creative-tim.com/product/vue-material-kit"
-                  class="btn btn-sm mb-0 bg-gradient-success px-5 py-3 mt-4"
-                  >Download Now</a
+                    href="register"
+                    class="btn btn-sm mb-0 bg-gradient-success px-5 py-3 mt-4"
+                    style="font-size: 25px"
+                >现在注册!</a
                 >
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="container">
-      <div class="row">
-        <div class="d-flex flex-column w-100 text-center p-5 mb-8">
-          <h3>Available on these technologies</h3>
-          <div class="d-flex justify-content-center mt-3 flex-wrap">
-            <a
-              href="https://www.creative-tim.com/product/material-kit"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Bootstrap 5 - Most popular front-end component library"
-            >
-              <img
-                :src="logoBootstrap"
-                alt="title"
-                loading="lazy"
-                :style="{ height: '90px' }"
-              />
-            </a>
-            <a
-              class="opacity-5 ms-3"
-              href="#"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Coming Soon"
-            >
-              <img
-                :src="logoTailwind"
-                alt="title"
-                loading="lazy"
-                :style="{ height: '90px' }"
-              />
-            </a>
-            <a
-              href="https://www.creative-tim.com/product/vue-material-kit-pro"
-              class="mx-3"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Vue.js - Is a Progressive JavaScript Framework"
-            >
-              <img
-                :src="logoVue"
-                alt="title"
-                loading="lazy"
-                :style="{ height: '90px' }"
-              />
-            </a>
-            <a
-              class="opacity-5"
-              href="#"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Coming Soon"
-            >
-              <img
-                :src="logoAngular"
-                alt="title"
-                loading="lazy"
-                :style="{ height: '90px' }"
-              />
-            </a>
-            <a
-              href="https://www.creative-tim.com/product/material-kit-react-pro"
-              class="mx-3"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="React – A JavaScript library for building user interfaces"
-            >
-              <img
-                :src="logoReact"
-                alt="title"
-                loading="lazy"
-                :style="{ height: '90px' }"
-              />
-            </a>
-            <a
-              class="opacity-5"
-              href="#"
-              data-bs-toggle="tooltip"
-              data-bs-placement="bottom"
-              title="Coming Soon"
-            >
-              <img
-                :src="logoSketch"
-                alt="title"
-                loading="lazy"
-                :style="{ height: '90px' }"
-              />
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
+    <BuiltByDevelopers
+        title="研招答疑"
+        subtitle="详细内容"
+        :links="DEBUG_array"/>
+    <BuiltByDevelopers
+        title="考研大纲"
+        subtitle="详细内容"
+        :links="DEBUG_array"/>
+
+    <PresentationTestimonials />
+
+
+
+
+
     <div class="py-5">
       <div class="container">
         <div class="row">
