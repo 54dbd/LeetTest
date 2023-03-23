@@ -12,7 +12,7 @@ import DefaultCounterCard from "../../../examples/cards/counterCards/DefaultCoun
               <DefaultCounterCard
                 color="success"
                 title="招生资料"
-                description="涵括各大院校的招生考试信息"
+                description="各种资料，尽在其中"
                 :count="750"
                 suffix="+篇"
                 :duration="3000"
