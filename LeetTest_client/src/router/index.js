@@ -25,6 +25,7 @@ import ElDropdowns from "../layouts/sections/elements/dropdowns/DropdownsView.vu
 import ElProgressBars from "../layouts/sections/elements/progress-bars/ProgressBarsView.vue";
 import ElToggles from "../layouts/sections/elements/toggles/TogglesView.vue";
 import ElTypography from "../layouts/sections/elements/typography/TypographyView.vue";
+import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -59,6 +60,11 @@ const router = createRouter({
       meta: {
         keepAlive: false,
       },
+    },
+    {
+      path: "/pages/landing-pages/post-article",
+      name: "post-article",
+      component: PostArticleView,
     },
     {
       path: "/pages/landing-pages/login",
