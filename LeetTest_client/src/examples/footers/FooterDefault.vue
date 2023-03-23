@@ -41,7 +41,7 @@ defineProps({
           },
           {
             name: "JavaEE课程网站",
-            href: "scdm.shu.edu.cn/javaee/"
+            href: "https://scdm.shu.edu.cn/javaee/"
           },
         ]
       },]

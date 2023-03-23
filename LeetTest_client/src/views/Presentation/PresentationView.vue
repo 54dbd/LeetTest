@@ -13,7 +13,6 @@ import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 
 // sections
 import PresentationCounter from "./Sections/PresentationCounter.vue";
-
 import BuiltByDevelopers from "./Components/BuiltByDevelopers.vue";
 import PresentationTestimonials from "./Sections/PresentationTestimonials.vue";
 
@@ -59,6 +58,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
@@ -66,12 +66,14 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+
   <Header>
     <div
       class="page-header min-vh-75"
       :style="`background-image: url(${vueMkHeader})`"
       loading="lazy"
     >
+
       <div class="container">
         <div class="row">
           <div class="col-lg-7 text-center mx-auto position-relative">

@@ -26,6 +26,8 @@ import ElProgressBars from "../layouts/sections/elements/progress-bars/ProgressB
 import ElToggles from "../layouts/sections/elements/toggles/TogglesView.vue";
 import ElTypography from "../layouts/sections/elements/typography/TypographyView.vue";
 import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
+import Elmessage from 'element-plus';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -235,6 +237,52 @@ const router = createRouter({
       },
     },
   ],
+});
+
+import { getToken } from "@/utils/token";
+import { useAppStore } from "@/stores";
+
+// 配置全局前置路由守卫
+router.beforeEach(async (to, from, next) => {
+  if (getToken()) {
+    //用户登录了还想去login组件
+    if (to.path === "/login") {
+      this.$message({
+        duration: 1000,
+        message: "已经登录，不能再重复登录~",
+      });
+      next(from.path);
+    } else {
+      //判断
+      if (useAppStore.state.user.userInfo.username) {
+        next();
+      } else {
+        //用户登录后获取用户信息
+        try {
+          const result = await useAppStore.dispatch("user/getUserInfo");
+          if (result) {
+            next();
+          }
+        } catch (e) {
+          //token异常了，就清除token
+          await useAppStore.dispatch("user/logout");
+          console.log(e.message);
+          next("/login");
+        }
+      }
+    }
+  } else {
+    //未登录状态下
+    if (to.path.indexOf("/post-article") !== -1) {
+      this.$message({
+        duration: 1000,
+        message: "当前尚未登录，请先登录",
+      });
+      next("/login");
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;

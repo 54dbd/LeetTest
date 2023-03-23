@@ -509,5 +509,7 @@ watch(
       </div>
     </div>
   </nav>
+
   <!-- End Navbar -->
+
 </template>
