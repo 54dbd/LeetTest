@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 
 //example components
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
@@ -21,6 +21,19 @@ import PresentationTestimonials from "./Sections/PresentationTestimonials.vue";
 import vueMkHeader from "@/assets/img/vue-mk-header.png";
 import wavesWhite from "@/assets/img/waves-white.svg";
 import logo from "@/assets/img/logo_Text.png";
+
+// Backend
+import {reqGetArticleByTid} from "@/api";
+import {ElLoading} from "element-plus";
+
+const getArticleByTid = async (tid) => {
+  const result = await reqGetArticleByTid(tid);
+  if (result.data.code === 200) {
+    return result.data.data;
+  } else {
+    return [];
+  }
+};
 
 //hooks
 const body = document.getElementsByTagName("body")[0];
@@ -74,9 +87,13 @@ const DEBUG_array = [
     title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
   },
 ];
-onMounted(() => {
+
+let list1 = reactive([]);
+
+onMounted(async () => {
   body.classList.add("presentation-page");
   body.classList.add("bg-gray-200");
+  list1.push(...(await getArticleByTid(27)));
 });
 onUnmounted(() => {
   body.classList.remove("presentation-page");
@@ -136,16 +153,8 @@ onUnmounted(() => {
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
             description=""
             title=""
-            :links="DEBUG_array"
+            :links="list1"
           >
-            <ul>
-              <li
-                style="margin-bottom: 10px"
-                v-for="item in list1"
-                :key="item.id"
-                class="text-view"
-              ></li>
-            </ul>
           </RotatingCardBack>
         </RotatingCard>
       </div>
