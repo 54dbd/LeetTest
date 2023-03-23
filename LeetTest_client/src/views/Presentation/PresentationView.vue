@@ -23,7 +23,7 @@ import wavesWhite from "@/assets/img/waves-white.svg";
 import logo from "@/assets/img/logo_Text.png";
 
 // Backend
-import {reqGetArticleByTid} from "@/api";
+import { reqGetArticleByTid } from "@/api";
 
 const getArticleByTid = async (tid) => {
   const result = await reqGetArticleByTid(tid);
@@ -36,63 +36,21 @@ const getArticleByTid = async (tid) => {
 
 //hooks
 const body = document.getElementsByTagName("body")[0];
-const DEBUG_array = [
-  {
-    id: "1",
-    title: "标题1标题1标题1标题1标题1标题1标题1标题1标题1",
-  },
-  {
-    id: "2",
-    title: "标题2标题2标题2标题2标题2标题2标题2标题2标题2标题2标题2",
-  },
-  {
-    id: "3",
-    title: "标题3标题3标题3标题3标题3标题3",
-  },
-  {
-    id: "4",
-    title: "标题4标题4标题4标题4",
-  },
-  {
-    id: "5",
-    title: "标题5标题5标题5标题5标题5标题5标题5标题5标题5标题5标题5标题5标题5",
-  },
-  {
-    id: "6",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-  {
-    id: "7",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-  {
-    id: "8",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-  {
-    id: "9",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-  {
-    id: "10",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-  {
-    id: "11",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-  {
-    id: "12",
-    title: "标题6标题6标题6标题6标题6标题6标题6标题6标题6",
-  },
-];
 
 let list1 = reactive([]);
+let list2 = reactive([]);
+let list3 = reactive([]);
+let list4 = reactive([]);
+let list5 = reactive([]);
 
 onMounted(async () => {
   body.classList.add("presentation-page");
   body.classList.add("bg-gray-200");
-  list1.push(...(await getArticleByTid(27)));
+  list1.push(...(await getArticleByTid(24)));
+  list2.push(...(await getArticleByTid(25)));
+  list3.push(...(await getArticleByTid(23)));
+  list4.push(...(await getArticleByTid(26)));
+  list5.push(...(await getArticleByTid(27)));
 });
 onUnmounted(() => {
   body.classList.remove("presentation-page");
@@ -169,7 +127,7 @@ onUnmounted(() => {
 
           <RotatingCardBack
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
-            :links="DEBUG_array"
+            :links="list2"
           />
         </RotatingCard>
       </div>
@@ -184,7 +142,7 @@ onUnmounted(() => {
 
           <RotatingCardBack
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
-            :links="DEBUG_array"
+            :links="list3"
           />
         </RotatingCard>
       </div>
@@ -221,16 +179,8 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <BuiltByDevelopers
-      title="研招答疑"
-      subtitle="详细内容"
-      :links="DEBUG_array"
-    />
-    <BuiltByDevelopers
-      title="考研大纲"
-      subtitle="详细内容"
-      :links="DEBUG_array"
-    />
+    <BuiltByDevelopers title="研招答疑" subtitle="详细内容" :links="list4" />
+    <BuiltByDevelopers title="考研大纲" subtitle="详细内容" :links="list5" />
 
     <PresentationTestimonials />
 
