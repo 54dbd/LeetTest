@@ -183,7 +183,8 @@ onUnmounted(() => {
         </RotatingCard>
       </div>
     </div>
-    <BuiltByDevelopers />
+    <BuiltByDevelopers
+    :links="DEBUG_array"/>
 
     <div class="container">
       <div class="row">

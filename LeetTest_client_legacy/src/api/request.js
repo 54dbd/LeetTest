@@ -12,7 +12,7 @@ import {getToken} from "@/utils/token"
 //2.requests其实就是axios
 const requests = axios.create({
 	//基础路径：发送请求时，路径中会出现csky
-	baseURL: '/csky',
+	baseURL: 'http://localhost:8001/csky',
 	//超时事件
 	timeout: 5000
 
