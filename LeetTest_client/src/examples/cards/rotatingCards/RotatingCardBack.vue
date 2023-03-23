@@ -61,8 +61,10 @@ defineProps({
       style="margin-left: -5%; overflow: auto"
     >
       <div>
-        <ul style="text-align: left">
-          <li v-for="item in links" :key="item.id" class="text-view">
+        <ul  style="text-align: left;
+                    padding-top: 40%">
+          <li v-for="item in links" :key="item.id" class="text-view"
+          >
             <svg
               t="1646132610508"
               class="icon"
@@ -132,6 +134,7 @@ defineProps({
 
 .scrollable::-webkit-scrollbar {
   width: 0.5em;
+  padding: 50%;
 }
 
 .scrollable::-webkit-scrollbar-track {

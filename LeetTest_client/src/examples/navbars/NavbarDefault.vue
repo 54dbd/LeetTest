@@ -7,6 +7,7 @@ import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
 import downArrow from "@/assets/img/down-arrow.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
+import logo from "@/assets/img/logo_noText.png";
 
 const props = defineProps({
   action: {
@@ -108,6 +109,8 @@ watch(
           : 'container-fluid px-0'
       "
     >
+      <img :src="logo" style="width: 3%" />
+
       <RouterLink
         class="navbar-brand d-none d-md-block"
         :class="[
@@ -136,9 +139,9 @@ watch(
       >
         LeetTest考研刷题网
       </RouterLink>
-      <a
-        class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
-        >刷题!</a>
+      <a class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
+        >刷题!</a
+      >
 
       <button
         class="navbar-toggler shadow-none ms-2"
@@ -163,52 +166,52 @@ watch(
           <!--          账号-->
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a
-                role="button"
-                class="nav-link ps-2 d-flex cursor-pointer align-items-center"
-                :class="getTextColor()"
-                id="dropdownMenuPages"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+              role="button"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+              :class="getTextColor()"
+              id="dropdownMenuPages"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               <i
-                  class="material-icons opacity-6 me-2 text-md"
-                  :class="getTextColor()"
-              >dashboard</i
+                class="material-icons opacity-6 me-2 text-md"
+                :class="getTextColor()"
+                >dashboard</i
               >
               账户
               <img
-                  :src="getArrowColor()"
-                  alt="down-arrow"
-                  class="arrow ms-2 d-lg-block d-none"
+                :src="getArrowColor()"
+                alt="down-arrow"
+                class="arrow ms-2 d-lg-block d-none"
               />
               <img
-                  :src="getArrowColor()"
-                  alt="down-arrow"
-                  class="arrow ms-1 d-lg-none d-block ms-auto"
+                :src="getArrowColor()"
+                alt="down-arrow"
+                class="arrow ms-1 d-lg-none d-block ms-auto"
               />
             </a>
             <div
-                class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
-                aria-labelledby="dropdownMenuPages"
+              class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
+              aria-labelledby="dropdownMenuPages"
             >
               <div class="row d-none d-lg-block">
                 <div class="col-12 px-4 py-2">
                   <div class="row">
                     <div class="position-relative">
                       <div
-                          class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
                       >
                         账户
                       </div>
                       <RouterLink
-                          :to="{ name: 'signin-basic' }"
-                          class="dropdown-item border-radius-md"
+                        :to="{ name: 'signin-basic' }"
+                        class="dropdown-item border-radius-md"
                       >
                         <span>登录</span>
                       </RouterLink>
                       <RouterLink
-                          :to="{ name: 'signup-basic' }"
-                          class="dropdown-item border-radius-md"
+                        :to="{ name: 'signup-basic' }"
+                        class="dropdown-item border-radius-md"
                       >
                         <span>注册</span>
                       </RouterLink>
@@ -218,36 +221,36 @@ watch(
               </div>
               <div class="d-lg-none">
                 <div
-                    class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
+                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
                 >
                   Landing Pages
                 </div>
                 <RouterLink
-                    :to="{ name: 'about' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'about' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>About Us</span>
                 </RouterLink>
                 <RouterLink
-                    :to="{ name: 'contactus' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'contactus' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>Contact Us</span>
                 </RouterLink>
                 <RouterLink
-                    :to="{ name: 'author' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'author' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>Author</span>
                 </RouterLink>
                 <div
-                    class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
+                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
                 >
                   Account
                 </div>
                 <RouterLink
-                    :to="{ name: 'signin-basic' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'signin-basic' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>Sign In</span>
                 </RouterLink>
@@ -363,98 +366,97 @@ watch(
           <!--          关于我们-->
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a
-                role="button"
-                class="nav-link ps-2 d-flex cursor-pointer align-items-center"
-                :class="getTextColor()"
-                id="dropdownMenuPages"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
+              role="button"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+              :class="getTextColor()"
+              id="dropdownMenuPages"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               <i
-                  class="material-icons opacity-6 me-2 text-md"
-                  :class="getTextColor()"
-              >dashboard</i
+                class="material-icons opacity-6 me-2 text-md"
+                :class="getTextColor()"
+                >dashboard</i
               >
               关于我们
               <img
-                  :src="getArrowColor()"
-                  alt="down-arrow"
-                  class="arrow ms-2 d-lg-block d-none"
+                :src="getArrowColor()"
+                alt="down-arrow"
+                class="arrow ms-2 d-lg-block d-none"
               />
               <img
-                  :src="getArrowColor()"
-                  alt="down-arrow"
-                  class="arrow ms-1 d-lg-none d-block ms-auto"
+                :src="getArrowColor()"
+                alt="down-arrow"
+                class="arrow ms-1 d-lg-none d-block ms-auto"
               />
             </a>
             <div
-                class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
-                aria-labelledby="dropdownMenuPages"
+              class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
+              aria-labelledby="dropdownMenuPages"
             >
               <div class="row d-none d-lg-block">
                 <div class="col-12 px-4 py-2">
                   <div class="row">
                     <div class="position-relative">
                       <div
-                          class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
                       >
                         相关信息
                       </div>
                       <RouterLink
-                          :to="{ name: 'about' }"
-                          class="dropdown-item border-radius-md"
+                        :to="{ name: 'about' }"
+                        class="dropdown-item border-radius-md"
                       >
                         <span>关于我们</span>
                       </RouterLink>
                       <RouterLink
-                          :to="{ name: 'contactus' }"
-                          class="dropdown-item border-radius-md"
+                        :to="{ name: 'contactus' }"
+                        class="dropdown-item border-radius-md"
                       >
                         <span>联系我们</span>
                       </RouterLink>
                       <RouterLink
-                          :to="{ name: 'author' }"
-                          class="dropdown-item border-radius-md"
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
                       >
                         <span>作者</span>
                       </RouterLink>
-
                     </div>
                   </div>
                 </div>
               </div>
               <div class="d-lg-none">
                 <div
-                    class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
+                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
                 >
                   Landing Pages
                 </div>
                 <RouterLink
-                    :to="{ name: 'about' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'about' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>About Us</span>
                 </RouterLink>
                 <RouterLink
-                    :to="{ name: 'contactus' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'contactus' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>Contact Us</span>
                 </RouterLink>
                 <RouterLink
-                    :to="{ name: 'author' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'author' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>Author</span>
                 </RouterLink>
                 <div
-                    class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
+                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
                 >
                   Account
                 </div>
                 <RouterLink
-                    :to="{ name: 'signin-basic' }"
-                    class="dropdown-item border-radius-md"
+                  :to="{ name: 'signin-basic' }"
+                  class="dropdown-item border-radius-md"
                 >
                   <span>Sign In</span>
                 </RouterLink>
@@ -486,8 +488,8 @@ watch(
           <!--          发布文章-->
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a
-                href="#"
-                class="nav-link d-flex cursor-pointer align-items-center"
+              href="#"
+              class="nav-link d-flex cursor-pointer align-items-center"
             >
               发布文章
             </a>
