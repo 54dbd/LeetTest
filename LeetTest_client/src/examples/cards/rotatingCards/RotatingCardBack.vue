@@ -61,10 +61,8 @@ defineProps({
       style="margin-left: -5%; overflow: auto"
     >
       <div>
-        <ul  style="text-align: left;
-                    padding-top: 10%">
-          <li v-for="item in links" :key="item.id" class="text-view"
-          >
+        <ul style="text-align: left; padding-top: 10%">
+          <li v-for="item in links" :key="item.id" class="text-view">
             <svg
               t="1646132610508"
               class="icon"
@@ -107,7 +105,7 @@ defineProps({
               ></path>
             </svg>
             <router-link
-              style="font-size: 15px;color: white"
+              style="font-size: 15px; color: white"
               :to="{ path: '/article', query: { id: item.id } }"
               >{{ item.title }}</router-link
             >
