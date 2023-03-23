@@ -12,6 +12,10 @@ defineProps({
     type: String,
     required: true,
   },
+  url:{
+    type:String,
+    required:true,
+  }
 });
 </script>
 <template>
@@ -20,7 +24,7 @@ defineProps({
       class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
       :style="{
         backgroundImage:
-          'url(https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg)',
+          'url('+url+')',
       }"
       loading="lazy"
     >
@@ -36,7 +40,7 @@ defineProps({
                 :key="item.id"
                 class="text-view"
               >
-                <div>
+                <div class="icon-move-right">
                   <router-link
                     style="font-size: 15px; color: white"
                     :to="{ path: '/article', query: { id: item.id } }"

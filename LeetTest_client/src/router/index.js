@@ -32,126 +32,201 @@ const router = createRouter({
       path: "/",
       name: "presentation",
       component: PresentationView,
+      meta: {
+        keepAlive: true,
+      },
     },
     {
       path: "/pages/landing-pages/about-us",
       name: "about",
       component: AboutView,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/pages/landing-pages/contact-us",
       name: "contactus",
       component: ContactView,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/pages/landing-pages/author",
       name: "author",
       component: AuthorView,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/pages/landing-pages/login",
       name: "signin-basic",
       component: SignInBasicView,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/pages/landing-pages/register",
       name: "signup-basic",
       component: SignUpBasicView,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/page-sections/page-headers",
       name: "page-headers",
       component: PageHeaders,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/page-sections/features",
       name: "page-features",
       component: PageFeatures,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/navigation/navbars",
       name: "navigation-navbars",
       component: NavigationNavbars,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/navigation/nav-tabs",
       name: "navigation-navtabs",
       component: NavigationNavTabs,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/navigation/pagination",
       name: "navigation-pagination",
       component: NavigationPagination,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/input-areas/inputs",
       name: "inputareas-inputs",
       component: InputAreasInputs,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/input-areas/forms",
       name: "inputareas-forms",
       component: InputAreasForms,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/attention-catchers/alerts",
       name: "ac-alerts",
       component: ACAlerts,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/attention-catchers/modals",
       name: "ac-modals",
       component: ACModals,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/attention-catchers/tooltips-popovers",
       name: "ac-tooltips-popovers",
       component: ACTooltipsPopovers,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/avatars",
       name: "el-avatars",
       component: ElAvatars,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/badges",
       name: "el-badges",
       component: ElBadges,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/breadcrumbs",
       name: "el-breadcrumbs",
       component: ElBreadcrumbs,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/buttons",
       name: "el-buttons",
       component: ElButtons,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/button-groups",
       name: "el-button-groups",
       component: ElButtonGroups,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/dropdowns",
       name: "el-dropdowns",
       component: ElDropdowns,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/progress-bars",
       name: "el-progress-bars",
       component: ElProgressBars,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/toggles",
       name: "el-toggles",
       component: ElToggles,
+      meta: {
+        keepAlive: false,
+      },
     },
     {
       path: "/sections/elements/typography",
       name: "el-typography",
       component: ElTypography,
+      meta: {
+        keepAlive: false,
+      },
     },
   ],
 });

@@ -24,7 +24,8 @@ let router = new VueRouter({
             component: () => import('@/pages/Home/Home'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: true
             }
         },
         {
@@ -32,7 +33,8 @@ let router = new VueRouter({
             component: () => import('@/pages/Login/Login'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -40,7 +42,8 @@ let router = new VueRouter({
             component: () => import('@/pages/Register/Register'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -49,7 +52,8 @@ let router = new VueRouter({
             component: () => import('@/pages/TimeLine/TimeLine'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -58,7 +62,8 @@ let router = new VueRouter({
             component: () => import('@/pages/Article/Article'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -67,7 +72,8 @@ let router = new VueRouter({
             component: () => import('@/pages/SchoolList/SchoolList'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -76,7 +82,8 @@ let router = new VueRouter({
             component: () => import('@/pages/Upload/Upload'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -85,7 +92,8 @@ let router = new VueRouter({
             component: () => import('@/pages/TeacherDetail/TeacherDetail'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -94,7 +102,8 @@ let router = new VueRouter({
             component: () => import('@/pages/MarkDownEditor/index'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -103,7 +112,8 @@ let router = new VueRouter({
             component: () => import('@/pages/SchoolDetail/SchoolDetail'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -112,7 +122,8 @@ let router = new VueRouter({
             component: () => import('@/pages/ScoreLineList/ScoreLine/ScoreLine'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -121,7 +132,8 @@ let router = new VueRouter({
             component: () => import('@/pages/ScoreLineList/ScoreLineList'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: true
+                isShowSearch: true,
+                keepAlive: false
             }
         },
         {
@@ -130,7 +142,8 @@ let router = new VueRouter({
             component: () => import('@/pages/Search/Search'),
             meta: {
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -139,7 +152,8 @@ let router = new VueRouter({
             component: () => import('@/pages/404/NotFound'),
             meta: {
                 isShowHeader: false,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -148,7 +162,8 @@ let router = new VueRouter({
             component:()=>import('@/pages/Test/Test'),
             meta:{
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -157,7 +172,8 @@ let router = new VueRouter({
             component:()=>import('@/pages/TestList/TestList'),
             meta:{
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         {
@@ -166,7 +182,8 @@ let router = new VueRouter({
             component:()=>import('@/pages/User/User'),
             meta:{
                 isShowHeader: true,
-                isShowSearch: false
+                isShowSearch: false,
+                keepAlive: false
             }
         },
         //配置重定向：项目开始运行时立马定向到首页
