@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUnmounted, reactive} from "vue";
+import { onMounted, onUnmounted, reactive } from "vue";
 
 //example components
 import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
