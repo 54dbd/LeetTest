@@ -62,7 +62,7 @@ defineProps({
     >
       <div>
         <ul  style="text-align: left;
-                    padding-top: 40%">
+                    padding-top: 10%">
           <li v-for="item in links" :key="item.id" class="text-view"
           >
             <svg
