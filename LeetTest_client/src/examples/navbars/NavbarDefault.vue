@@ -221,38 +221,21 @@ watch(
               </div>
               <div class="d-lg-none">
                 <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
+                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
                 >
-                  Landing Pages
-                </div>
-                <RouterLink
-                  :to="{ name: 'about' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>About Us</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'contactus' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>Contact Us</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'author' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>Author</span>
-                </RouterLink>
-                <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
-                >
-                  Account
+                  账户
                 </div>
                 <RouterLink
                   :to="{ name: 'signin-basic' }"
                   class="dropdown-item border-radius-md"
                 >
-                  <span>Sign In</span>
+                  <span>登录</span>
+                </RouterLink>
+                <RouterLink
+                  :to="{ name: 'signup-basic' }"
+                  class="dropdown-item border-radius-md"
+                >
+                  <span>注册</span>
                 </RouterLink>
               </div>
             </div>
@@ -326,40 +309,41 @@ watch(
                 </div>
               </div>
               <div class="d-lg-none">
-                <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
-                >
-                  Landing Pages
+                <div class="col-12 px-4 py-2">
+                  <div class="row">
+                    <div class="position-relative">
+                      <div
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
+                      >
+                        考研信息
+                      </div>
+                      <RouterLink
+                        :to="{ name: 'contactus' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>信息中心</span>
+                      </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>34所高校</span>
+                      </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span> 考研分数线</span>
+                      </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>考研时间线</span>
+                      </RouterLink>
+                    </div>
+                  </div>
                 </div>
-                <RouterLink
-                  :to="{ name: 'about' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>About Us</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'contactus' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>Contact Us</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'author' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>Author</span>
-                </RouterLink>
-                <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
-                >
-                  Account
-                </div>
-                <RouterLink
-                  :to="{ name: 'signin-basic' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>Sign In</span>
-                </RouterLink>
               </div>
             </div>
           </li>
@@ -427,38 +411,27 @@ watch(
               </div>
               <div class="d-lg-none">
                 <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0"
+                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
                 >
-                  Landing Pages
+                  相关信息
                 </div>
                 <RouterLink
                   :to="{ name: 'about' }"
                   class="dropdown-item border-radius-md"
                 >
-                  <span>About Us</span>
+                  <span>关于我们</span>
                 </RouterLink>
                 <RouterLink
                   :to="{ name: 'contactus' }"
                   class="dropdown-item border-radius-md"
                 >
-                  <span>Contact Us</span>
+                  <span>联系我们</span>
                 </RouterLink>
                 <RouterLink
                   :to="{ name: 'author' }"
                   class="dropdown-item border-radius-md"
                 >
-                  <span>Author</span>
-                </RouterLink>
-                <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-0 mt-3"
-                >
-                  Account
-                </div>
-                <RouterLink
-                  :to="{ name: 'signin-basic' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>Sign In</span>
+                  <span>作者</span>
                 </RouterLink>
               </div>
             </div>
@@ -511,5 +484,4 @@ watch(
   </nav>
 
   <!-- End Navbar -->
-
 </template>

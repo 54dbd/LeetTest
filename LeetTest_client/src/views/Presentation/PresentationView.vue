@@ -58,7 +58,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
@@ -73,7 +72,6 @@ onUnmounted(() => {
       :style="`background-image: url(${vueMkHeader})`"
       loading="lazy"
     >
-
       <div class="container">
         <div class="row">
           <div class="col-lg-7 text-center mx-auto position-relative">
@@ -113,6 +111,7 @@ onUnmounted(() => {
             description=""
             title=""
             :links="list1"
+            id="list1"
           >
           </RotatingCardBack>
         </RotatingCard>
@@ -129,6 +128,8 @@ onUnmounted(() => {
           <RotatingCardBack
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
             :links="list2"
+            id="list2"
+
           />
         </RotatingCard>
       </div>
@@ -144,6 +145,8 @@ onUnmounted(() => {
           <RotatingCardBack
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
             :links="list3"
+            id="list3"
+
           />
         </RotatingCard>
       </div>
@@ -180,18 +183,26 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <BuiltByDevelopers
-      title="研招答疑"
-      subtitle="详细内容"
-      :links="list4"
-      url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"
-    />
-    <BuiltByDevelopers
-      title="考研大纲"
-      subtitle="详细内容"
-      :links="list5"
-      url="https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80"
-    />
+    <div>
+      <BuiltByDevelopers
+          title="研招答疑"
+          subtitle="详细内容"
+          :links="list4"
+          id="list4"
+
+          url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"
+      />
+      <BuiltByDevelopers
+          title="考研大纲"
+          subtitle="详细内容"
+          :links="list5"
+          id="list5"
+
+          url="https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80"
+      />
+
+    </div>
+
 
     <PresentationTestimonials />
 
@@ -216,3 +227,40 @@ onUnmounted(() => {
   </div>
   <DefaultFooter />
 </template>
+
+<script>
+import { defineComponent, onMounted, onUnmounted } from 'vue'
+import {useAppStore} from "@/stores";
+
+export default defineComponent({
+  setup() {
+    // 从本地存储中读取数据并保存到Pinia状态中
+    const loadData = () => {
+      const content = localStorage.getItem('content')
+      if (content) {
+        useAppStore.content = content
+      }
+    }
+
+    // 保存Pinia状态到本地存储中
+    const saveData = () => {
+      localStorage.setItem('content', useAppStore.content)
+    }
+
+    onMounted(() => {
+      // 组件挂载时从本地存储中读取数据
+      loadData()
+    })
+
+    onUnmounted(() => {
+      // 组件销毁时保存Pinia状态到本地存储中
+      saveData()
+    })
+
+    return { useAppStore }
+  }
+})
+
+
+
+</script>
