@@ -157,16 +157,6 @@ let router = new VueRouter({
             }
         },
         {
-            name:'test',
-            path:'/test',
-            component:()=>import('@/pages/Test/Test'),
-            meta:{
-                isShowHeader: true,
-                isShowSearch: false,
-                keepAlive: false
-            }
-        },
-        {
             name:'testList',
             path:'/testList',
             component:()=>import('@/pages/TestList/TestList'),
