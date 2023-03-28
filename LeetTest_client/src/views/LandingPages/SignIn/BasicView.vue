@@ -10,6 +10,7 @@ import MaterialInput from "@/components/MaterialInput.vue";
 import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 
+
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
 onMounted(() => {
@@ -63,19 +64,30 @@ onMounted(() => {
                 </div>
               </div>
               <div class="card-body">
-                <form role="form" class="text-start">
+                <el-form
+                  role="form"
+                  class="text-start"
+                  :model="loginForm"
+                  ref="loginForm"
+                >
+                  <!--                  <el-form-item prop="username">-->
                   <MaterialInput
                     id="email"
                     class="input-group-outline my-3"
-                    :label="{ text: '邮箱', class: 'form-label' }"
-                    type="email"
+                    v-model="loginForm.username"
+                    :label="{ text: '用户名', class: 'form-label' }"
                   />
+                  <!--                  </el-form-item>-->
+                  <!--                  <el-form-item prop="password">-->
                   <MaterialInput
                     id="password"
                     class="input-group-outline mb-3"
+                    v-model="loginForm.password"
                     :label="{ text: '密码', class: 'form-label' }"
+                    @keyup.enter="userLogin"
                     type="password"
                   />
+                  <!--                  </el-form-item>-->
                   <MaterialSwitch
                     class="d-flex align-items-center mb-3"
                     id="rememberMe"
@@ -90,18 +102,19 @@ onMounted(() => {
                       variant="gradient"
                       color="success"
                       fullWidth
+                      @click.prevent="userLogin"
                       >登录</MaterialButton
                     >
                   </div>
                   <p class="mt-4 text-sm text-center">
                     还没有账号?
                     <a
-                      href="register"
+                      href="/register"
                       class="text-success text-gradient font-weight-bold"
                       >注册</a
                     >
                   </p>
-                </form>
+                </el-form>
               </div>
             </div>
           </div>
@@ -118,10 +131,87 @@ onMounted(() => {
                 <i class="fa fa-heart" aria-hidden="true"></i>
               </div>
             </div>
-
           </div>
         </div>
       </footer>
     </div>
   </Header>
 </template>
+
+<script>
+import { useAppStore } from "@/stores";
+export default {
+  name: "Login",
+  setup() {
+    const piniaStore = useAppStore();
+    console.log(piniaStore);
+  },
+  data() {
+    // 自定义校验规则
+    const validateUsername = (rule, value, callback) => {
+      if (!/^\w{5,15}$/.test(value)) {
+        callback(new Error("请检查用户名格式是否正确"));
+      } else {
+        callback();
+      }
+    };
+    const validatePassword = (rule, value, callback) => {
+      if (!/^\w{5,17}$/.test(value)) {
+        callback(new Error("密码只能6~15位包含数字、字母和下划线"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      loginForm: {
+        username: "",
+        password: "",
+      },
+
+      rules: {
+        username: [
+          { required: true, trigger: "blur", validator: validateUsername },
+        ],
+        password: [
+          { required: true, trigger: "blur", validator: validatePassword },
+        ],
+      },
+    };
+  },
+  methods: {
+    userLogin() {
+      this.$refs.loginForm.validate(async (valid) => {
+        if (valid) {
+          try {
+            const piniaStore = useAppStore();
+            const result = await piniaStore.dispatch("user/login", {
+              username: this.loginForm.username,
+              password: this.loginForm.password,
+            });
+            if (result) {
+              await this.$message({
+                duration: 1500,
+                message: "登录成功！",
+                type: "success",
+              });
+              await this.$router.push("/");
+              const toPath = this.$route.query.redirect || "/";
+              await this.$router.push(toPath);
+            } else {
+              this.$message.error(result.data.msg);
+              this.loginForm.username = "";
+              this.loginForm.password = "";
+            }
+          } catch (e) {
+            this.$message.error(e.message);
+            this.loginForm.username = "";
+            this.loginForm.password = "";
+          }
+        } else {
+          this.$message.warning("请检查输入是否正确");
+        }
+      });
+    },
+  },
+};
+</script>

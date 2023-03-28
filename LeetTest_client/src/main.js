@@ -17,6 +17,8 @@ import materialKit from "./material-kit";
 
 const app = createApp(App);
 
+console.log("pinia instance:", createPinia()); // 打印 pinia 实例
+
 app.use(ElementPlus);
 app.use(createPinia());
 app.use(router);
