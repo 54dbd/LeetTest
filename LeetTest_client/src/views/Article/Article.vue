@@ -1,5 +1,10 @@
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
+import MarkDown from "@/views/Article/Sections/MarkDown/MarkDown.vue";
+import CommentText from "@/views/Article/Sections/CommentText/CommentText.vue";
+import { getToken } from "@/utils/token";
+import { useAppStore } from "@/stores";
+import Clipboard from "clipboard";
 
 //example components
 import DefaultNavbar from "../../examples/navbars/NavbarDefault.vue";
@@ -10,6 +15,10 @@ import bg0 from "@/assets/img/bg9.jpg";
 
 //dep
 import Typed from "typed.js";
+import { useRoute, useRouter } from "vue-router";
+import { ElMessage, ElNotification } from "element-plus";
+
+import * as api from "@/api";
 
 // //sections
 // import Information from "./Sections/AboutInformation.vue";
@@ -17,15 +26,353 @@ import Typed from "typed.js";
 // import Featuring from "./Sections/AboutFeaturing.vue";
 // import Newsletter from "./Sections/AboutNewsletter.vue";
 
+// Data
+const router = useRouter();
+const route = useRoute();
+const content = ref("");
+const comments = ref("");
+const title = ref("");
+const likesCount = ref(0);
+const isLiked = ref(false);
+const repostCount = ref(0);
+const favoriteCount = ref(0);
+const isFavorite = ref(false);
+const historyCount = ref(1);
+const commentCount = ref(0);
+const commentList = ref([]);
+const tagList = ref([]);
+const author = ref({});
+const create_time = ref("");
+const model_time = ref("");
+const placeholder = ref("想说点什么？评论支持markdown语法。");
+const dialogVisible = ref(false);
+const replyText = ref("");
+const commentParam = ref({
+  userId: useAppStore().user.userInfo.userId,
+  articleId: route.query.id,
+  parentId: 0,
+  toUserId: 0,
+});
+let page = ref({
+  current: 1,
+  size: 10,
+});
+let pages = ref(0);
+let total = ref(0);
+let moreArticle = ref([]);
+let tagNameList = ref([]);
+let url = ref("1");
+
+// Methods
+
+const submit_click = async () => {
+  // 先判断是否登录
+  if (!getToken()) {
+    ElMessage.warning("未登录，请先登录~");
+    await router.push("/login");
+    return;
+  }
+  const result = await api.reqAddParentComment({
+    userId: useAppStore().user.userInfo.userId,
+    articleId: route.query.id,
+    parentId: 0,
+    toUserId: 0,
+    content: comment_text,
+  });
+  if (result.data.code === 200) {
+    this.$refs.my_comment.success_submit("评论成功", 1500);
+    await getComment();
+  } else {
+    ElMessage.error("系统异常~ " + result.data.msg);
+    this.$refs.my_comment.err_submitFn("评论失败", 1500);
+  }
+  //你可以在这里验证用户输入的格式。
+  //若格式错误可调用此函数：
+  //this.$refs.my_comment.err_submitFn("格式错误",1500)
+
+  //你可以在这儿请求AJAX
+  //失败回调：
+  // this.$refs.my_comment.err_submitFn("评论失败",1500)
+  //成功回调
+  // this.$refs.my_comment.success_submit("评论成功", 1500)
+};
+
+//点击评论按钮后，触发的事件
+const submit_son_click = async () => {
+  // 先判断是否登录
+  if (!getToken()) {
+    ElMessage.warning("未登录，请先登录~");
+    await router.push("/login");
+    return;
+  }
+  if (replyText.value === "") {
+    ElMessage.warning("评论区不能为空~");
+    return;
+  }
+  commentParam.value.content = replyText;
+  const result = await api.reqAddParentComment(commentParam);
+  if (result.data.code === 200) {
+    ElMessage.success("评论成功~");
+  } else {
+    ElMessage.error("系统异常~ " + result.data.msg);
+  }
+  replyText.value = "";
+  dialogVisible.value = false;
+  await getComment();
+};
+
+const giveup_son_click = () => {
+  dialogVisible.value = false;
+};
+
+const reply = (comment, index, comment_) => {
+  dialogVisible.value = true;
+  if (index === 0) {
+    commentParam.value.parentId = comment.id;
+    commentParam.value.toUserId = comment.author.userId;
+    commentParam.value.username = comment.author.username;
+  } else {
+    commentParam.value.parentId = comment_.id;
+    commentParam.value.username = comment.author.username;
+  }
+};
+
+const getArticle = async () => {
+  const result = await api.reqGetArticleById(route.query.id);
+  if (result.data.code === 200) {
+    title.value = result.data.data.article.title;
+    content.value = result.data.data.article.content;
+    author.value = result.data.data.author;
+    tagList.value = result.data.data.tagsList;
+    await getMoreArticle();
+    create_time.value = result.data.data.article.createTime;
+    model_time.value = result.data.data.article.modifyTime;
+    likesCount.value = result.data.data.likesCount;
+    repostCount.value = result.data.data.repostCount;
+    favoriteCount.value = result.data.data.favoriteCount;
+    historyCount.value = result.data.data.historyCount;
+  } else {
+    ElMessage.error("系统异常~ " + result.data.msg);
+    await router.push({ path: "/404" });
+  }
+};
+
+const getAUCondition = async () => {
+  const result = await api.reqGetAUCondition({
+    aid: route.query.id,
+    uid: useAppStore().user.userInfo.userId,
+  });
+  if (result.data.code === 200) {
+    isLiked.value = result.data.data.isLiked;
+    isFavorite.value = result.data.data.isFavorit;
+  } else {
+    ElMessage.error(result.data.msg);
+  }
+};
+
+const getComment = async () => {
+  const result = await api.reqGetCommentById({
+    articleId: route.query.id,
+    page: page,
+    userId: useAppStore().user.userInfo.userId,
+  });
+  if (result.data.code === 200) {
+    commentCount.value = result.data.data.commentCount;
+    commentList.value = result.data.data.commentVoList;
+    pages = result.data.data.pages;
+    total = result.data.data.total;
+  } else {
+    ElMessage.error("系统异常~ " + result.data.msg);
+  }
+};
+
+const addCommentLike = async (comment) => {
+  if (!getToken()) {
+    await ElMessage.warning("当前尚未登录，请先登录...");
+    await router.push("/login");
+  }
+  if (comment.isLiked) {
+    const result = await api.reqRevokeCommentLike({
+      cid: comment.id,
+      uid: useAppStore().user.userInfo.userId,
+    });
+    if (result.data.code === 200) {
+      ElNotification.warning({
+        title: "警告",
+        message: "取消成功~",
+      });
+      await getComment();
+    } else {
+      ElMessage.error("系统异常~ " + result.data.msg);
+    }
+    return;
+  }
+  const result = await api.reqAddCommentLike({
+    aid: route.query.id,
+    cid: comment.id,
+    uid: useAppStore().user.userInfo.userId,
+  });
+  if (result.data.code === 200) {
+    ElNotification.success({
+      title: "成功",
+      message: "点赞成功~",
+    });
+    await getComment();
+  } else {
+    ElMessage.error("系统异常~ " + result.data.msg);
+  }
+};
+
+const handleSizeChange = (size) => {
+  page.value.size = size;
+  getComment();
+};
+
+const handleCurrentChange = (current) => {
+  page.value.current = current;
+  getComment();
+};
+
+const addLikes = async () => {
+  if (!getToken()) {
+    ElMessage.warning("当前尚未登录，请先登录");
+    await router.push("/login");
+    return;
+  }
+  if (!isLiked.value) {
+    const result = await api.addLikes({
+      aid: route.query.id,
+      uid: useAppStore().user.userInfo.userId,
+    });
+    if (result.data.code === 200) {
+      isLiked.value = true;
+      likesCount.value = result.data.data.likeCount;
+      ElNotification.success({
+        title: "成功",
+        message: "点赞成功！",
+      });
+    } else {
+      ElNotification.error({
+        title: "错误",
+        message: "点赞失败~ " + result.data.msg,
+      });
+    }
+  } else {
+    const result = await api.revokeLikes({
+      aid: route.query.id,
+      uid: useAppStore().user.userInfo.userId,
+    });
+    if (result.data.code === 200) {
+      isLiked.value = false;
+      likesCount.value = result.data.data.likeCount;
+      ElNotification.warning({
+        title: "警告",
+        message: "已取消点赞~",
+      });
+    } else {
+      ElNotification.error({
+        title: "错误",
+        message: "取消失败~ " + result.data.msg,
+      });
+    }
+  }
+};
+
+const addFavorite = async () => {
+  if (!getToken()) {
+    ElMessage.warning("当前尚未登录，请先登录");
+    await router.push("/login");
+    return;
+  }
+  if (!isFavorite.value) {
+    const result = await api.addFavorite({
+      aid: route.query.id,
+      uid: useAppStore().user.userInfo.userId,
+    });
+    if (result.data.code === 200) {
+      isFavorite.value = true;
+      favoriteCount.value = result.data.data.favoriteCount;
+      ElNotification.success({ title: "成功", message: "收藏成功！" });
+    } else {
+      ElNotification.error({
+        title: "失败",
+        message: "收藏失败~" + result.data.msg,
+      });
+    }
+  } else {
+    const result = await api.revokeFavorite({
+      aid: route.query.id,
+      uid: useAppStore().user.userInfo.userId,
+    });
+    if (result.data.code === 200) {
+      isFavorite.value = false;
+      favoriteCount.value = result.data.data.favoriteCount;
+      ElNotification.warning({ title: "警告", message: "已取消收藏~" });
+    } else {
+      ElNotification.error({
+        title: "失败",
+        message: "取消收藏失败~" + result.data.msg,
+      });
+    }
+  }
+};
+
+const addRepost = async () => {
+  /* const url = this.$refs.url;
+   url.select(); // 选择对象
+   document.execCommand("Copy"); // 执行浏览器复制命令
+   alert("已复制好，可贴粘。");*/
+  /*const result = await api.addRepost({
+    aid: route.query.id,
+    uid: useAppStore().user.userInfo.userId
+  })
+  if (result.data.code === 200) {
+    this.repostCount = result.data.data.repostCount
+  }*/
+};
+
+const getMoreArticle = async () => {
+  const result = await api.reqSearchArticle({
+    text: tagList.value[0].tagName,
+    current: 1,
+    size: 5,
+  });
+  if (result.data.code === 200) {
+    moreArticle = result.data.data.articleBriefParams;
+  } else {
+    ElMessage.error(result.data.msg);
+  }
+};
+
+const getTagNameList = async () => {
+  const result = await api.reqGetTagNameList();
+  if (result.data.code === 200) {
+    tagNameList = result.data.data;
+  }
+};
+
+const comment_text = computed(() => {
+  //获取子组件的评论内容。
+  return this.$refs.my_comment.insert_comment.comment_text;
+});
+
 const body = document.getElementsByTagName("body")[0];
 //hooks
 onMounted(() => {
+  getArticle();
+  getAUCondition();
+  getComment();
+  api.reqAddHistory({
+    aid: route.query.id,
+    uid: useAppStore().user.userInfo.userId,
+  });
+  getTagNameList();
   body.classList.add("about-us");
   body.classList.add("bg-gray-200");
 
   if (document.getElementById("typed")) {
     // eslint-disable-next-line no-unused-vars
-    var typed = new Typed("#typed", {
+    let typed = new Typed("#typed", {
       stringsElement: "#typed-strings",
       typeSpeed: 90,
       backSpeed: 90,
@@ -143,350 +490,3 @@ onUnmounted(() => {
   </div>
   <DefaultFooter />
 </template>
-
-<script>
-import MarkDown from "@/views/Article/Sections/MarkDown/MarkDown.vue";
-import CommentText from "@/views/Article/Sections/CommentText/CommentText.vue";
-import { getToken } from "@/utils/token";
-import { useAppStore } from "@/stores";
-
-import Clipboard from "clipboard";
-
-export default {
-  name: "index",
-  components: {
-    MarkDown,
-    CommentText,
-  },
-  data() {
-    return {
-      content: "",
-      comments: "",
-      title: "",
-      likesCount: 0,
-      isLiked: false,
-      repostCount: 0,
-      favoriteCount: 0,
-      isFavorite: false,
-      historyCount: 1,
-      commentCount: 0,
-      commentList: [],
-      tagList: [],
-      author: {},
-      create_time: "",
-      model_time: "",
-      placeholder: "想说点什么？评论支持markdown语法。", //默认文字提示。
-      // 展示回复框
-      dialogVisible: false,
-      replyText: "",
-      // 回复用的comment
-      commentParam: {
-        userId: useAppStore().user.userInfo.userId,
-        articleId: this.$route.query.id,
-        parentId: 0,
-        toUserId: 0,
-      },
-      // 分页信息
-      page: {
-        current: 1,
-        size: 10,
-      },
-      pages: 0,
-      total: 0,
-      // 更多
-      moreArticle: [],
-      tagNameList: [],
-      url: "1",
-    };
-  },
-  methods: {
-    //点击评论按钮后，触发的事件
-    async submit_click() {
-      // 先判断是否登录
-      if (!getToken()) {
-        this.$message.warning("未登录，请先登录~");
-        await this.$router.push("/login");
-        return;
-      }
-      const result = await this.$API.reqAddParentComment({
-        userId: useAppStore().user.userInfo.userId,
-        articleId: this.$route.query.id,
-        parentId: 0,
-        toUserId: 0,
-        content: this.comment_text,
-      });
-      if (result.data.code === 200) {
-        this.$refs.my_comment.success_submit("评论成功", 1500);
-        await this.getComment();
-      } else {
-        this.$message.error("系统异常~ " + result.data.msg);
-        this.$refs.my_comment.err_submitFn("评论失败", 1500);
-      }
-      //你可以在这里验证用户输入的格式。
-      //若格式错误可调用此函数：
-      //this.$refs.my_comment.err_submitFn("格式错误",1500)
-
-      //你可以在这儿请求AJAX
-      //失败回调：
-      // this.$refs.my_comment.err_submitFn("评论失败",1500)
-      //成功回调
-      // this.$refs.my_comment.success_submit("评论成功", 1500)
-    },
-    async submit_son_click() {
-      // 先判断是否登录
-      if (!getToken()) {
-        this.$message.warning("未登录，请先登录~");
-        await this.$router.push("/login");
-        return;
-      }
-      if (this.replyText === "") {
-        this.$message.warning("评论区不能为空~");
-        return;
-      }
-      this.commentParam.content = this.replyText;
-      const result = await this.$API.reqAddParentComment(this.commentParam);
-      if (result.data.code === 200) {
-        this.$message.success("评论成功~");
-      } else {
-        this.$message.error("系统异常~ " + result.data.msg);
-      }
-      this.replyText = "";
-      this.dialogVisible = false;
-      await this.getComment();
-    },
-    giveup_son_click() {
-      this.dialogVisible = false;
-    },
-    reply(comment, index, comment_) {
-      this.dialogVisible = true;
-      if (index === 0) {
-        this.commentParam.parentId = comment.id;
-        this.commentParam.toUserId = comment.author.userId;
-        this.commentParam.username = comment.author.username;
-      } else {
-        this.commentParam.parentId = comment_.id;
-        this.commentParam.username = comment.author.username;
-      }
-    },
-    async getArticle() {
-      const result = await this.$API.reqGetArticleById(this.$route.query.id);
-      if (result.data.code === 200) {
-        this.title = result.data.data.article.title;
-        this.content = result.data.data.article.content;
-        this.author = result.data.data.author;
-        this.tagList = result.data.data.tagsList;
-        await this.getMoreArticle();
-        this.create_time = result.data.data.article.createTime;
-        this.model_time = result.data.data.article.modifyTime;
-        this.likesCount = result.data.data.likesCount;
-        this.repostCount = result.data.data.repostCount;
-        this.favoriteCount = result.data.data.favoriteCount;
-        this.historyCount = result.data.data.historyCount;
-      } else {
-        this.$message.error("系统异常~ " + result.data.msg);
-        await this.$router.push({ path: "/404" });
-      }
-    },
-    async getAUCondition() {
-      const result = await this.$API.reqGetAUCondition({
-        aid: this.$route.query.id,
-        uid: useAppStore().user.userInfo.userId,
-      });
-      if (result.data.code === 200) {
-        this.isLiked = result.data.data.isLiked;
-        this.isFavorite = result.data.data.isFavorit;
-      } else {
-        this.$message.error(result.data.msg);
-      }
-    },
-    async getComment() {
-      const result = await this.$API.reqGetCommentById({
-        articleId: this.$route.query.id,
-        page: this.page,
-        userId: useAppStore().user.userInfo.userId,
-      });
-      if (result.data.code === 200) {
-        this.commentCount = result.data.data.commentCount;
-        this.commentList = result.data.data.commentVoList;
-        this.pages = result.data.data.pages;
-        this.total = result.data.data.total;
-      } else {
-        this.$message.error("系统异常~ " + result.data.msg);
-      }
-    },
-    async addCommentLike(comment) {
-      if (!getToken()) {
-        await this.$message.warning("当前尚未登录，请先登录...");
-        await this.$router.push("/login");
-      }
-      if (comment.isLiked) {
-        const result = await this.$API.reqRevokeCommentLike({
-          cid: comment.id,
-          uid: useAppStore().user.userInfo.userId,
-        });
-        if (result.data.code === 200) {
-          this.$notify.warning({
-            title: "警告",
-            message: "取消成功~",
-          });
-          await this.getComment();
-        } else {
-          this.$message.error("系统异常~ " + result.data.msg);
-        }
-        return;
-      }
-      const result = await this.$API.reqAddCommentLike({
-        aid: this.$route.query.id,
-        cid: comment.id,
-        uid: useAppStore().user.userInfo.userId,
-      });
-      if (result.data.code === 200) {
-        this.$notify.success({
-          title: "成功",
-          message: "点赞成功~",
-        });
-        await this.getComment();
-      } else {
-        this.$message.error("系统异常~ " + result.data.msg);
-      }
-    },
-    handleSizeChange(size) {
-      this.page.size = size;
-      this.getComment();
-    },
-    handleCurrentChange(current) {
-      this.page.current = current;
-      this.getComment();
-    },
-    async addLikes() {
-      if (!getToken()) {
-        this.$message.warning("当前尚未登录，请先登录");
-        await this.$router.push("/login");
-        return;
-      }
-      if (!this.isLiked) {
-        const result = await this.$API.addLikes({
-          aid: this.$route.query.id,
-          uid: useAppStore().user.userInfo.userId,
-        });
-        if (result.data.code === 200) {
-          this.isLiked = true;
-          this.likesCount = result.data.data.likeCount;
-          this.$notify.success({
-            title: "成功",
-            message: "点赞成功！",
-          });
-        } else {
-          this.$notify.error({
-            title: "错误",
-            message: "点赞失败~ " + result.data.msg,
-          });
-        }
-      } else {
-        const result = await this.$API.revokeLikes({
-          aid: this.$route.query.id,
-          uid: useAppStore().user.userInfo.userId,
-        });
-        if (result.data.code === 200) {
-          this.isLiked = false;
-          this.likesCount = result.data.data.likeCount;
-          this.$notify.warning({
-            title: "警告",
-            message: "已取消点赞~",
-          });
-        } else {
-          this.$notify.error({
-            title: "错误",
-            message: "取消失败~ " + result.data.msg,
-          });
-        }
-      }
-    },
-    async addFavorite() {
-      if (!getToken()) {
-        this.$message.warning("当前尚未登录，请先登录");
-        await this.$router.push("/login");
-        return;
-      }
-      if (!this.isFavorite) {
-        const result = await this.$API.addFavorite({
-          aid: this.$route.query.id,
-          uid: useAppStore().user.userInfo.userId,
-        });
-        if (result.data.code === 200) {
-          this.isFavorite = true;
-          this.favoriteCount = result.data.data.favoriteCount;
-          this.$notify.success({ title: "成功", message: "收藏成功！" });
-        } else {
-          this.$notify.error({
-            title: "失败",
-            message: "收藏失败~" + result.data.msg,
-          });
-        }
-      } else {
-        const result = await this.$API.revokeFavorite({
-          aid: this.$route.query.id,
-          uid: useAppStore().user.userInfo.userId,
-        });
-        if (result.data.code === 200) {
-          this.isFavorite = false;
-          this.favoriteCount = result.data.data.favoriteCount;
-          this.$notify.warning({ title: "警告", message: "已取消收藏~" });
-        } else {
-          this.$notify.error({
-            title: "失败",
-            message: "取消收藏失败~" + result.data.msg,
-          });
-        }
-      }
-    },
-    async addRepost() {
-      /* const url = this.$refs.url;
-       url.select(); // 选择对象
-       document.execCommand("Copy"); // 执行浏览器复制命令
-       alert("已复制好，可贴粘。");*/
-      /*const result = await this.$API.addRepost({
-        aid: this.$route.query.id,
-        uid: useAppStore().user.userInfo.userId
-      })
-      if (result.data.code === 200) {
-        this.repostCount = result.data.data.repostCount
-      }*/
-    },
-    async getMoreArticle() {
-      const result = await this.$API.reqSearchArticle({
-        text: this.tagList[0].tagName,
-        current: 1,
-        size: 5,
-      });
-      if (result.data.code === 200) {
-        this.moreArticle = result.data.data.articleBriefParams;
-      } else {
-        this.$message.error(result.data.msg);
-      }
-    },
-    async getTagNameList() {
-      const result = await this.$API.reqGetTagNameList();
-      if (result.data.code === 200) {
-        this.tagNameList = result.data.data;
-      }
-    },
-  },
-  mounted() {
-    this.getArticle();
-    this.getAUCondition();
-    this.getComment();
-    this.$API.reqAddHistory({
-      aid: this.$route.query.id,
-      uid: useAppStore().user.userInfo.userId,
-    });
-    this.getTagNameList();
-  },
-  computed: {
-    comment_text() {
-      //获取子组件的评论内容。
-      return this.$refs.my_comment.insert_comment.comment_text;
-    },
-  },
-};
-</script>
