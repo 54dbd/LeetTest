@@ -1,5 +1,12 @@
 <script setup>
-import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
+import {
+  computed,
+  onActivated,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+} from "vue";
 import MarkDown from "@/views/Article/Sections/MarkDown/MarkDown.vue";
 import CommentText from "@/views/Article/Sections/CommentText/CommentText.vue";
 import { getToken } from "@/utils/token";
@@ -63,8 +70,14 @@ const moreArticle = ref([]);
 const tagNameList = ref([]);
 const url = ref("1");
 
-// Methods
+onActivated(async () => {
+  getArticle();
+  getComment();
+  getMoreArticle();
+  getTagNameList();
+});
 
+// Methods
 const submit_click = async () => {
   // 先判断是否登录
   if (!getToken()) {
