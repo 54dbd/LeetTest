@@ -53,15 +53,15 @@ const commentParam = ref({
   parentId: 0,
   toUserId: 0,
 });
-let page = ref({
+const page = ref({
   current: 1,
   size: 10,
 });
-let pages = ref(0);
-let total = ref(0);
-let moreArticle = ref([]);
-let tagNameList = ref([]);
-let url = ref("1");
+const pages = ref(0);
+const total = ref(0);
+const moreArticle = ref([]);
+const tagNameList = ref([]);
+const url = ref("1");
 
 // Methods
 
@@ -179,8 +179,8 @@ const getComment = async () => {
   if (result.data.code === 200) {
     commentCount.value = result.data.data.commentCount;
     commentList.value = result.data.data.commentVoList;
-    pages = result.data.data.pages;
-    total = result.data.data.total;
+    pages.value = result.data.data.pages;
+    total.value = result.data.data.total;
   } else {
     ElMessage.error("系统异常~ " + result.data.msg);
   }
@@ -338,7 +338,7 @@ const getMoreArticle = async () => {
     size: 5,
   });
   if (result.data.code === 200) {
-    moreArticle = result.data.data.articleBriefParams;
+    moreArticle.value = result.data.data.articleBriefParams;
   } else {
     ElMessage.error(result.data.msg);
   }
@@ -347,7 +347,7 @@ const getMoreArticle = async () => {
 const getTagNameList = async () => {
   const result = await api.reqGetTagNameList();
   if (result.data.code === 200) {
-    tagNameList = result.data.data;
+    tagNameList.value = result.data.data;
   }
 };
 
