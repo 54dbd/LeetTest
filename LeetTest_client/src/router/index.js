@@ -28,7 +28,7 @@ import ElTypography from "../layouts/sections/elements/typography/TypographyView
 import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
 import { ElMessage } from "element-plus";
 import Article from "@/views/Article/Article.vue";
-
+import TestList from "@/views/Testlist/TestList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +45,14 @@ const router = createRouter({
       path: "/article",
       name: "article",
       component: Article,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path: "/testList",
+      name: "testList",
+      component: TestList,
       meta: {
         keepAlive: false,
       },
