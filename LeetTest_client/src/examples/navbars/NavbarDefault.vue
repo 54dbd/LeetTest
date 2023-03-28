@@ -139,7 +139,9 @@ watch(
       >
         LeetTest考研刷题网
       </RouterLink>
-      <a class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
+      <a
+        class="btn btn-sm bg-gradient-success mb-0 ms-auto d-lg-none d-block"
+        href="/testlist"
         >刷题!</a
       >
 
@@ -473,6 +475,7 @@ watch(
             <a
               class="btn btn-sm mb-0"
               :class="action.color"
+              href="/testlist"
               onclick="smoothToPricing('pricing-soft-ui')"
               style="font-size: 15px"
               >开刷!</a

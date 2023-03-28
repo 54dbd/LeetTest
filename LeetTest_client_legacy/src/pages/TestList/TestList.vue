@@ -108,7 +108,7 @@
         <el-card class="left_fbox">
           <el-col class="left_button_list">
             <el-button type="primary" icon="el-icon-notebook-2" class="left_button" @click="zz" >政治题库</el-button>
-            <el-button type="primary" icon="el-icon-suitcase"class="left_button" @click="cs">计算机题库</el-button>
+            <el-button type="primary" icon="el-icon-suitcase" class="left_button" @click="cs">计算机题库</el-button>
             <el-button type="primary" icon="el-icon-pie-chart" class="left_button" @click="math">数学题库</el-button>
           </el-col>
         </el-card>

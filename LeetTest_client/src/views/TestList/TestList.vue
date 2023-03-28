@@ -74,7 +74,7 @@ onUnmounted(() => {
   </header>
 
   <div class="card card-body blur shadow-xl mx-3 mx-md-7 mt-n3">
-    <!--    Navbar -->
+    <!--    TabBar -->
     <div class="row">
       <div class="col-lg-4 mx-auto">
         <div class="nav-wrapper position-relative end-0">
@@ -194,13 +194,13 @@ onUnmounted(() => {
         </el-table-column>
 
       </el-table>
-
     </el-col>
-  </div>
 <!--  Pagination-->
-<Pagination>
-
-</Pagination>
+    <div class="row mx-auto">
+      <Pagination>
+      </Pagination>
+    </div>
+  </div>
   <DefaultFooter />
 </template>
 <script>
