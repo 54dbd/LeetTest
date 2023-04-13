@@ -55,7 +55,7 @@ const placeholder = ref("想说点什么？评论支持markdown语法。");
 const dialogVisible = ref(false);
 const replyText = ref("");
 const commentParam = ref({
-  userId: useAppStore().user.userInfo.userId,
+  userId: useAppStore().user.state.userInfo.userId,
   articleId: route.query.id,
   parentId: 0,
   toUserId: 0,
@@ -86,7 +86,7 @@ const submit_click = async () => {
     return;
   }
   const result = await api.reqAddParentComment({
-    userId: useAppStore().user.userInfo.userId,
+    userId: useAppStore().user.state.userInfo.userId,
     articleId: route.query.id,
     parentId: 0,
     toUserId: 0,
@@ -173,7 +173,7 @@ const getArticle = async () => {
 const getAUCondition = async () => {
   const result = await api.reqGetAUCondition({
     aid: route.query.id,
-    uid: useAppStore().user.userInfo.userId,
+    uid: useAppStore().user.state.userInfo.userId,
   });
   if (result.data.code === 200) {
     isLiked.value = result.data.data.isLiked;
@@ -187,7 +187,7 @@ const getComment = async () => {
   const result = await api.reqGetCommentById({
     articleId: route.query.id,
     page: page,
-    userId: useAppStore().user.userInfo.userId,
+    userId: useAppStore().user.state.userInfo.userId,
   });
   if (result.data.code === 200) {
     commentCount.value = result.data.data.commentCount;
@@ -207,7 +207,7 @@ const addCommentLike = async (comment) => {
   if (comment.isLiked) {
     const result = await api.reqRevokeCommentLike({
       cid: comment.id,
-      uid: useAppStore().user.userInfo.userId,
+      uid: useAppStore().user.state.userInfo.userId,
     });
     if (result.data.code === 200) {
       ElNotification.warning({
@@ -223,7 +223,7 @@ const addCommentLike = async (comment) => {
   const result = await api.reqAddCommentLike({
     aid: route.query.id,
     cid: comment.id,
-    uid: useAppStore().user.userInfo.userId,
+    uid: useAppStore().user.state.userInfo.userId,
   });
   if (result.data.code === 200) {
     ElNotification.success({
@@ -255,7 +255,7 @@ const addLikes = async () => {
   if (!isLiked.value) {
     const result = await api.addLikes({
       aid: route.query.id,
-      uid: useAppStore().user.userInfo.userId,
+      uid: useAppStore().user.state.userInfo.userId,
     });
     if (result.data.code === 200) {
       isLiked.value = true;
@@ -273,7 +273,7 @@ const addLikes = async () => {
   } else {
     const result = await api.revokeLikes({
       aid: route.query.id,
-      uid: useAppStore().user.userInfo.userId,
+      uid: useAppStore().user.state.userInfo.userId,
     });
     if (result.data.code === 200) {
       isLiked.value = false;
@@ -300,7 +300,7 @@ const addFavorite = async () => {
   if (!isFavorite.value) {
     const result = await api.addFavorite({
       aid: route.query.id,
-      uid: useAppStore().user.userInfo.userId,
+      uid: useAppStore().user.state.userInfo.userId,
     });
     if (result.data.code === 200) {
       isFavorite.value = true;
@@ -315,7 +315,7 @@ const addFavorite = async () => {
   } else {
     const result = await api.revokeFavorite({
       aid: route.query.id,
-      uid: useAppStore().user.userInfo.userId,
+      uid: useAppStore().user.state.userInfo.userId,
     });
     if (result.data.code === 200) {
       isFavorite.value = false;
@@ -377,7 +377,7 @@ onMounted(() => {
   getComment();
   api.reqAddHistory({
     aid: route.query.id,
-    uid: useAppStore().user.userInfo.userId,
+    uid: useAppStore().user.state.userInfo.userId,
   });
   getTagNameList();
   body.classList.add("about-us");
