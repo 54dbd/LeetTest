@@ -25,6 +25,6 @@ app.use(router);
 app.use(materialKit);
 app.use(mavonEditor);
 
-app.config.globalProperties.$API = API;
+app.config.globalProperties.API = API;
 
 app.mount("#app");

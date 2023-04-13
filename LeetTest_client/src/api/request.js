@@ -9,7 +9,7 @@ import { ElMessage } from "element-plus";
 //1.利用axios对象的方法create插件一个axios对象实例
 //2.requests其实就是axios
 const requests = axios.create({
-  //基础路径：发送请求时，路径中会出现csky
+  //基础路径：发送请求时，路径中会出现leetTest
   baseURL: "http://localhost:8001/csky",
   //超时事件
   timeout: 100000,
