@@ -2,6 +2,7 @@
 import {onMounted} from "vue";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
+import { inject } from 'vue'
 
 // example components
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
@@ -13,21 +14,20 @@ import MaterialSwitch from "@/components/MaterialSwitch.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 // material-input
 import setMaterialInput from "@/assets/js/material-input";
-import { useAppStore } from "@/stores";
-import router from "@/router";
-
-const store = useAppStore().user;
 
 const username = ref();
 const password = ref();
 const loading = ref();
+const store = inject('store')
+const router = inject('router')
+
 onMounted(() => {
   setMaterialInput();
 });
 async function login() {
   try {
     loading.value = true;
-    const response = await store.actions({
+    const response = await store.dispatch("user/login",{
       username:username.value,
       password:password.value,
     })
@@ -37,9 +37,8 @@ async function login() {
         message: '登录成功！',
         type: 'success'
       })
-      await this.$router.push('/')
-      const toPath = this.$route.query.redirect || '/'
-      await this.$router.push(toPath)
+      await router.push('/')
+
     } else {
       ElMessage.error(response.data.msg)
       username.value = ''

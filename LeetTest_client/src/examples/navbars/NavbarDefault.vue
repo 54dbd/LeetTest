@@ -8,6 +8,10 @@ import ArrDark from "@/assets/img/down-arrow-dark.svg";
 import downArrow from "@/assets/img/down-arrow.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 import logo from "@/assets/img/logo_noText.png";
+import store from "@/stores"; // 引入store实例
+import MaterialAvatar from "@/components/MaterialAvatar.vue";
+import profilePic from "@/assets/img/bruce-mars.jpg";
+const userName = store.state.user.userInfo.username;
 
 const props = defineProps({
   action: {
@@ -164,9 +168,9 @@ watch(
         class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0"
         id="navigation"
       >
-        <ul class="navbar-nav navbar-nav-hover ms-auto">
+        <ul class="navbar-nav navbar-nav-hover ms-auto align-items-center">
           <!--          账号-->
-          <li class="nav-item dropdown dropdown-hover mx-2">
+          <li class="nav-item dropdown dropdown-hover mx-2" v-if="!userName">
             <a
               role="button"
               class="nav-link ps-2 d-flex cursor-pointer align-items-center"
@@ -469,6 +473,108 @@ watch(
               发布文章
             </RouterLink>
           </li>
+          <!--            用户头像-->
+          <li class="nav-item dropdown dropdown-hover mx-2" v-if="userName">
+            <a
+              role="button"
+              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+              :class="getTextColor()"
+              id="dropdownMenuPages"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <MaterialAvatar
+                size="sm"
+                border-radius="0.2px"
+                class="shadow-xl position-relative z-index-2"
+                :image="profilePic"
+                alt="Avatar"
+              />
+              <div
+                class="nav-link ps-2 d-flex cursor-pointer align-items-center"
+              >
+                {{ userName }}
+              </div>
+              <img
+                :src="getArrowColor()"
+                alt="down-arrow"
+                class="arrow ms-2 d-lg-block d-none"
+              />
+              <img
+                :src="getArrowColor()"
+                alt="down-arrow"
+                class="arrow ms-1 d-lg-none d-block ms-auto"
+              />
+            </a>
+            <div
+              class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
+              aria-labelledby="dropdownMenuPages"
+            >
+              <div class="row d-none d-lg-block">
+                <div class="col-12 px-4 py-2">
+                  <div class="row">
+                    <div class="position-relative">
+                      <div
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
+                      >
+                        用户
+                      </div>
+                      <RouterLink
+                        :to="{ name: 'contactus' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>个人中心</span>
+                      </RouterLink>
+                      <a
+                          class="dropdown-item border-radius-md"
+                          @click="logout"
+                      >
+                        <span>注销</span>
+                      </a>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-lg-none">
+                <div class="col-12 px-4 py-2">
+                  <div class="row">
+                    <div class="position-relative">
+                      <div
+                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
+                      >
+                        考研信息
+                      </div>
+                      <RouterLink
+                        :to="{ name: 'contactus' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>信息中心</span>
+                      </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>34所高校</span>
+                      </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span> 考研分数线</span>
+                      </RouterLink>
+                      <RouterLink
+                        :to="{ name: 'author' }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>考研时间线</span>
+                      </RouterLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
@@ -488,3 +594,72 @@ watch(
 
   <!-- End Navbar -->
 </template>
+<script>
+export default {
+  data() {
+    return {
+      keyWord: '',
+      centerDialogVisible: false
+    }
+  },
+  methods: {
+    goSearch() {
+      if (this.keyWord.trim() === '') {
+        this.$message.warning('输入框不能为空~')
+        return
+      }
+      let location = {
+        name: 'search',
+        params: {
+          keyWord: this.keyWord,
+          fromRouter: this.$route.path
+        }
+      }
+      //如果带有query参数也传过去
+      if (this.$route.query) {
+        location.query = this.$route.query
+      }
+      this.$router.push(location)
+      this.keyWord = ''
+    },
+    //退出登录
+    async logout() {
+      this.$confirm('即将退出登录, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const result = await store.dispatch('user/logout')
+        if (result) {
+          this.$message({
+            type: 'success',
+            message: '已退出登录!'
+          })
+          await this.$router.push('/login')
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+
+    },
+    register() {
+      this.$router.push('/register')
+    }
+  },
+  computed: {
+    username() {
+      if (store.state.user.userInfo)
+        return store.state.user.userInfo.username
+      return ''
+    },
+    userImg() {
+      if (store.state.user.userInfo)
+        return store.state.user.userInfo.userImg
+      return ''
+    }
+  }
+}
+</script>

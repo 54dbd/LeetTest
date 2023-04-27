@@ -44,21 +44,33 @@ onMounted(() => {
                 </div>
               </div>
               <div class="card-body">
-                <form role="form" class="text-start">
-                  <MaterialInput
-                    class="input-group-static mb-4"
-                    label="用户名称"
-                    type="text"
-                    placeholder="请输入你的用户名"
-                  />
+                <el-form
+                  role="form"
+                  class="text-start"
+                  :rules="rules"
+                  :model="register"
+                  ref="registerForm"
+                >
+                  <el-form-item prop="username">
+                    <MaterialInput
+                      class="input-group-static mb-4"
+                      label="用户名称"
+                      type="text"
+                      placeholder="请输入你的用户名"
+                      v-model="register.username"
+                    />
+                  </el-form-item>
                   <div class="row">
                     <div class="col-8 text-center ms-auto">
-                      <MaterialInput
-                        class="input-group-static mb-4"
-                        label="邮箱账号"
-                        type="text"
-                        placeholder="请输入你的邮箱账号"
-                      />
+                      <el-form-item prop="email">
+                        <MaterialInput
+                          class="input-group-static mb-4"
+                          label="邮箱账号"
+                          type="text"
+                          placeholder="请输入你的邮箱账号"
+                          v-model="register.email"
+                        />
+                      </el-form-item>
                     </div>
                     <div class="col-4 text-center mt-4">
                       <MaterialButton
@@ -66,18 +78,23 @@ onMounted(() => {
                         color="success"
                         size="sm"
                         style="width: 100%"
-                      >发送验证码</MaterialButton
+                        type="button"
+                        @click="sendEmailCode"
+                        >发送验证码</MaterialButton
                       >
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-8 text-center ms-auto">
-                      <MaterialInput
-                        class="input-group-static mb-4"
-                        label="验证码"
-                        type="text"
-                        placeholder="请输入你的邮箱验证码"
-                      />
+                      <el-form-item prop="emailCode">
+                        <MaterialInput
+                          class="input-group-static mb-4"
+                          label="验证码"
+                          type="text"
+                          placeholder="请输入你的邮箱验证码"
+                          v-model="register.emailCode"
+                        />
+                      </el-form-item>
                     </div>
                     <div class="col-4 text-center mt-4">
                       <MaterialButton
@@ -85,23 +102,30 @@ onMounted(() => {
                         color="success"
                         size="sm"
                         style="width: 100%"
+                        @click="checkEmailCode"
+                        type="button"
                         >点击验证</MaterialButton
                       >
                     </div>
                   </div>
-
-                  <MaterialInput
-                    class="input-group-static mb-4"
-                    label="登陆密码"
-                    type="text"
-                    placeholder="请输入你的密码"
-                  />
-                  <MaterialInput
-                    class="input-group-static mb-4"
-                    label="确认密码"
-                    type="text"
-                    placeholder="请输入你的密码"
-                  />
+                  <el-form-item prop="password1">
+                    <MaterialInput
+                      class="input-group-static mb-4"
+                      label="登陆密码"
+                      type="password"
+                      placeholder="请输入你的密码"
+                      v-model="register.password1"
+                    />
+                  </el-form-item>
+                  <el-form-item prop="password2">
+                    <MaterialInput
+                      class="input-group-static mb-4"
+                      label="确认密码"
+                      type="password"
+                      placeholder="请输入你的密码"
+                      v-model="register.password2"
+                    />
+                  </el-form-item>
 
                   <div class="text-center">
                     <MaterialButton
@@ -109,10 +133,12 @@ onMounted(() => {
                       variant="gradient"
                       color="success"
                       fullWidth
+                      @click="userRegister"
+                      type="button"
                       >完成注册</MaterialButton
                     >
                   </div>
-                </form>
+                </el-form>
               </div>
             </div>
           </div>
@@ -135,3 +161,216 @@ onMounted(() => {
     </div>
   </Header>
 </template>
+<script>
+import { reqGetCode, reqCheckCode } from "@/api";
+import store from "@/stores";
+import useValidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
+import { ElMessage } from "element-plus";
+
+export default {
+  name: "Register",
+  data() {
+
+
+    // 自定义校验规则
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!/^\w{5,15}$/.test(value)) {
+    //     callback(new Error("请检查用户名格式是否正确"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
+    // const validatePassword1 = (rule, value, callback) => {
+    //   if (!/^[a-zA-Z]\w{5,17}$/.test(value)) {
+    //     callback(
+    //       new Error(
+    //         "密码以字母开头，长度在6~18之间，只能包含字母、数字和下划线"
+    //       )
+    //     );
+    //   } else {
+    //     callback();
+    //   }
+    // };
+    // const validatePassword2 = (rule, value, callback) => {
+    //   if (this.register.password2 === "" || this.register.password1 !== value) {
+    //     callback(new Error("前后密码不一致"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
+    // const validateEmail = (rule, value, callback) => {
+    //   if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value)) {
+    //     callback(new Error("请输入正确的邮箱地址"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
+    // const validateEmailCode = (rule, value, callback) => {
+    //   if (!/^[A-Za-z0-9]{6}$/.test(value)) {
+    //     callback(new Error("请输入6位邮箱验证码"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
+    return {
+      v$: useValidate(),
+      register: {
+        //用户名
+        username: "",
+        //密码
+        password1: "",
+        //确认密码
+        password2: "",
+        // 用户邮箱
+        email: "",
+        // 邮箱验证码
+        emailCode: "",
+      },
+      // 是否已经发送验证码
+      isClickGetCode: false,
+      // 是否显示验证成功图标
+      isShowIcon: true,
+      // 点击获取验证码后的倒计时
+      codeNum: 60,
+
+      // rules: {
+      //   username: [
+      //     { required: true, trigger: "blur", validator: validateUsername },
+      //   ],
+      //   email: [{ required: true, trigger: "blur", validator: validateEmail }],
+      //   emailCode: [
+      //     { required: true, trigger: "blur", validator: validateEmailCode },
+      //   ],
+      //   password1: [
+      //     { required: true, trigger: "blur", validator: validatePassword1 },
+      //   ],
+      //   password2: [
+      //     { required: true, trigger: "change", validator: validatePassword2 },
+      //   ],
+      // },
+      // 校验验证码时的使用
+      eid: "",
+    };
+  },
+  computed: {},
+  methods: {
+    async sendEmailCode() {
+      if (
+        /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(
+          this.register.email
+        )
+      ) {
+        this.isClickGetCode = true;
+        let interval = setInterval(() => {
+          if (this.codeNum > 0) {
+            this.codeNum--;
+          } else {
+            clearInterval(interval);
+            this.isClickGetCode = false;
+          }
+        }, 1000);
+        this.$notify.warning({
+          title: "提示",
+          message: "验证码发送中...",
+          duration: 8000,
+        });
+        try {
+          const result = await reqGetCode(this.register.email);
+          if (result.data.code === 200) {
+            await this.$notify.success({
+              message: "验证码成功发送，请注意查收！",
+              title: "提示",
+              duration: 5000,
+            });
+            this.eid = result.data.data.eid;
+            // 不能再被点击
+            this.isClickGetCode = true;
+          } else {
+            this.$message.error("验证码发送失败！");
+          }
+        } catch (e) {
+          this.$message.error(e.message);
+        }
+      } else {
+        this.$message.warning("请先输入正确的邮箱账号");
+      }
+    },
+    async checkEmailCode() {
+      if (!this.isClickGetCode) {
+        this.$message.warning("请先发送验证码~");
+        return;
+      }
+      if (!/^[A-Za-z0-9]{6}$/.test(this.register.emailCode)) {
+        this.$message.warning("验证码格式有误，请重新输入");
+        return;
+      }
+      try {
+        // 先校验验证码是否通过
+        const result = await reqCheckCode(
+          this.register.emailCode.toUpperCase(),
+          this.eid
+        );
+        if (result.data.code !== 200) {
+          this.$message.error(result.data.msg);
+        } else {
+          this.$message.success("验证通过~");
+          this.isShowIcon = false;
+        }
+      } catch (e) {
+        this.$message.error(e.message);
+      }
+    },
+    async userRegister() {
+      const isValid = await this.v$.$validate();
+      console.log(isValid)
+      if (this.isShowIcon) {
+        ElMessage.warning("请正确填写表单信息");
+        return;
+      }
+      if (isValid) {
+        try {
+          const result = await store.dispatch("user/register", {
+            username: this.register.username,
+            password: this.register.password1,
+            userEmail: this.register.email,
+          });
+          if (result) {
+            this.$confirm("注册成功，是否立即登录", "", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "success",
+            })
+              .then(() => {
+                this.$router.push("/login");
+              })
+              .catch(() => {
+                this.$router.push("/home");
+              });
+          }
+        } catch (e) {
+          ElMessage.error(e.message);
+        }
+      } else {
+        ElMessage.warning("请检查输入是否有误");
+      }
+    },
+  },
+  validations(){
+    return {
+      register: {
+        //用户名
+        username: {required},
+        //密码
+        password1: {required},
+        //确认密码
+        password2:{required},
+        // 用户邮箱
+        email: {required},
+        // 邮箱验证码
+        emailCode: {required},
+      },
+    }
+  },
+};
+</script>

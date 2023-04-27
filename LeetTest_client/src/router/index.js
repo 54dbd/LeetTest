@@ -29,6 +29,7 @@ import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vu
 import { ElMessage } from "element-plus";
 import Article from "@/views/Article/Article.vue";
 import TestList from "@/views/Testlist/TestList.vue";
+import store from "@/stores"; // 引入store实例
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -258,32 +259,33 @@ const router = createRouter({
 });
 
 import { getToken } from "@/utils/token";
-import { useAppStore } from "@/stores";
 
 // 配置全局前置路由守卫
 router.beforeEach(async (to, from, next) => {
+
   if (getToken()) {
     //用户登录了还想去login组件
     if (to.path === "/login") {
-      this.$message({
+      await ElMessage({
         duration: 1000,
-        message: "已经登录，不能再重复登录~",
-      });
+        message: '已经登录，不能再重复登录！',
+      })
+      console.log(getToken())
       next(from.path);
     } else {
       //判断
-      if (useAppStore().user.userInfo.username) {
+      if (store.state.user.username) {
         next();
       } else {
         //用户登录后获取用户信息
         try {
-          const result = await useAppStore().dispatch("user/getUserInfo");
+          const result = await store.dispatch("user/getUserInfo");
           if (result) {
             next();
           }
         } catch (e) {
           //token异常了，就清除token
-          await useAppStore().dispatch("user/logout");
+          await store.dispatch("user/logout");
           console.log(e.message);
           next("/login");
         }
