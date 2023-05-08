@@ -171,48 +171,6 @@ import { ElMessage } from "element-plus";
 export default {
   name: "Register",
   data() {
-
-
-    // 自定义校验规则
-    // const validateUsername = (rule, value, callback) => {
-    //   if (!/^\w{5,15}$/.test(value)) {
-    //     callback(new Error("请检查用户名格式是否正确"));
-    //   } else {
-    //     callback();
-    //   }
-    // };
-    // const validatePassword1 = (rule, value, callback) => {
-    //   if (!/^[a-zA-Z]\w{5,17}$/.test(value)) {
-    //     callback(
-    //       new Error(
-    //         "密码以字母开头，长度在6~18之间，只能包含字母、数字和下划线"
-    //       )
-    //     );
-    //   } else {
-    //     callback();
-    //   }
-    // };
-    // const validatePassword2 = (rule, value, callback) => {
-    //   if (this.register.password2 === "" || this.register.password1 !== value) {
-    //     callback(new Error("前后密码不一致"));
-    //   } else {
-    //     callback();
-    //   }
-    // };
-    // const validateEmail = (rule, value, callback) => {
-    //   if (!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value)) {
-    //     callback(new Error("请输入正确的邮箱地址"));
-    //   } else {
-    //     callback();
-    //   }
-    // };
-    // const validateEmailCode = (rule, value, callback) => {
-    //   if (!/^[A-Za-z0-9]{6}$/.test(value)) {
-    //     callback(new Error("请输入6位邮箱验证码"));
-    //   } else {
-    //     callback();
-    //   }
-    // };
     return {
       v$: useValidate(),
       register: {
@@ -233,23 +191,6 @@ export default {
       isShowIcon: true,
       // 点击获取验证码后的倒计时
       codeNum: 60,
-
-      // rules: {
-      //   username: [
-      //     { required: true, trigger: "blur", validator: validateUsername },
-      //   ],
-      //   email: [{ required: true, trigger: "blur", validator: validateEmail }],
-      //   emailCode: [
-      //     { required: true, trigger: "blur", validator: validateEmailCode },
-      //   ],
-      //   password1: [
-      //     { required: true, trigger: "blur", validator: validatePassword1 },
-      //   ],
-      //   password2: [
-      //     { required: true, trigger: "change", validator: validatePassword2 },
-      //   ],
-      // },
-      // 校验验证码时的使用
       eid: "",
     };
   },

@@ -1,17 +1,8 @@
 <script setup>
-import {
-  computed,
-  onActivated,
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-} from "vue";
+import { computed, onActivated, onMounted, onUnmounted, ref } from "vue";
 import MarkDown from "@/views/Article/Sections/MarkDown/MarkDown.vue";
-import CommentText from "@/views/Article/Sections/CommentText/CommentText.vue";
 import { getToken } from "@/utils/token";
 import store from "@/stores";
-import Clipboard from "clipboard";
 
 //example components
 import DefaultNavbar from "../../examples/navbars/NavbarDefault.vue";
@@ -37,7 +28,6 @@ import * as api from "@/api";
 const router = useRouter();
 const route = useRoute();
 const content = ref("");
-const comments = ref("");
 const title = ref("");
 const likesCount = ref(0);
 const isLiked = ref(false);
@@ -51,15 +41,6 @@ const tagList = ref([]);
 const author = ref({});
 const create_time = ref("");
 const model_time = ref("");
-const placeholder = ref("想说点什么？评论支持markdown语法。");
-const dialogVisible = ref(false);
-const replyText = ref("");
-const commentParam = ref({
-  userId: store.state.user.userInfo.userId,
-  articleId: route.query.id,
-  parentId: 0,
-  toUserId: 0,
-});
 const page = ref({
   current: 1,
   size: 10,
@@ -68,7 +49,7 @@ const pages = ref(0);
 const total = ref(0);
 const moreArticle = ref([]);
 const tagNameList = ref([]);
-const url = ref("1");
+
 
 onActivated(async () => {
   getArticle();
@@ -77,78 +58,14 @@ onActivated(async () => {
   getTagNameList();
 });
 
-// Methods
-const submit_click = async () => {
-  // 先判断是否登录
-  if (!getToken()) {
-    ElMessage.warning("未登录，请先登录~");
-    await router.push("/login");
-    return;
-  }
-  const result = await api.reqAddParentComment({
-    userId: store.state.user.userInfo.userId,
-    articleId: route.query.id,
-    parentId: 0,
-    toUserId: 0,
-    content: comment_text,
-  });
-  if (result.data.code === 200) {
-    this.$refs.my_comment.success_submit("评论成功", 1500);
-    await getComment();
-  } else {
-    ElMessage.error("系统异常~ " + result.data.msg);
-    this.$refs.my_comment.err_submitFn("评论失败", 1500);
-  }
-  //你可以在这里验证用户输入的格式。
-  //若格式错误可调用此函数：
-  //this.$refs.my_comment.err_submitFn("格式错误",1500)
-
-  //你可以在这儿请求AJAX
-  //失败回调：
-  // this.$refs.my_comment.err_submitFn("评论失败",1500)
-  //成功回调
-  // this.$refs.my_comment.success_submit("评论成功", 1500)
-};
-
-//点击评论按钮后，触发的事件
-const submit_son_click = async () => {
-  // 先判断是否登录
-  if (!getToken()) {
-    ElMessage.warning("未登录，请先登录~");
-    await router.push("/login");
-    return;
-  }
-  if (replyText.value === "") {
-    ElMessage.warning("评论区不能为空~");
-    return;
-  }
-  commentParam.value.content = replyText;
-  const result = await api.reqAddParentComment(commentParam);
-  if (result.data.code === 200) {
-    ElMessage.success("评论成功~");
-  } else {
-    ElMessage.error("系统异常~ " + result.data.msg);
-  }
-  replyText.value = "";
-  dialogVisible.value = false;
-  await getComment();
-};
-
-const giveup_son_click = () => {
-  dialogVisible.value = false;
-};
-
-const reply = (comment, index, comment_) => {
-  dialogVisible.value = true;
-  if (index === 0) {
-    commentParam.value.parentId = comment.id;
-    commentParam.value.toUserId = comment.author.userId;
-    commentParam.value.username = comment.author.username;
-  } else {
-    commentParam.value.parentId = comment_.id;
-    commentParam.value.username = comment.author.username;
-  }
-};
+const toggleIconLike = () => {
+  const icon = document.querySelector('.icon-like')
+  icon.classList.toggle('text-warning')
+}
+const toggleIconFav = () => {
+  const icon = document.querySelector('.icon-fav')
+  icon.classList.toggle('text-danger')
+}
 
 const getArticle = async () => {
   const result = await api.reqGetArticleById(route.query.id);
@@ -199,53 +116,6 @@ const getComment = async () => {
   }
 };
 
-const addCommentLike = async (comment) => {
-  if (!getToken()) {
-    await ElMessage.warning("当前尚未登录，请先登录...");
-    await router.push("/login");
-  }
-  if (comment.isLiked) {
-    const result = await api.reqRevokeCommentLike({
-      cid: comment.id,
-      uid: store.state.user.userInfo.userId,
-    });
-    if (result.data.code === 200) {
-      ElNotification.warning({
-        title: "警告",
-        message: "取消成功~",
-      });
-      await getComment();
-    } else {
-      ElMessage.error("系统异常~ " + result.data.msg);
-    }
-    return;
-  }
-  const result = await api.reqAddCommentLike({
-    aid: route.query.id,
-    cid: comment.id,
-    uid: store.state.user.userInfo.userId,
-  });
-  if (result.data.code === 200) {
-    ElNotification.success({
-      title: "成功",
-      message: "点赞成功~",
-    });
-    await getComment();
-  } else {
-    ElMessage.error("系统异常~ " + result.data.msg);
-  }
-};
-
-const handleSizeChange = (size) => {
-  page.value.size = size;
-  getComment();
-};
-
-const handleCurrentChange = (current) => {
-  page.value.current = current;
-  getComment();
-};
-
 const addLikes = async () => {
   if (!getToken()) {
     ElMessage.warning("当前尚未登录，请先登录");
@@ -260,6 +130,7 @@ const addLikes = async () => {
     if (result.data.code === 200) {
       isLiked.value = true;
       likesCount.value = result.data.data.likeCount;
+      toggleIconLike();
       ElNotification.success({
         title: "成功",
         message: "点赞成功！",
@@ -278,6 +149,7 @@ const addLikes = async () => {
     if (result.data.code === 200) {
       isLiked.value = false;
       likesCount.value = result.data.data.likeCount;
+      toggleIconLike();
       ElNotification.warning({
         title: "警告",
         message: "已取消点赞~",
@@ -305,6 +177,7 @@ const addFavorite = async () => {
     if (result.data.code === 200) {
       isFavorite.value = true;
       favoriteCount.value = result.data.data.favoriteCount;
+      toggleIconFav();
       ElNotification.success({ title: "成功", message: "收藏成功！" });
     } else {
       ElNotification.error({
@@ -320,6 +193,7 @@ const addFavorite = async () => {
     if (result.data.code === 200) {
       isFavorite.value = false;
       favoriteCount.value = result.data.data.favoriteCount;
+      toggleIconFav();
       ElNotification.warning({ title: "警告", message: "已取消收藏~" });
     } else {
       ElNotification.error({
@@ -328,20 +202,6 @@ const addFavorite = async () => {
       });
     }
   }
-};
-
-const addRepost = async () => {
-  /* const url = this.$refs.url;
-   url.select(); // 选择对象
-   document.execCommand("Copy"); // 执行浏览器复制命令
-   alert("已复制好，可贴粘。");*/
-  /*const result = await api.addRepost({
-    aid: route.query.id,
-    uid: store.user.userInfo.userId
-  })
-  if (result.data.code === 200) {
-    this.repostCount = result.data.data.repostCount
-  }*/
 };
 
 const getMoreArticle = async () => {
@@ -363,11 +223,6 @@ const getTagNameList = async () => {
     tagNameList.value = result.data.data;
   }
 };
-
-const comment_text = computed(() => {
-  //获取子组件的评论内容。
-  return this.$refs.my_comment.insert_comment.comment_text;
-});
 
 const body = document.getElementsByTagName("body")[0];
 //hooks
@@ -466,40 +321,27 @@ onUnmounted(() => {
   </div>
   <div class="row justify-space-between text-center py-2">
     <div class="col-12 mx-auto">
-      <button class="btn bg-gradient-primary btn-icon btn-lg m-3" type="button">
+      <button
+        class="btn bg-gradient-primary btn-icon btn-lg m-3"
+        type="button"
+        @click="addLikes"
+      >
         <div class="d-flex align-items-center">
-          <i class="material-icons me-2" aria-hidden="true">favorite</i>
+          <i class="material-icons me-2 icon-like" aria-hidden="true">favorite</i>
           点赞
         </div>
       </button>
-      <button class="btn bg-gradient-warning btn-icon btn-lg m-3" type="button">
+      <button
+        class="btn bg-gradient-warning btn-icon btn-lg m-3"
+        type="button"
+        @click="addFavorite"
+      >
         <div class="d-flex align-items-center">
-          <i class="material-icons me-2" aria-hidden="true">star</i>
+          <i class="material-icons me-2 icon-fav" aria-hidden="true">star</i>
           收藏
         </div>
       </button>
     </div>
-  </div>
-  <div class="card card-body blur shadow-xl mx-3 mx-md-7 mt-8">
-    <comment-text
-      ref="my_comment"
-      :placeholder="placeholder"
-      @submit_click="submit_click"
-    />
-    <h4>全部评论: {{ commentCount }}</h4>
-    <el-dialog title="说点什么呢？" v-model:visible="dialogVisible" width="50%">
-      <el-input
-        type="textarea"
-        :placeholder="'回复' + commentParam.username"
-        maxlength="200"
-        v-model="replyText"
-        show-word-limit
-      />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="giveup_son_click">取 消</el-button>
-        <el-button type="primary" @click="submit_son_click">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
   <DefaultFooter />
 </template>

@@ -28,6 +28,7 @@ import ElTypography from "../layouts/sections/elements/typography/TypographyView
 import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
 import { ElMessage } from "element-plus";
 import Article from "@/views/Article/Article.vue";
+import Test from  "@/views/Test/Test.vue";
 import TestList from "@/views/Testlist/TestList.vue";
 import store from "@/stores"; // 引入store实例
 
@@ -46,6 +47,14 @@ const router = createRouter({
       path: "/article",
       name: "article",
       component: Article,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: Test,
       meta: {
         keepAlive: false,
       },
