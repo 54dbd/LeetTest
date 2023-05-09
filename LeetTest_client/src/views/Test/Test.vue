@@ -10,291 +10,6 @@ import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 import image from "@/assets/img/city-profile.jpg";
 // import PostMainBody from "@/views/LandingPages/PostArticle/Sections/PostMainBody.vue";
 // import MarkDown from "@/components/MarkDown/MarkDown";
-import { reactive, ref, watch } from "vue";
-
-const state = reactive({
-  question: "",
-  answer: "",
-  points: "",
-  difficulty: "",
-  qchoicea: "",
-  qchoiceb: "",
-  qchoicec: "",
-  qchoiced: "",
-  accuracy: "",
-  num: "",
-  correctnum: "",
-  analysis: "",
-  qtype: "",
-  atype: "",
-  sname: "",
-  radio: "",
-  choice: [],
-  correct: "",
-  tid: "",
-  textarea: "",
-  wronganswer: "",
-  score: "",
-});
-
-const testIntroduce = ref({});
-watch(testIntroduce, (sc) => {
-  state.question = sc.question;
-  state.answer = sc.answer;
-  state.difficulty = sc.difficulty;
-  state.qchoicea = sc.qchoicea;
-  state.qchoiceb = sc.qchoiceb;
-  state.qchoicec = sc.qchoicec;
-  state.qchoiced = sc.qchoiced;
-  state.accuracy = (sc.accuracy * 100).toFixed(2);
-  state.num = sc.num;
-  state.correctnum = sc.correctnum;
-  state.points = sc.points;
-  state.analysis = sc.analysis;
-  state.sname = sc.sname;
-  state.atype = sc.atype;
-  state.qtype = sc.qtype;
-  state.tid = sc.tid;
-});
-
-async function saveHistory() {
-  this.wronganswer = "";
-  console.log("iscorrect:" + this.correct);
-  if (this.atype == 1)
-    for (let i = 0; i < this.choice.length; i++) {
-      this.wronganswer += this.choice[i];
-    }
-  else if (this.atype == 0) {
-    this.wronganswer = this.textarea;
-  }
-  console.log("before SAVE request" + this.wronganswer);
-  const result = await this.$API.reqSaveHistory({
-    tid: this.tid,
-    sname: this.sname,
-    userid: this.$store.state.user.userInfo.userId,
-    wronganswer: this.wronganswer,
-    score: this.score,
-    iscorrect: this.correct,
-  });
-  console.log("after request");
-  if (result.data.code === 200) {
-    this.$notify.success("发布成功~");
-  } else {
-    this.$message.error("系统异常~ " + result.data.data.msg);
-  }
-}
-
-//提交答案
-async function submitText() {
-  this.num += 1;
-  console.log(this.num);
-
-  //获得答案与回答的匹配程度,30%权重
-  let weight_1 = this.strSimilarity2Percent(this.textarea, this.answer) * 0.3;
-  console.log("答案字符串匹配：" + weight_1 * 2.0 * 100.0 + "%");
-  console.log("weight_1：" + weight_1);
-  //获得答案与回答的模糊程度,70%权重
-  let weight_2 = this.fuzzyMatch(this.textarea, this.answer) * 0.7;
-  console.log("答案模糊匹配：" + weight_2 * 2.0 * 100.0 + "%");
-  console.log("weight_2：" + weight_2);
-  let weight = weight_1 + weight_2;
-  let sigmoid = 1 / (1 + Math.exp(-8 * (weight - 0.5)));
-  console.log("综合打分weight：" + weight * 100.0 + "%");
-  console.log("综合打分sigmoid：" + sigmoid * 100.0 + "%");
-  let score = ((sigmoid * 100) / 20).toFixed(0);
-  //最终成绩0~5分
-  console.log("最终得分：" + score);
-  //大于等于4分则判定为正确
-  if (score >= 4) {
-    this.correct = true;
-    this.correctnum += 1;
-    const h = this.$createElement;
-    const hrenderc = h("p", null, [
-      h("div", [
-        h("div", "回答正确！"),
-        h("div", "您的得分为："),
-        h("div", score),
-      ]),
-    ]);
-    this.$notify({
-      title: "提示",
-      message: hrenderc,
-      type: "success",
-    });
-  } else {
-    const h = this.$createElement;
-    const hrenderw = h("p", null, [
-      h("div", [
-        h("div", "回答错误！"),
-        h("div", "您的得分为："),
-        h("div", score),
-      ]),
-    ]);
-    this.correct = false;
-    this.$notify.error({
-      title: "提示",
-      message: hrenderw,
-    });
-  }
-  this.score = score;
-  await this.saveHistory();
-  this.accuracy = ((this.correctnum * 100) / this.num).toFixed(2);
-  const result = await this.$API.setNumByAid({
-    num: this.num,
-    sname: this.sname,
-    correctnum: this.correctnum,
-    accuracy: this.accuracy / 100,
-  });
-  if (result.data.code === 200) {
-    console.log("提交成功~");
-    console.log(this.textarea);
-  } else {
-    console.log("系统异常~ ");
-  }
-}
-//选择题判题系统
-async function submitChoice() {
-  this.num += 1;
-  console.log(this.num);
-  const result = await this.$API.setNumByAid({
-    num: this.num,
-    sname: this.sname,
-  });
-  if (result.data.code === 200) {
-    console.log("提交成功~");
-  } else {
-    console.log("系统异常~ ");
-  }
-  this.$notify.info({
-    title: "提示",
-    message: "已提交!",
-    position: "top-left",
-  });
-  let choice = "";
-  for (let i = 0; i < this.choice.length; i++) {
-    choice += this.choice[i];
-  }
-  console.log(choice);
-  console.log(this.answer);
-  if (this.answer.charAt(this.answer.length - 1) === " ") {
-    this.answer = this.answer.slice(0, this.answer.length - 1);
-  }
-  if (choice.length !== this.answer.length) {
-    this.correct = false;
-    this.$notify.error({
-      title: "提示",
-      message: "选项个数不符！错误！",
-    });
-  } else {
-    let j = 0;
-    for (let i = 0; i < choice.length; i++) {
-      for (j = 0; j < choice.length; j++) {
-        if (choice[i] === this.answer[j]) {
-          break;
-        }
-      }
-    }
-    if (j === choice.length) {
-      //发现answer中不存在
-      this.correct = false;
-
-      this.$notify.error({
-        title: "提示",
-        message: "选择错误！",
-      });
-    } else {
-      this.correct = true;
-      this.correctnum += 1;
-      await this.$API.setNumByAid({
-        correctnum: this.correctnum,
-        sname: this.sname,
-      });
-      this.$notify({
-        title: "提示",
-        message: "选择正确！",
-        type: "success",
-      });
-    }
-    await this.saveHistory();
-  }
-}
-function select() {
-  console.log("您的选项是" + this.choice);
-}
-function flush() {
-  this.$router.go(0);
-}
-//相似度匹配
-function strSimilarity2Number(s, t) {
-  let n = s.length,
-    m = t.length,
-    d = [];
-  let i, j, s_i, t_j, cost;
-  if (n == 0) return m;
-  if (m == 0) return n;
-  for (i = 0; i <= n; i++) {
-    d[i] = [];
-    d[i][0] = i;
-  }
-  for (j = 0; j <= m; j++) {
-    d[0][j] = j;
-  }
-  for (i = 1; i <= n; i++) {
-    s_i = s.charAt(i - 1);
-    for (j = 1; j <= m; j++) {
-      t_j = t.charAt(j - 1);
-      if (s_i == t_j) {
-        cost = 0;
-      } else {
-        cost = 1;
-      }
-      d[i][j] = this.Minimum(
-        d[i - 1][j] + 1,
-        d[i][j - 1] + 1,
-        d[i - 1][j - 1] + cost
-      );
-    }
-  }
-  return d[n][m];
-}
-//两个字符串的相似程度，并返回相似度百分比
-function strSimilarity2Percent(s, t) {
-  let l = s.length > t.length ? s.length : t.length;
-  let d = this.strSimilarity2Number(s, t);
-  return (1 - d / l).toFixed(4);
-}
-function Minimum(a, b, c) {
-  return a < b ? (a < c ? a : c) : b < c ? b : c;
-}
-//关键词模糊匹配
-function fuzzyMatch(str, key) {
-  let index = -1,
-    flag = false,
-    count = 0;
-
-  for (let i = 0, arr = key.split(""); i < arr.length; i++) {
-    //有一个关键字都没匹配到，则没有匹配到数据
-    if (str.indexOf(arr[i]) < 0) {
-      //count为在答案中未找到的知识点字符个数
-      count++;
-      //break;
-    } else {
-      let match = str.matchAll(arr[i]);
-      let next = match.next();
-      while (!next.done) {
-        if (next.value.index > index) {
-          index = next.value.index;
-          if (i === arr.length - 1) {
-            flag = true;
-          }
-          break;
-        }
-        next = match.next();
-      }
-    }
-  }
-  return (1 - count / key.length).toFixed(4);
-}
 </script>
 <template>
   <DefaultNavbar transparent />
@@ -309,131 +24,454 @@ function fuzzyMatch(str, key) {
   </Header>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
     <div>
-      <el-row :gutter="20">
-        <el-col :span="20" :offset="2">
-          <h1>{{ sname }}</h1>
-          <h3 v-if="qtype != 0">{{ qtype }}</h3>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col class="elCol1" :span="12" :push="2">
-          <el-card shadow="always">
-            <div>
-              <MarkDown
-                :text="question"
-                class="content"
-                v-if="qtype != '图片题'"
-              />
-              <el-image :src="question" :fit="fill" v-else></el-image>
-            </div>
-          </el-card>
-          <el-card class="choices" v-if="atype == 1">
-            <el-checkbox-group v-model="choice" v-if="qchoicea != null">
-              <el-checkbox label="A" class="choice">{{ qchoicea }}</el-checkbox>
-              <el-checkbox label="B" class="choice">{{ qchoiceb }}</el-checkbox>
-              <el-checkbox label="C" class="choice">{{ qchoicec }}</el-checkbox>
-              <el-checkbox label="D" class="choice">{{ qchoiced }}</el-checkbox>
-            </el-checkbox-group>
-            <el-checkbox-group v-model="choice" v-else>
-              <el-checkbox label="A" class="choice">选项A</el-checkbox>
-              <el-checkbox label="B" class="choice">选项B</el-checkbox>
-              <el-checkbox label="C" class="choice">选项C</el-checkbox>
-              <el-checkbox label="D" class="choice">选项D</el-checkbox>
-            </el-checkbox-group>
-          </el-card>
+      <!--这里是测试测试详细页面传入的参数 -->
+      <test-introduce
+        v-if="page == 'checkQuestion'"
+        :testIntroduce="{
+          question: test.question,
+          answer: test.answer,
+          difficulty: test.difficulty,
+          qchoicea: test.qchoicea,
+          qchoiceb: test.qchoiceb,
+          qchoicec: test.qchoicec,
+          qchoiced: test.qchoiced,
+          num: test.num,
+          correctnum: test.correctnum,
+          points: test.points,
+          analysis: test.analysis,
+          sname: test.sname,
+          accuracy: test.accuracy,
+          qtype: test.qtype,
+          atype: test.atype,
+          tid: this.$route.query.tid,
+        }"
+      ></test-introduce>
 
-          <el-card v-if="atype == 0" style="margin: 20px 0">
-            <el-input
-              type="textarea"
-              resize="none"
-              :autosize="{ minRows: 5, maxRows: 50 }"
-              v-model="textarea"
-            >
-            </el-input>
-          </el-card>
-          <el-row class="changePage">
-            <router-link
-              @click="flush"
-              :to="{ path: '/test', query: { tid: parseInt(this.tid) - 1 } }"
-            >
-              <el-button type="primary" plain>上一题</el-button>
-            </router-link>
-            <router-link
-              @click="flush"
-              :to="{ path: '/test', query: { tid: parseInt(this.tid) + 1 } }"
-            >
-              <el-button type="primary" plain>下一题</el-button>
-            </router-link>
-          </el-row>
-          <el-row class="analysis">
-            <el-card v-if="correct == true">
-              <h2>解析:</h2>
-
-              <div v-if="analysis">
-                <MarkDown
-                  :text="analysis"
-                  class="content"
-                  v-if="qtype != '图片题'"
-                />
-                <el-image :src="analysis" :fit="fill" v-else></el-image>
-              </div>
-              <div v-else>
-                {{ answer }}
-              </div>
-            </el-card>
-          </el-row>
-        </el-col>
-        <el-col class="elCol2" :span="10" :push="2">
-          <el-card shadow="always">
-            <el-descriptions
-              title="题目信息"
-              direction="vertical"
-              :column="1"
-              size="medium"
-            >
-              <el-descriptions-item label="正确率"
-                ><span style="color: #77b72c">{{
-                  accuracy + "%"
-                }}</span></el-descriptions-item
+      <div v-if="page == 'comment'">
+        <div id="editor">
+          <el-row :gutter="20" class="head">
+            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+              <div class="grid-content bg-purple"></div>
+            </el-col>
+            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+              <h1 style="font-size: 20px">评论标题</h1>
+            </el-col>
+            <el-col :xs="10" :sm="14" :md="14" :lg="14" :xl="14">
+              <el-input v-model="title" placeholder="请输入内容"></el-input>
+            </el-col>
+            <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
+              <el-button type="success" @click="saveComment"
+                >发布评论</el-button
               >
-              <el-descriptions-item label="正确人数"
-                ><span style="color: #77b72c">{{ correctnum }}</span>
-              </el-descriptions-item>
-              <el-descriptions-item label="做题人数"
-                ><a
-                  rel="nofollow"
-                  target="_blank"
-                  style="color: #4cb9fc; text-decoration: none"
-                  >{{ num }}</a
-                >
-              </el-descriptions-item>
-              <el-descriptions-item v-if="points != null" label="知识点"
-                ><a
-                  rel="nofollow"
-                  target="_blank"
-                  style="color: #4cb9fc; text-decoration: none"
-                  >{{ points }}</a
-                >
-              </el-descriptions-item>
-            </el-descriptions>
-          </el-card>
-          <el-button
-            v-if="atype == 1"
-            type="success"
-            class="submit"
-            @click="submitChoice"
-            >提交</el-button
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="20">
+              <mavon-editor
+                v-model="mdText"
+                class="me-editor"
+                ref="md"
+                @imgAdd="$imgAdd"
+              ></mavon-editor>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <div v-if="page == 'checkComment'" class="commentList">
+        <h1>做题心得</h1>
+        <ul style="margin-top: 7px">
+          <h2
+            v-if="testCommentList.length == 0"
+            style="color: grey; margin-left: 50%"
           >
-          <el-button
-            v-if="atype == 0"
-            type="success"
-            class="submit"
-            @click="submitText"
-            >提交</el-button
+            暂无评论！
+          </h2>
+          <li
+            style="margin-bottom: 10px"
+            v-for="item in testCommentList"
+            :key="item.commentid"
+            class="text-view"
           >
-        </el-col>
-      </el-row>
+            <el-card>
+              <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
+              <el-card style="font-size: 20px; font-weight: bold">{{
+                item.title
+              }}</el-card>
+              <mavon-editor
+                class="me-editor"
+                :value="item.commenttext"
+                :subfield="false"
+                :defaultOpen="'preview'"
+                :toolbarsFlag="false"
+                :editable="false"
+                :scrollStyle="true"
+                :ishljs="true"
+              ></mavon-editor>
+            </el-card>
+          </li>
+        </ul>
+      </div>
+      <test-history v-if="page == 'checkHistory'">
+        <h1>错题记录</h1>
+        <ul style="margin-top: 7px">
+          <h2
+            v-if="problemList.length == 0"
+            style="color: grey; margin-left: 40%"
+          >
+            暂无错题！
+          </h2>
+          <li
+            style="margin-bottom: 10px"
+            v-for="item in problemList"
+            :key="item.id"
+            class="text-view"
+          >
+            <div v-if="item.iscorrect == true">
+              <el-card
+                style="
+                  width: 80%;
+                  font-size: 20px;
+                  font-weight: bold;
+                  background-color: #e5f3ed !important;
+                  border: #e1f3d8 1px solid;
+                "
+              >
+                <h1 v-if="item.score != null">
+                  <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
+                </h1>
+                <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+                <h3>{{ item.createdate }}</h3>
+              </el-card>
+            </div>
+            <div v-else>
+              <el-card
+                style="
+                  width: 80%;
+                  font-size: 20px;
+                  font-weight: bold;
+                  background-color: #fef0f0 !important;
+                  border: #fde2e2 1px solid;
+                "
+              >
+                <h1 v-if="item.score != null">
+                  <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
+                </h1>
+                <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+                <h3>{{ item.createdate }}</h3>
+              </el-card>
+            </div>
+          </li>
+        </ul>
+      </test-history>
+      <!--        <el-card class="right_fbox">-->
+      <!--          <el-col class="right_button_list">-->
+      <!--            <el-button-->
+      <!--              type="primary"-->
+      <!--              icon="el-icon-edit"-->
+      <!--              class="right_button"-->
+      <!--              @click="comment"-->
+      <!--              >发表心得</el-button-->
+      <!--            >-->
+      <!--            <el-button-->
+      <!--              type="primary"-->
+      <!--              icon="el-icon-chat-line-round"-->
+      <!--              class="right_button"-->
+      <!--              @click="checkComment"-->
+      <!--              >查看评论</el-button-->
+      <!--            >-->
+      <!--            <el-button-->
+      <!--              type="primary"-->
+      <!--              icon="el-icon-notebook-1"-->
+      <!--              class="right_button"-->
+      <!--              @click="checkHistory"-->
+      <!--              >错题记录</el-button-->
+      <!--            >-->
+      <!--            <el-button-->
+      <!--              type="primary"-->
+      <!--              icon="el-icon-document"-->
+      <!--              class="right_button"-->
+      <!--              @click="checkQuestion"-->
+      <!--              >查看题目</el-button-->
+      <!--            >-->
+      <!--          </el-col>-->
+      <!--        </el-card>-->
     </div>
   </div>
   <DefaultFooter />
 </template>
+<script>
+import TestIntroduce from "@/views/Test/TestIntroduce.vue";
+
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
+import { getToken } from "@/utils/token";
+import * as api from "@/api";
+export default {
+  name: "TestDetail",
+  components: {
+    TestIntroduce,
+    mavonEditor,
+  },
+  data() {
+    return {
+      userid: 0,
+      test: {},
+      testCommentList: [],
+      problemList: [],
+      page: "checkQuestion",
+      mdText: "",
+      title: "",
+      dialogVisible: false,
+      tagIdList: [],
+      schoolId: 0,
+      form: {},
+      schoolList: [],
+      state: "",
+      timeout: null,
+      tagNameList: [],
+      newTag: "",
+      tid: this.$route.query.tid,
+      pageParam: {
+        current: 1,
+        size: 5,
+      },
+      pages: 0,
+      // 总条数
+      total: 0,
+      keyWord: "",
+      loading: true,
+      contentList: [],
+    };
+  },
+  methods: {
+    async getTestDetail(tid) {
+      const result = await api.reqGetTestDetailByTid(tid);
+
+      if (result.data.code === 200) {
+        this.test = result.data.data;
+      } else {
+        this.$message.warning("系统异常~ " + result.data.msg);
+      }
+    },
+
+    flush: function () {
+      this.$router.go(0);
+    },
+    async comment() {
+      if (!getToken()) {
+        this.$message.warning("当前尚未登录，请先登录");
+        await this.$router.push("/login");
+        return;
+      }
+      this.page = "comment";
+
+      //this.flush();
+    },
+    async checkComment() {
+      this.testCommentList = await this.getTestCommentByQuestionid(
+        this.test.sname
+      );
+      for (var i = 0; i < this.testCommentList.length; i++) {
+        this.contentList.push(this.testCommentList[i].commenttext);
+      }
+      console.log(this.testCommentList);
+      console.log(this.test.sname);
+      this.page = "checkComment";
+    },
+    async getTestCommentByQuestionid(questionid) {
+      const result = await this.$API.reqGetTestCommentByQuestionid(questionid);
+      console.log(
+        "questionid=" + questionid + " get result " + result.data.questionid
+      );
+      if (result.data.code === 200) {
+        console.log("获取评论成功！");
+        return result.data.data;
+      } else {
+        console.log("获取评论失败！");
+        return [];
+      }
+    },
+    async getProblemCollectionBySname() {
+      this.userid = this.$store.state.user.userInfo.userId;
+      console.log("获取错题中" + this.test.sname + this.userid);
+      const result = await this.$API.reqGetProblemCollectionBySname(
+        this.test.sname,
+        this.userid
+      );
+      console.log(
+        "Sname=" + this.test.sname + " get result " + result.data.sname
+      );
+      if (result.data.code === 200) {
+        console.log("获取错题成功！");
+        return result.data.data;
+      } else {
+        console.log("获取错题失败！");
+        return [];
+      }
+    },
+
+    async checkHistory() {
+      this.problemList = await this.getProblemCollectionBySname();
+      this.page = "checkHistory";
+      //this.flush();
+    },
+    checkQuestion: function () {
+      this.page = "checkQuestion";
+      this.flush();
+    },
+    /**
+     *
+     * 发布评论方法
+     */
+    // 上传图片
+    async $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      var formdata = new FormData();
+      formdata.append("image", $file);
+      const result = await this.$API.reqUploadImage(formdata);
+      if (result.data.code === 200) {
+        const url = result.data.data;
+        this.$refs.md.$img2Url(pos, url);
+      } else {
+        this.$message.error("上传失败~");
+      }
+    },
+    filterTagName(query, item) {
+      return item.tagName.indexOf(query) > -1;
+    },
+    async saveComment() {
+      if (!this.title) {
+        this.$message.warning("请输入标题...");
+        return;
+      } else {
+        console.log(this.title);
+      }
+      if (!this.mdText) {
+        this.$message.warning("请输入文章内容...");
+        return;
+      }
+      this.tagIdList[0] = this.test.sname;
+      console.log("before request" + this.title);
+      const result = await this.$API.reqSaveComment({
+        title: this.title,
+        commenttext: this.mdText,
+        userid: this.$store.state.user.userInfo.userId,
+        questionid: this.test.sname,
+      });
+      console.log("after request");
+      if (result.data.code === 200) {
+        this.$notify.success("发布成功~");
+        await this.$router.push({
+          path: "/test",
+          query: {
+            id: result.data.data.data.commentid,
+          },
+        });
+      } else {
+        this.$message.error("系统异常~ " + result.data.data.msg);
+      }
+    },
+    async getTagNameList() {
+      const result = await this.$API.reqGetTagNameList();
+      if (result.data.code === 200) {
+        this.tagNameList = result.data.data;
+      } else {
+        this.$message.error("系统异常~ " + result.data.msg);
+      }
+    },
+
+    async loadAll() {
+      const result = await this.$API.reqGetSchoolNameList();
+      if (result.data.code === 200) {
+        this.schoolList = result.data.data.map((school) => {
+          return {
+            value: school.sname,
+            name: school.sid,
+          };
+        });
+      } else {
+        this.$message.error("系统异常~ " + result.data.msg);
+      }
+    },
+    querySearchAsync(queryString, cb) {
+      let schoolList = this.schoolList;
+      let results = queryString
+        ? schoolList.filter(this.createStateFilter(queryString))
+        : schoolList;
+
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        cb(results);
+      }, 500 * Math.random());
+    },
+    createStateFilter(queryString) {
+      return (state) => {
+        return (
+          state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+    handleSelect(item) {
+      this.schoolId = item.name;
+    },
+    // 添加新的标签
+    async addNewTag() {
+      const result = await this.$API.reqAddNewTag({ tagName: this.newTag });
+      if (result.data.code === 200) {
+        this.$message.success(result.data.msg);
+        this.newTag = "";
+        await this.getTagNameList();
+      } else {
+        this.$message.error(result.data.msg);
+      }
+    },
+  },
+  async mounted() {
+    this.getTestDetail(this.$route.query.tid);
+  },
+};
+</script>
+
+<style scoped>
+.all {
+  width: 90%;
+  margin: 20px 200px;
+}
+
+.right_fbox {
+  width: 250px;
+  height: 360px;
+  position: fixed;
+  float: right;
+  left: 57%;
+  top: 20%;
+  z-index: 999;
+  margin-left: 530px;
+}
+.right_button_list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.right_button {
+  margin: 20px 0 !important;
+}
+
+#editor {
+  height: 100px;
+  margin: 20px 30px;
+}
+
+.me-editor {
+  white-space: normal;
+  display: flex;
+  z-index: 6 !important;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.commentList {
+  width: 80%;
+}
+</style>
