@@ -103,128 +103,126 @@ import MaterialButton from "@/components/MaterialButton.vue";
           }"
           @flush="flush"
         ></test-introduce>
-
-        <div v-if="page == 'comment'">
-          <div id="editor">
-            <el-row :gutter="20" class="head">
-              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-                <div class="grid-content bg-purple"></div>
-              </el-col>
-              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-                <h1 style="font-size: 20px">评论标题</h1>
-              </el-col>
-              <el-col :xs="10" :sm="14" :md="14" :lg="14" :xl="14">
-                <el-input v-model="title" placeholder="请输入内容"></el-input>
-              </el-col>
-              <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
-                <el-button type="success" @click="saveComment"
-                  >发布评论
-                </el-button>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <el-col :span="20">
-                <mavon-editor
-                  v-model="mdText"
-                  class="me-editor"
-                  ref="md"
-                  @imgAdd="$imgAdd"
-                ></mavon-editor>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-
-        <div v-if="page == 'checkComment'" class="commentList">
-          <h1>做题心得</h1>
-          <ul style="margin-top: 7px">
-            <h2
-              v-if="testCommentList.length == 0"
-              style="color: grey; margin-left: 50%"
-            >
-              暂无评论！
-            </h2>
-            <li
-              style="margin-bottom: 10px"
-              v-for="item in testCommentList"
-              :key="item.commentid"
-              class="text-view"
-            >
-              <el-card>
-                <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
-                <el-card style="font-size: 20px; font-weight: bold"
-                  >{{ item.title }}
-                </el-card>
-                <mavon-editor
-                  class="me-editor"
-                  :value="item.commenttext"
-                  :subfield="false"
-                  :defaultOpen="'preview'"
-                  :toolbarsFlag="false"
-                  :editable="false"
-                  :scrollStyle="true"
-                  :ishljs="true"
-                ></mavon-editor>
-              </el-card>
-            </li>
-          </ul>
-        </div>
-        <test-history v-if="page == 'checkHistory'">
-          <h1>错题记录</h1>
-          <ul style="margin-top: 7px">
-            <h2
-              v-if="problemList.length == 0"
-              style="color: grey; margin-left: 40%"
-            >
-              暂无错题！
-            </h2>
-            <li
-              style="margin-bottom: 10px"
-              v-for="item in problemList"
-              :key="item.id"
-              class="text-view"
-            >
-              <div v-if="item.iscorrect == true">
-                <el-card
-                  style="
-                    width: 80%;
-                    font-size: 20px;
-                    font-weight: bold;
-                    background-color: #e5f3ed !important;
-                    border: #e1f3d8 1px solid;
-                  "
-                >
-                  <h1 v-if="item.score != null">
-                    <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
-                  </h1>
-                  <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-                  <h3>{{ item.createdate }}</h3>
-                </el-card>
-              </div>
-              <div v-else>
-                <el-card
-                  style="
-                    width: 80%;
-                    font-size: 20px;
-                    font-weight: bold;
-                    background-color: #fef0f0 !important;
-                    border: #fde2e2 1px solid;
-                  "
-                >
-                  <h1 v-if="item.score != null">
-                    <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
-                  </h1>
-                  <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-                  <h3>{{ item.createdate }}</h3>
-                </el-card>
-              </div>
-            </li>
-          </ul>
-        </test-history>
       </div>
     </div>
   </div>
   <DefaultFooter />
+  <el-dialog width="80%" v-model="commentDialogVisible" title="发表心得">
+    <div id="editor" class="el-dialog-div">
+      <el-row :gutter="20" class="head">
+        <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+          <div class="grid-content bg-purple"></div>
+        </el-col>
+        <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+          <h1 style="font-size: 20px">评论标题</h1>
+        </el-col>
+        <el-col :xs="10" :sm="14" :md="14" :lg="14" :xl="14">
+          <el-input v-model="title" placeholder="请输入内容"></el-input>
+        </el-col>
+        <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
+          <el-button type="success" @click="saveComment">发布评论 </el-button>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="20">
+          <mavon-editor
+            v-model="mdText"
+            class="me-editor"
+            ref="md"
+            @imgAdd="$imgAdd"
+          ></mavon-editor>
+        </el-col>
+      </el-row>
+    </div>
+  </el-dialog>
+  <el-dialog
+    width="80%"
+    v-model="checkCommentDialogVisible"
+    title="查看评论"
+    class="commentList"
+  >
+    <h1>做题心得</h1>
+    <ul style="margin-top: 7px">
+      <h2
+        v-if="testCommentList.length == 0"
+        style="color: grey; margin-left: 50%"
+      >
+        暂无评论！
+      </h2>
+      <li
+        style="margin-bottom: 10px"
+        v-for="item in testCommentList"
+        :key="item.commentid"
+        class="text-view"
+      >
+        <el-card>
+          <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
+          <el-card style="font-size: 20px; font-weight: bold"
+            >{{ item.title }}
+          </el-card>
+          <mavon-editor
+            class="me-editor"
+            :value="item.commenttext"
+            :subfield="false"
+            :defaultOpen="'preview'"
+            :toolbarsFlag="false"
+            :editable="false"
+            :scrollStyle="true"
+            :ishljs="true"
+          ></mavon-editor>
+        </el-card>
+      </li>
+    </ul>
+  </el-dialog>
+  <el-dialog width="80%" v-model="checkHistoryDialogVisible" title="错题记录">
+    <h1>错题记录</h1>
+    <ul style="margin-top: 7px">
+      <h2 v-if="problemList.length == 0" style="color: grey; margin-left: 40%">
+        暂无错题！
+      </h2>
+      <li
+        style="margin-bottom: 10px"
+        v-for="item in problemList"
+        :key="item.id"
+        class="text-view"
+      >
+        <div v-if="item.iscorrect == true">
+          <el-card
+            style="
+              width: 80%;
+              font-size: 20px;
+              font-weight: bold;
+              background-color: #e5f3ed !important;
+              border: #e1f3d8 1px solid;
+            "
+          >
+            <h1 v-if="item.score != null">
+              <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
+            </h1>
+            <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+            <h3>{{ item.createdate }}</h3>
+          </el-card>
+        </div>
+        <div v-else>
+          <el-card
+            style="
+              width: 80%;
+              font-size: 20px;
+              font-weight: bold;
+              background-color: #fef0f0 !important;
+              border: #fde2e2 1px solid;
+            "
+          >
+            <h1 v-if="item.score != null">
+              <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
+            </h1>
+            <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+            <h3>{{ item.createdate }}</h3>
+          </el-card>
+        </div>
+      </li>
+    </ul>
+  </el-dialog>
 </template>
 <script>
 import TestIntroduce from "@/views/Test/TestIntroduce.vue";
@@ -269,6 +267,10 @@ export default {
       keyWord: "",
       loading: true,
       contentList: [],
+      // 更多功能
+      commentDialogVisible: false,
+      checkCommentDialogVisible: false,
+      checkHistoryDialogVisible: false,
     };
   },
   methods: {
@@ -291,20 +293,19 @@ export default {
         await this.$router.push("/login");
         return;
       }
-      this.page = "comment";
-
+      this.commentDialogVisible = true;
       //this.flush();
     },
     async checkComment() {
       this.testCommentList = await this.getTestCommentByQuestionid(
         this.test.sname
       );
-      for (var i = 0; i < this.testCommentList.length; i++) {
+      for (let i = 0; i < this.testCommentList.length; i++) {
         this.contentList.push(this.testCommentList[i].commenttext);
       }
       console.log(this.testCommentList);
       console.log(this.test.sname);
-      this.page = "checkComment";
+      this.checkCommentDialogVisible = true;
     },
     async getTestCommentByQuestionid(questionid) {
       const result = await api.reqGetTestCommentByQuestionid(questionid);
@@ -340,7 +341,7 @@ export default {
 
     async checkHistory() {
       this.problemList = await this.getProblemCollectionBySname();
-      this.page = "checkHistory";
+      this.checkHistoryDialogVisible = true;
       //this.flush();
     },
     /**
@@ -501,5 +502,9 @@ export default {
 
 .commentList {
   width: 80%;
+}
+.el-dialog-div {
+  max-height: 60vh;
+  overflow: auto;
 }
 </style>
