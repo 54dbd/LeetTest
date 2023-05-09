@@ -47,7 +47,7 @@
             <MaterialButton
               variant="gradient"
               color="success"
-              size="sm"
+              size="lg"
               style="width: 100%"
               type="button"
               >上一题
@@ -60,7 +60,7 @@
             <MaterialButton
               variant="gradient"
               color="success"
-              size="sm"
+              size="lg"
               style="width: 100%"
               type="button"
               >下一题
@@ -119,28 +119,47 @@
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
-        <MaterialButton
-          v-if="atype === 1"
-          variant="gradient"
-          color="success"
-          size="sm"
-          class="submit"
-          style="width: 100%; height: 60px"
-          type="button"
-          @click="submitChoice"
-          >提交
-        </MaterialButton>
-        <MaterialButton
-          v-if="atype === 0"
-          variant="gradient"
-          color="success"
-          size="sm"
-          class="submit"
-          style="width: 100%; height: 60px"
-          type="button"
-          @click="submitText"
-          >提交
-        </MaterialButton>
+        <div
+          style="
+            width: 80%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            margin: 5px auto;
+          "
+        >
+          <MaterialButton
+            v-if="atype === 1"
+            variant="gradient"
+            color="success"
+            size="sm"
+            class="submit"
+            type="button"
+            @click="submitChoice"
+            >提交
+          </MaterialButton>
+        </div>
+        <div
+          style="
+            width: 80%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            margin: 5px auto;
+          "
+        >
+          <MaterialButton
+            v-if="atype === 0"
+            variant="gradient"
+            color="success"
+            size="sm"
+            class="submit"
+            style="width: 80%; height: 60px"
+            type="button"
+            @click="submitText"
+            >提交
+          </MaterialButton>
+        </div>
       </el-col>
     </el-row>
   </div>

@@ -9,6 +9,7 @@ import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 // image
 import image from "@/assets/img/city-profile.jpg";
 import MaterialButton from "@/components/MaterialButton.vue";
+import MarkDown from "@/components/MarkDown/MarkDown.vue";
 // import PostMainBody from "@/views/LandingPages/PostArticle/Sections/PostMainBody.vue";
 // import MarkDown from "@/components/MarkDown/MarkDown";
 </script>
@@ -63,7 +64,7 @@ import MaterialButton from "@/components/MaterialButton.vue";
                     <a
                       class="dropdown-item border-radius-md"
                       href="javascript:;"
-                      >查看评论</a
+                      >查看心得</a
                     >
                   </li>
                   <li @click="checkHistory">
@@ -138,10 +139,9 @@ import MaterialButton from "@/components/MaterialButton.vue";
   <el-dialog
     width="80%"
     v-model="checkCommentDialogVisible"
-    title="查看评论"
+    title="做题心得"
     class="commentList"
   >
-    <h1>做题心得</h1>
     <ul style="margin-top: 7px">
       <h2
         v-if="testCommentList.length == 0"
@@ -160,16 +160,7 @@ import MaterialButton from "@/components/MaterialButton.vue";
           <el-card style="font-size: 20px; font-weight: bold"
             >{{ item.title }}
           </el-card>
-          <mavon-editor
-            class="me-editor"
-            :value="item.commenttext"
-            :subfield="false"
-            :defaultOpen="'preview'"
-            :toolbarsFlag="false"
-            :editable="false"
-            :scrollStyle="true"
-            :ishljs="true"
-          ></mavon-editor>
+          <MarkDown :text="item.commenttext" class="content" />
         </el-card>
       </li>
     </ul>
