@@ -50,8 +50,8 @@
               size="sm"
               style="width: 100%"
               type="button"
-              >上一题</MaterialButton
-            >
+              >上一题
+            </MaterialButton>
           </router-link>
           <router-link
             @click="flush(nextPage)"
@@ -63,8 +63,8 @@
               size="sm"
               style="width: 100%"
               type="button"
-              >下一题</MaterialButton
-            >
+              >下一题
+            </MaterialButton>
           </router-link>
         </el-row>
         <el-row class="analysis">
@@ -128,8 +128,8 @@
           style="width: 100%; height: 60px"
           type="button"
           @click="submitChoice"
-          >提交</MaterialButton
-        >
+          >提交
+        </MaterialButton>
         <MaterialButton
           v-if="atype === 0"
           variant="gradient"
@@ -139,8 +139,8 @@
           style="width: 100%; height: 60px"
           type="button"
           @click="submitText"
-          >提交</MaterialButton
-        >
+          >提交
+        </MaterialButton>
       </el-col>
     </el-row>
   </div>
@@ -245,6 +245,7 @@ export default {
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
       }
+      this.$emit("flush", parseInt(this.tid));
     },
 
     //提交答案
@@ -304,7 +305,6 @@ export default {
     async submitChoice() {
       this.num += 1;
       console.log(this.num);
-      await this.saveHistory();
       var choice = "";
       for (let i = 0; i < this.choice.length; i++) {
         choice += this.choice[i];
@@ -347,6 +347,7 @@ export default {
           });
         }
       }
+      await this.saveHistory();
     },
     select: function () {
       console.log("您的选项是" + this.choice);
@@ -447,9 +448,11 @@ export default {
 h1 {
   font-size: 40px;
 }
+
 h3 {
   color: grey;
 }
+
 .choices {
   display: flex;
 
@@ -458,6 +461,7 @@ h3 {
   justify-content: space-between;
   align-items: flex-start;
 }
+
 .choice {
   display: flex;
   margin: 10px 0 !important;
