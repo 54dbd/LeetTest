@@ -76,6 +76,8 @@ const getTestList = async (pageParam) => {
   } else {
     ElMessage.error("系统异常~ " + result.data.msg);
   }
+  subject.value = "政治";
+  keyWord.value = subject.value;
 };
 
 const searchTest = async (current) => {
@@ -217,8 +219,8 @@ const currentChange = (val) => {
       style="
         margin-top: 10px;
         margin-bottom: 10px;
-        margin-left: 25%;
-        width: 55%;
+        margin-left: 10%;
+        width: 80%;
       "
     >
       <el-table-column fixed label="题目" width="150">
@@ -260,10 +262,7 @@ const currentChange = (val) => {
           <el-tag v-if="!scope.row.accuracy">暂无数据</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        label="难度"
-        width="100"
-      >
+      <el-table-column label="难度" width="100">
         <template v-slot="scope">
           <el-tag v-if="scope.row.difficulty" type="warning">{{
             scope.row.difficulty
@@ -271,10 +270,10 @@ const currentChange = (val) => {
           <el-tag v-if="!scope.row.difficulty" type="warning">暂无数据</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="computerSubject" label="题目类型" width="120">
+      <el-table-column prop="computerSubject" label="题目类型" width="100">
         <template v-slot="scope">
-          <el-card v-if="scope.row.atype == 0" shadow="hover"> 简答题 </el-card>
-          <el-card v-if="scope.row.atype == 1" shadow="hover"> 选择题 </el-card>
+          <el-tag v-if="scope.row.atype === 0"> {{ "简答题" }} </el-tag>
+          <el-tag v-if="scope.row.atype === 1"> {{ "选择题" }} </el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="points" label="知识点" width="350">
@@ -382,9 +381,6 @@ export default {
       this.subject = "数学";
       this.keyWord = this.subject;
     },
-  },
-  mounted() {
-    this.getTestList(this.pageParam);
   },
   watch: {
     keyWord() {

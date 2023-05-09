@@ -28,7 +28,7 @@ import ElTypography from "../layouts/sections/elements/typography/TypographyView
 import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
 import { ElMessage } from "element-plus";
 import Article from "@/views/Article/Article.vue";
-import Test from  "@/views/Test/Test.vue";
+import Test from "@/views/Test/Test.vue";
 import TestList from "@/views/Testlist/TestList.vue";
 import store from "@/stores"; // 引入store实例
 
@@ -271,15 +271,14 @@ import { getToken } from "@/utils/token";
 
 // 配置全局前置路由守卫
 router.beforeEach(async (to, from, next) => {
-
   if (getToken()) {
     //用户登录了还想去login组件
     if (to.path === "/login") {
       await ElMessage({
         duration: 1000,
-        message: '已经登录，不能再重复登录！',
-      })
-      console.log(getToken())
+        message: "已经登录，不能再重复登录！",
+      });
+      console.log(getToken());
       next(from.path);
     } else {
       //判断
@@ -302,7 +301,10 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     //未登录状态下
-    if (to.path.indexOf("/post-article") !== -1) {
+    if (
+      to.path.indexOf("/post-article") !== -1 ||
+      to.path.indexOf("/testlist") !== -1
+    ) {
       ElMessage({
         duration: 1000,
         message: "当前尚未登录，请先登录",

@@ -94,10 +94,6 @@ public class TestServiceImpl implements TestService {
 
         QueryWrapper<Test> wrapper = new QueryWrapper<>();
         wrapper.like("sname", text)
-                .or()
-                .like("question", text)
-                .or()
-                .like("difficulty", text)
                 .orderByAsc("tid");
         IPage<Test> testPage = new Page<>();
         BeanUtils.copyProperties(queryPageParam, testPage);

@@ -18,6 +18,7 @@
     "nprogress": "^0.2.0",
     "pinia": "2.0.14",
     "prismjs": "1.28.0",
+    "sass": "^1.62.1",
     "typed.js": "2.0.12",
     "vee-validate": "^4.8.6",
     "vue": "3.2.36",

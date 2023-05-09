@@ -9,7 +9,7 @@ import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 // image
 import image from "@/assets/img/city-profile.jpg";
 // import PostMainBody from "@/views/LandingPages/PostArticle/Sections/PostMainBody.vue";
-import MarkDown from "@/components/MarkDown/MarkDown";
+// import MarkDown from "@/components/MarkDown/MarkDown";
 import { reactive, ref, watch } from "vue";
 
 const state = reactive({
@@ -227,8 +227,8 @@ function flush() {
 //相似度匹配
 function strSimilarity2Number(s, t) {
   let n = s.length,
-      m = t.length,
-      d = [];
+    m = t.length,
+    d = [];
   let i, j, s_i, t_j, cost;
   if (n == 0) return m;
   if (m == 0) return n;
@@ -249,9 +249,9 @@ function strSimilarity2Number(s, t) {
         cost = 1;
       }
       d[i][j] = this.Minimum(
-          d[i - 1][j] + 1,
-          d[i][j - 1] + 1,
-          d[i - 1][j - 1] + cost
+        d[i - 1][j] + 1,
+        d[i][j - 1] + 1,
+        d[i - 1][j - 1] + cost
       );
     }
   }
@@ -269,8 +269,8 @@ function Minimum(a, b, c) {
 //关键词模糊匹配
 function fuzzyMatch(str, key) {
   let index = -1,
-      flag = false,
-      count = 0;
+    flag = false,
+    count = 0;
 
   for (let i = 0, arr = key.split(""); i < arr.length; i++) {
     //有一个关键字都没匹配到，则没有匹配到数据
@@ -300,9 +300,9 @@ function fuzzyMatch(str, key) {
   <DefaultNavbar transparent />
   <Header>
     <div
-        class="page-header min-height-200"
-        :style="{ backgroundImage: `url(${image})` }"
-        loading="lazy"
+      class="page-header min-height-200"
+      :style="{ backgroundImage: `url(${image})` }"
+      loading="lazy"
     >
       <span class="mask bg-gradient-dark opacity-8"></span>
     </div>
@@ -320,9 +320,9 @@ function fuzzyMatch(str, key) {
           <el-card shadow="always">
             <div>
               <MarkDown
-                  :text="question"
-                  class="content"
-                  v-if="qtype != '图片题'"
+                :text="question"
+                class="content"
+                v-if="qtype != '图片题'"
               />
               <el-image :src="question" :fit="fill" v-else></el-image>
             </div>
@@ -344,23 +344,23 @@ function fuzzyMatch(str, key) {
 
           <el-card v-if="atype == 0" style="margin: 20px 0">
             <el-input
-                type="textarea"
-                resize="none"
-                :autosize="{ minRows: 5, maxRows: 50 }"
-                v-model="textarea"
+              type="textarea"
+              resize="none"
+              :autosize="{ minRows: 5, maxRows: 50 }"
+              v-model="textarea"
             >
             </el-input>
           </el-card>
           <el-row class="changePage">
             <router-link
-                @click="flush"
-                :to="{ path: '/test', query: { tid: parseInt(this.tid) - 1 } }"
+              @click="flush"
+              :to="{ path: '/test', query: { tid: parseInt(this.tid) - 1 } }"
             >
               <el-button type="primary" plain>上一题</el-button>
             </router-link>
             <router-link
-                @click="flush"
-                :to="{ path: '/test', query: { tid: parseInt(this.tid) + 1 } }"
+              @click="flush"
+              :to="{ path: '/test', query: { tid: parseInt(this.tid) + 1 } }"
             >
               <el-button type="primary" plain>下一题</el-button>
             </router-link>
@@ -371,9 +371,9 @@ function fuzzyMatch(str, key) {
 
               <div v-if="analysis">
                 <MarkDown
-                    :text="analysis"
-                    class="content"
-                    v-if="qtype != '图片题'"
+                  :text="analysis"
+                  class="content"
+                  v-if="qtype != '图片题'"
                 />
                 <el-image :src="analysis" :fit="fill" v-else></el-image>
               </div>
@@ -386,50 +386,50 @@ function fuzzyMatch(str, key) {
         <el-col class="elCol2" :span="10" :push="2">
           <el-card shadow="always">
             <el-descriptions
-                title="题目信息"
-                direction="vertical"
-                :column="1"
-                size="medium"
+              title="题目信息"
+              direction="vertical"
+              :column="1"
+              size="medium"
             >
               <el-descriptions-item label="正确率"
-              ><span style="color: #77b72c">{{
+                ><span style="color: #77b72c">{{
                   accuracy + "%"
                 }}</span></el-descriptions-item
               >
               <el-descriptions-item label="正确人数"
-              ><span style="color: #77b72c">{{ correctnum }}</span>
+                ><span style="color: #77b72c">{{ correctnum }}</span>
               </el-descriptions-item>
               <el-descriptions-item label="做题人数"
-              ><a
+                ><a
                   rel="nofollow"
                   target="_blank"
                   style="color: #4cb9fc; text-decoration: none"
-              >{{ num }}</a
-              >
+                  >{{ num }}</a
+                >
               </el-descriptions-item>
               <el-descriptions-item v-if="points != null" label="知识点"
-              ><a
+                ><a
                   rel="nofollow"
                   target="_blank"
                   style="color: #4cb9fc; text-decoration: none"
-              >{{ points }}</a
-              >
+                  >{{ points }}</a
+                >
               </el-descriptions-item>
             </el-descriptions>
           </el-card>
           <el-button
-              v-if="atype == 1"
-              type="success"
-              class="submit"
-              @click="submitChoice"
-          >提交</el-button
+            v-if="atype == 1"
+            type="success"
+            class="submit"
+            @click="submitChoice"
+            >提交</el-button
           >
           <el-button
-              v-if="atype == 0"
-              type="success"
-              class="submit"
-              @click="submitText"
-          >提交</el-button
+            v-if="atype == 0"
+            type="success"
+            class="submit"
+            @click="submitText"
+            >提交</el-button
           >
         </el-col>
       </el-row>
