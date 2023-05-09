@@ -1,13 +1,7 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="20" :offset="2">
-        <h1>{{ sname }}</h1>
-        <h3 v-if="qtype !== 0">{{ qtype }}</h3>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col class="elCol1" :span="12" :push="2">
+      <el-col class="elCol1" :span="16">
         <el-card shadow="always">
           <div>
             <MarkDown
@@ -91,7 +85,7 @@
           </el-card>
         </el-row>
       </el-col>
-      <el-col class="elCol2" :span="10" :push="2">
+      <el-col class="elCol2" :span="6">
         <el-card shadow="always">
           <el-descriptions
             title="题目信息"

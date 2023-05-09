@@ -8,6 +8,7 @@ import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 
 // image
 import image from "@/assets/img/city-profile.jpg";
+import MaterialButton from "@/components/MaterialButton.vue";
 // import PostMainBody from "@/views/LandingPages/PostArticle/Sections/PostMainBody.vue";
 // import MarkDown from "@/components/MarkDown/MarkDown";
 </script>
@@ -23,180 +24,204 @@ import image from "@/assets/img/city-profile.jpg";
     </div>
   </Header>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-    <div>
-      <!--这里是测试测试详细页面传入的参数 -->
-      <test-introduce
-        v-if="page === 'checkQuestion'"
-        :testIntroduce="{
-          question: test.question,
-          answer: test.answer,
-          difficulty: test.difficulty,
-          qchoicea: test.qchoicea,
-          qchoiceb: test.qchoiceb,
-          qchoicec: test.qchoicec,
-          qchoiced: test.qchoiced,
-          num: test.num,
-          correctnum: test.correctnum,
-          points: test.points,
-          analysis: test.analysis,
-          sname: test.sname,
-          accuracy: test.accuracy,
-          qtype: test.qtype,
-          atype: test.atype,
-          tid: this.$route.query.tid,
-        }"
-        @flush="flush"
-      ></test-introduce>
+    <div style="position: relative; left: 5%">
+      <el-row style="position: relative; left: 2%">
+        <el-col :span="20">
+          <el-row>
+            <el-col :span="23">
+              <h1>{{ test.sname }}</h1>
+              <h3 v-if="test.qtype !== 0">{{ test.qtype }}</h3>
+            </el-col>
+            <el-col :span="1">
+              <div class="dropdown" style="margin-top: 10px">
+                <MaterialButton
+                  variant="gradient"
+                  color="success"
+                  class="dropdown-toggle"
+                  :class="{ show: showDropdown }"
+                  @focusout="showDropdown = false"
+                  id="dropdownMenuButton"
+                  data-bs-toggle="dropdown"
+                  :area-expanded="showDropdown"
+                  @click="showDropdown = !showDropdown"
+                >
+                  更多功能
+                </MaterialButton>
+                <ul
+                  class="dropdown-menu px-2 py-3"
+                  :class="{ show: showDropdown }"
+                  aria-labelledby="dropdownMenuButton"
+                >
+                  <li @click="comment">
+                    <a
+                      class="dropdown-item border-radius-md"
+                      href="javascript:;"
+                      >发表心得</a
+                    >
+                  </li>
+                  <li @click="checkComment">
+                    <a
+                      class="dropdown-item border-radius-md"
+                      href="javascript:;"
+                      >查看评论</a
+                    >
+                  </li>
+                  <li @click="checkHistory">
+                    <a
+                      class="dropdown-item border-radius-md"
+                      href="javascript:;"
+                      >错题记录</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+      <div>
+        <!--这里是测试测试详细页面传入的参数 -->
+        <test-introduce
+          v-if="page === 'checkQuestion'"
+          :testIntroduce="{
+            question: test.question,
+            answer: test.answer,
+            difficulty: test.difficulty,
+            qchoicea: test.qchoicea,
+            qchoiceb: test.qchoiceb,
+            qchoicec: test.qchoicec,
+            qchoiced: test.qchoiced,
+            num: test.num,
+            correctnum: test.correctnum,
+            points: test.points,
+            analysis: test.analysis,
+            sname: test.sname,
+            accuracy: test.accuracy,
+            qtype: test.qtype,
+            atype: test.atype,
+            tid: this.$route.query.tid,
+          }"
+          @flush="flush"
+        ></test-introduce>
 
-      <div v-if="page == 'comment'">
-        <div id="editor">
-          <el-row :gutter="20" class="head">
-            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-              <div class="grid-content bg-purple"></div>
-            </el-col>
-            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
-              <h1 style="font-size: 20px">评论标题</h1>
-            </el-col>
-            <el-col :xs="10" :sm="14" :md="14" :lg="14" :xl="14">
-              <el-input v-model="title" placeholder="请输入内容"></el-input>
-            </el-col>
-            <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
-              <el-button type="success" @click="saveComment"
-                >发布评论
-              </el-button>
-            </el-col>
-          </el-row>
-          <el-row :gutter="20">
-            <el-col :span="20">
-              <mavon-editor
-                v-model="mdText"
-                class="me-editor"
-                ref="md"
-                @imgAdd="$imgAdd"
-              ></mavon-editor>
-            </el-col>
-          </el-row>
+        <div v-if="page == 'comment'">
+          <div id="editor">
+            <el-row :gutter="20" class="head">
+              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+                <div class="grid-content bg-purple"></div>
+              </el-col>
+              <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+                <h1 style="font-size: 20px">评论标题</h1>
+              </el-col>
+              <el-col :xs="10" :sm="14" :md="14" :lg="14" :xl="14">
+                <el-input v-model="title" placeholder="请输入内容"></el-input>
+              </el-col>
+              <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
+                <el-button type="success" @click="saveComment"
+                  >发布评论
+                </el-button>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="20">
+                <mavon-editor
+                  v-model="mdText"
+                  class="me-editor"
+                  ref="md"
+                  @imgAdd="$imgAdd"
+                ></mavon-editor>
+              </el-col>
+            </el-row>
+          </div>
         </div>
-      </div>
 
-      <div v-if="page == 'checkComment'" class="commentList">
-        <h1>做题心得</h1>
-        <ul style="margin-top: 7px">
-          <h2
-            v-if="testCommentList.length == 0"
-            style="color: grey; margin-left: 50%"
-          >
-            暂无评论！
-          </h2>
-          <li
-            style="margin-bottom: 10px"
-            v-for="item in testCommentList"
-            :key="item.commentid"
-            class="text-view"
-          >
-            <el-card>
-              <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
-              <el-card style="font-size: 20px; font-weight: bold"
-                >{{ item.title }}
+        <div v-if="page == 'checkComment'" class="commentList">
+          <h1>做题心得</h1>
+          <ul style="margin-top: 7px">
+            <h2
+              v-if="testCommentList.length == 0"
+              style="color: grey; margin-left: 50%"
+            >
+              暂无评论！
+            </h2>
+            <li
+              style="margin-bottom: 10px"
+              v-for="item in testCommentList"
+              :key="item.commentid"
+              class="text-view"
+            >
+              <el-card>
+                <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
+                <el-card style="font-size: 20px; font-weight: bold"
+                  >{{ item.title }}
+                </el-card>
+                <mavon-editor
+                  class="me-editor"
+                  :value="item.commenttext"
+                  :subfield="false"
+                  :defaultOpen="'preview'"
+                  :toolbarsFlag="false"
+                  :editable="false"
+                  :scrollStyle="true"
+                  :ishljs="true"
+                ></mavon-editor>
               </el-card>
-              <mavon-editor
-                class="me-editor"
-                :value="item.commenttext"
-                :subfield="false"
-                :defaultOpen="'preview'"
-                :toolbarsFlag="false"
-                :editable="false"
-                :scrollStyle="true"
-                :ishljs="true"
-              ></mavon-editor>
-            </el-card>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+        <test-history v-if="page == 'checkHistory'">
+          <h1>错题记录</h1>
+          <ul style="margin-top: 7px">
+            <h2
+              v-if="problemList.length == 0"
+              style="color: grey; margin-left: 40%"
+            >
+              暂无错题！
+            </h2>
+            <li
+              style="margin-bottom: 10px"
+              v-for="item in problemList"
+              :key="item.id"
+              class="text-view"
+            >
+              <div v-if="item.iscorrect == true">
+                <el-card
+                  style="
+                    width: 80%;
+                    font-size: 20px;
+                    font-weight: bold;
+                    background-color: #e5f3ed !important;
+                    border: #e1f3d8 1px solid;
+                  "
+                >
+                  <h1 v-if="item.score != null">
+                    <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
+                  </h1>
+                  <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+                  <h3>{{ item.createdate }}</h3>
+                </el-card>
+              </div>
+              <div v-else>
+                <el-card
+                  style="
+                    width: 80%;
+                    font-size: 20px;
+                    font-weight: bold;
+                    background-color: #fef0f0 !important;
+                    border: #fde2e2 1px solid;
+                  "
+                >
+                  <h1 v-if="item.score != null">
+                    <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
+                  </h1>
+                  <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+                  <h3>{{ item.createdate }}</h3>
+                </el-card>
+              </div>
+            </li>
+          </ul>
+        </test-history>
       </div>
-      <test-history v-if="page == 'checkHistory'">
-        <h1>错题记录</h1>
-        <ul style="margin-top: 7px">
-          <h2
-            v-if="problemList.length == 0"
-            style="color: grey; margin-left: 40%"
-          >
-            暂无错题！
-          </h2>
-          <li
-            style="margin-bottom: 10px"
-            v-for="item in problemList"
-            :key="item.id"
-            class="text-view"
-          >
-            <div v-if="item.iscorrect == true">
-              <el-card
-                style="
-                  width: 80%;
-                  font-size: 20px;
-                  font-weight: bold;
-                  background-color: #e5f3ed !important;
-                  border: #e1f3d8 1px solid;
-                "
-              >
-                <h1 v-if="item.score != null">
-                  <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
-                </h1>
-                <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-                <h3>{{ item.createdate }}</h3>
-              </el-card>
-            </div>
-            <div v-else>
-              <el-card
-                style="
-                  width: 80%;
-                  font-size: 20px;
-                  font-weight: bold;
-                  background-color: #fef0f0 !important;
-                  border: #fde2e2 1px solid;
-                "
-              >
-                <h1 v-if="item.score != null">
-                  <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
-                </h1>
-                <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-                <h3>{{ item.createdate }}</h3>
-              </el-card>
-            </div>
-          </li>
-        </ul>
-      </test-history>
-      <!--        <el-card class="right_fbox">-->
-      <!--          <el-col class="right_button_list">-->
-      <!--            <el-button-->
-      <!--              type="primary"-->
-      <!--              icon="el-icon-edit"-->
-      <!--              class="right_button"-->
-      <!--              @click="comment"-->
-      <!--              >发表心得</el-button-->
-      <!--            >-->
-      <!--            <el-button-->
-      <!--              type="primary"-->
-      <!--              icon="el-icon-chat-line-round"-->
-      <!--              class="right_button"-->
-      <!--              @click="checkComment"-->
-      <!--              >查看评论</el-button-->
-      <!--            >-->
-      <!--            <el-button-->
-      <!--              type="primary"-->
-      <!--              icon="el-icon-notebook-1"-->
-      <!--              class="right_button"-->
-      <!--              @click="checkHistory"-->
-      <!--              >错题记录</el-button-->
-      <!--            >-->
-      <!--            <el-button-->
-      <!--              type="primary"-->
-      <!--              icon="el-icon-document"-->
-      <!--              class="right_button"-->
-      <!--              @click="checkQuestion"-->
-      <!--              >查看题目</el-button-->
-      <!--            >-->
-      <!--          </el-col>-->
-      <!--        </el-card>-->
     </div>
   </div>
   <DefaultFooter />
@@ -282,7 +307,7 @@ export default {
       this.page = "checkComment";
     },
     async getTestCommentByQuestionid(questionid) {
-      const result = await this.$API.reqGetTestCommentByQuestionid(questionid);
+      const result = await api.reqGetTestCommentByQuestionid(questionid);
       console.log(
         "questionid=" + questionid + " get result " + result.data.questionid
       );
@@ -297,7 +322,7 @@ export default {
     async getProblemCollectionBySname() {
       this.userid = this.$store.state.user.userInfo.userId;
       console.log("获取错题中" + this.test.sname + this.userid);
-      const result = await this.$API.reqGetProblemCollectionBySname(
+      const result = await api.reqGetProblemCollectionBySname(
         this.test.sname,
         this.userid
       );
@@ -318,10 +343,6 @@ export default {
       this.page = "checkHistory";
       //this.flush();
     },
-    checkQuestion: function () {
-      this.page = "checkQuestion";
-      this.flush();
-    },
     /**
      *
      * 发布评论方法
@@ -331,7 +352,7 @@ export default {
       // 第一步.将图片上传到服务器.
       var formdata = new FormData();
       formdata.append("image", $file);
-      const result = await this.$API.reqUploadImage(formdata);
+      const result = await api.reqUploadImage(formdata);
       if (result.data.code === 200) {
         const url = result.data.data;
         this.$refs.md.$img2Url(pos, url);
@@ -355,7 +376,7 @@ export default {
       }
       this.tagIdList[0] = this.test.sname;
       console.log("before request" + this.title);
-      const result = await this.$API.reqSaveComment({
+      const result = await api.reqSaveComment({
         title: this.title,
         commenttext: this.mdText,
         userid: this.$store.state.user.userInfo.userId,
@@ -375,7 +396,7 @@ export default {
       }
     },
     async getTagNameList() {
-      const result = await this.$API.reqGetTagNameList();
+      const result = await api.reqGetTagNameList();
       if (result.data.code === 200) {
         this.tagNameList = result.data.data;
       } else {
@@ -384,7 +405,7 @@ export default {
     },
 
     async loadAll() {
-      const result = await this.$API.reqGetSchoolNameList();
+      const result = await api.reqGetSchoolNameList();
       if (result.data.code === 200) {
         this.schoolList = result.data.data.map((school) => {
           return {
@@ -419,7 +440,7 @@ export default {
     },
     // 添加新的标签
     async addNewTag() {
-      const result = await this.$API.reqAddNewTag({ tagName: this.newTag });
+      const result = await api.reqAddNewTag({ tagName: this.newTag });
       if (result.data.code === 200) {
         this.$message.success(result.data.msg);
         this.newTag = "";
