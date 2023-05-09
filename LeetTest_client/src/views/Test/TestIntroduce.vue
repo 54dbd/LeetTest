@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="20" :offset="2">
         <h1>{{ sname }}</h1>
-        <h3 v-if="qtype != 0">{{ qtype }}</h3>
+        <h3 v-if="qtype !== 0">{{ qtype }}</h3>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -13,12 +13,12 @@
             <MarkDown
               :text="question"
               class="content"
-              v-if="qtype != '图片题'"
+              v-if="qtype !== '图片题'"
             />
-            <el-image :src="question" :fit="fill" v-else></el-image>
+            <el-image :src="question" fit="fill" v-else></el-image>
           </div>
         </el-card>
-        <el-card class="choices" v-if="atype == 1">
+        <el-card class="choices" v-if="atype === 1">
           <el-checkbox-group v-model="choice" v-if="qchoicea != null">
             <el-checkbox label="A" class="choice">{{ qchoicea }}</el-checkbox>
             <el-checkbox label="B" class="choice">{{ qchoiceb }}</el-checkbox>
@@ -33,7 +33,7 @@
           </el-checkbox-group>
         </el-card>
 
-        <el-card v-if="atype == 0" style="margin: 20px 0">
+        <el-card v-if="atype === 0" style="margin: 20px 0">
           <el-input
             type="textarea"
             resize="none"
@@ -44,29 +44,43 @@
         </el-card>
         <el-row class="changePage">
           <router-link
-            @click="flush(-1)"
-            :to="{ path: '/test', query: { tid: parseInt(this.tid) - 1 } }"
+            @click="flush(lastPage)"
+            :to="{ path: '/test', query: { tid: lastPage } }"
           >
-            <el-button type="primary" plain>上一题</el-button>
+            <MaterialButton
+              variant="gradient"
+              color="success"
+              size="sm"
+              style="width: 100%"
+              type="button"
+              >上一题</MaterialButton
+            >
           </router-link>
           <router-link
-            @click="flush(1)"
-            :to="{ path: '/test', query: { tid: parseInt(this.tid) + 1 } }"
+            @click="flush(nextPage)"
+            :to="{ path: '/test', query: { tid: nextPage } }"
           >
-            <el-button type="primary" plain>下一题</el-button>
+            <MaterialButton
+              variant="gradient"
+              color="success"
+              size="sm"
+              style="width: 100%"
+              type="button"
+              >下一题</MaterialButton
+            >
           </router-link>
         </el-row>
         <el-row class="analysis">
-          <el-card v-if="correct == true">
+          <el-card v-if="correct === true">
             <h2>解析:</h2>
 
             <div v-if="analysis">
               <MarkDown
                 :text="analysis"
                 class="content"
-                v-if="qtype != '图片题'"
+                v-if="qtype !== '图片题'"
               />
-              <el-image :src="analysis" :fit="fill" v-else></el-image>
+              <el-image :src="analysis" fit="fill" v-else></el-image>
             </div>
             <div v-else>
               {{ answer }}
@@ -109,14 +123,14 @@
           </el-descriptions>
         </el-card>
         <el-button
-          v-if="atype == 1"
+          v-if="atype === 1"
           type="success"
           class="submit"
           @click="submitChoice"
           >提交</el-button
         >
         <el-button
-          v-if="atype == 0"
+          v-if="atype === 0"
           type="success"
           class="submit"
           @click="submitText"
@@ -129,12 +143,15 @@
 
 <script>
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
+import MaterialButton from "@/components/MaterialButton.vue";
+import * as api from "@/api";
 
 export default {
   name: "index",
   props: ["testIntroduce"],
   emits: ["flush"],
   components: {
+    MaterialButton,
     MarkDown,
   },
   data() {
@@ -163,6 +180,18 @@ export default {
       score: "",
     };
   },
+  computed: {
+    nextPage() {
+      let tid = parseInt(this.tid) + 1;
+      if (tid <= 302) return tid;
+      else return 302;
+    },
+    lastPage() {
+      let tid = parseInt(this.tid) - 1;
+      if (tid >= 1) return tid;
+      else return 1;
+    },
+  },
   watch: {
     testIntroduce(sc) {
       this.question = sc.question;
@@ -187,11 +216,11 @@ export default {
     async saveHistory() {
       this.wronganswer = "";
       console.log("iscorrect:" + this.correct);
-      if (this.atype == 1)
+      if (this.atype === 1)
         for (let i = 0; i < this.choice.length; i++) {
           this.wronganswer += this.choice[i];
         }
-      else if (this.atype == 0) {
+      else if (this.atype === 0) {
         this.wronganswer = this.textarea;
       }
       console.log("before SAVE request" + this.wronganswer);
@@ -359,8 +388,8 @@ export default {
         m = t.length,
         d = [];
       var i, j, s_i, t_j, cost;
-      if (n == 0) return m;
-      if (m == 0) return n;
+      if (n === 0) return m;
+      if (m === 0) return n;
       for (i = 0; i <= n; i++) {
         d[i] = [];
         d[i][0] = i;
@@ -372,7 +401,7 @@ export default {
         s_i = s.charAt(i - 1);
         for (j = 1; j <= m; j++) {
           t_j = t.charAt(j - 1);
-          if (s_i == t_j) {
+          if (s_i === t_j) {
             cost = 0;
           } else {
             cost = 1;

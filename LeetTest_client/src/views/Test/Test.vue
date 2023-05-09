@@ -62,8 +62,8 @@ import image from "@/assets/img/city-profile.jpg";
             </el-col>
             <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
               <el-button type="success" @click="saveComment"
-                >发布评论</el-button
-              >
+                >发布评论
+              </el-button>
             </el-col>
           </el-row>
           <el-row :gutter="20">
@@ -96,9 +96,9 @@ import image from "@/assets/img/city-profile.jpg";
           >
             <el-card>
               <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
-              <el-card style="font-size: 20px; font-weight: bold">{{
-                item.title
-              }}</el-card>
+              <el-card style="font-size: 20px; font-weight: bold"
+                >{{ item.title }}
+              </el-card>
               <mavon-editor
                 class="me-editor"
                 :value="item.commenttext"
@@ -208,6 +208,7 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import { getToken } from "@/utils/token";
 import * as api from "@/api";
+
 export default {
   name: "TestDetail",
   components: {
@@ -257,8 +258,7 @@ export default {
     },
 
     flush: async function (num) {
-      console.log(parseInt(this.$route.query.tid) + num);
-      await this.getTestDetail(parseInt(this.$route.query.tid) + num);
+      if (num >= 1 && num <= 302) await this.getTestDetail(num);
     },
     async comment() {
       if (!getToken()) {
@@ -454,11 +454,13 @@ export default {
   z-index: 999;
   margin-left: 530px;
 }
+
 .right_button_list {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .right_button {
   margin: 20px 0 !important;
 }
