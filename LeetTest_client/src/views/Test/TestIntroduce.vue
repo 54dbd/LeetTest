@@ -247,7 +247,7 @@ export default {
       });
       console.log("after request");
       if (result.data.code === 200) {
-        this.$notify.success("发布成功~");
+        // this.$notify.success("发布成功~");
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
       }
@@ -278,35 +278,30 @@ export default {
       if (score >= 4) {
         this.correct = true;
         this.correctnum += 1;
-        console.log("正确 得分", score);
-        // const h = this.$createElement;
-        // const hrenderc = h("p", null, [
-        //   h("div", [
-        //     h("div", "回答正确！"),
-        //     h("div", "您的得分为："),
-        //     h("div", score),
-        //   ]),
-        // ]);
-        // this.$notify({
-        //   title: "提示",
-        //   message: hrenderc,
-        //   type: "success",
-        // });
+        const h = document.createElement("p");
+        const newContent = document.createElement("div");
+        const newContentText = document.createTextNode(`您的得分为：${score}`);
+        newContent.appendChild(newContentText);
+        h.appendChild(newContent);
+        console.log(h);
+        this.$notify({
+          dangerouslyUseHTMLString: true,
+          title: "回答正确！",
+          message: h.innerHTML,
+          type: "success",
+        });
       } else {
-        console.log("错误 得分", score);
-        // const h = this.$createElement;
-        // const hrenderw = h("p", null, [
-        //   h("div", [
-        //     h("div", "回答错误！"),
-        //     h("div", "您的得分为："),
-        //     h("div", score),
-        //   ]),
-        // ]);
-        // this.correct = false;
-        // this.$notify.error({
-        //   title: "提示",
-        //   message: hrenderw,
-        // });
+        const h = document.createElement("p");
+        const newContent = document.createElement("div");
+        const newContentText = document.createTextNode(`您的得分为：${score}`);
+        newContent.appendChild(newContentText);
+        h.appendChild(newContent);
+        this.correct = false;
+        this.$notify.error({
+          dangerouslyUseHTMLString: true,
+          title: "回答错误！",
+          message: h.innerHTML,
+        });
       }
       this.score = score;
       await this.saveHistory();
@@ -337,11 +332,6 @@ export default {
       } else {
         console.log("系统异常~ ");
       }
-      this.$notify.info({
-        title: "提示",
-        message: "已提交!",
-        position: "top-left",
-      });
       var choice = "";
       for (let i = 0; i < this.choice.length; i++) {
         choice += this.choice[i];
@@ -394,7 +384,7 @@ export default {
       console.log("您的选项是" + this.choice);
     },
     flush: function (num) {
-      // location.reload();
+      this.correct = false;
       this.$emit("flush", num);
     },
     //相似度匹配
