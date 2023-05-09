@@ -299,33 +299,12 @@ export default {
       }
       this.score = score;
       await this.saveHistory();
-      this.accuracy = ((this.correctnum * 100) / this.num).toFixed(2);
-      const result = await api.setNumByAid({
-        num: this.num,
-        sname: this.sname,
-        correctnum: this.correctnum,
-        accuracy: this.accuracy / 100,
-      });
-      if (result.data.code === 200) {
-        console.log("提交成功~");
-        console.log(this.textarea);
-      } else {
-        console.log("系统异常~ ");
-      }
     },
     //选择题判题系统
     async submitChoice() {
       this.num += 1;
       console.log(this.num);
-      const result = await api.setNumByAid({
-        num: this.num,
-        sname: this.sname,
-      });
-      if (result.data.code === 200) {
-        console.log("提交成功~");
-      } else {
-        console.log("系统异常~ ");
-      }
+      await this.saveHistory();
       var choice = "";
       for (let i = 0; i < this.choice.length; i++) {
         choice += this.choice[i];
@@ -361,17 +340,12 @@ export default {
         } else {
           this.correct = true;
           this.correctnum += 1;
-          const result = await api.setNumByAid({
-            correctnum: this.correctnum,
-            sname: this.sname,
-          });
           this.$notify({
             title: "提示",
             message: "选择正确！",
             type: "success",
           });
         }
-        await this.saveHistory();
       }
     },
     select: function () {
@@ -379,6 +353,7 @@ export default {
     },
     flush: function (num) {
       this.correct = false;
+      this.choice = [];
       this.$emit("flush", num);
     },
     //相似度匹配
