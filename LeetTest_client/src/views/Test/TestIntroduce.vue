@@ -33,15 +33,18 @@
           </el-checkbox-group>
         </el-card>
 
-        <el-card v-if="atype === 0" style="margin: 20px 0">
-          <el-input
-            type="textarea"
-            resize="none"
-            :autosize="{ minRows: 5, maxRows: 50 }"
-            v-model="textarea"
-          >
-          </el-input>
-        </el-card>
+        <div v-if="atype === 0" style="margin: 10px 0">
+          <el-card class="input-group-static mb-4">
+            <textarea
+              name="message"
+              class="form-control"
+              id="message"
+              :rows="4"
+              v-model="textarea"
+            />
+          </el-card>
+        </div>
+
         <el-row class="changePage">
           <router-link
             @click="flush(lastPage)"
@@ -122,19 +125,27 @@
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
-        <el-button
+        <MaterialButton
           v-if="atype === 1"
-          type="success"
+          variant="gradient"
+          color="success"
+          size="sm"
           class="submit"
+          style="width: 100%; height: 60px"
+          type="button"
           @click="submitChoice"
-          >提交</el-button
+          >提交</MaterialButton
         >
-        <el-button
+        <MaterialButton
           v-if="atype === 0"
-          type="success"
+          variant="gradient"
+          color="success"
+          size="sm"
           class="submit"
+          style="width: 100%; height: 60px"
+          type="button"
           @click="submitText"
-          >提交</el-button
+          >提交</MaterialButton
         >
       </el-col>
     </el-row>
@@ -145,6 +156,7 @@
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import * as api from "@/api";
+import MaterialTextArea from "@/components/MaterialTextArea.vue";
 
 export default {
   name: "index",
@@ -152,6 +164,7 @@ export default {
   emits: ["flush"],
   components: {
     MaterialButton,
+    MaterialTextArea,
     MarkDown,
   },
   data() {
@@ -265,33 +278,35 @@ export default {
       if (score >= 4) {
         this.correct = true;
         this.correctnum += 1;
-        const h = this.$createElement;
-        const hrenderc = h("p", null, [
-          h("div", [
-            h("div", "回答正确！"),
-            h("div", "您的得分为："),
-            h("div", score),
-          ]),
-        ]);
-        this.$notify({
-          title: "提示",
-          message: hrenderc,
-          type: "success",
-        });
+        console.log("正确 得分", score);
+        // const h = this.$createElement;
+        // const hrenderc = h("p", null, [
+        //   h("div", [
+        //     h("div", "回答正确！"),
+        //     h("div", "您的得分为："),
+        //     h("div", score),
+        //   ]),
+        // ]);
+        // this.$notify({
+        //   title: "提示",
+        //   message: hrenderc,
+        //   type: "success",
+        // });
       } else {
-        const h = this.$createElement;
-        const hrenderw = h("p", null, [
-          h("div", [
-            h("div", "回答错误！"),
-            h("div", "您的得分为："),
-            h("div", score),
-          ]),
-        ]);
-        this.correct = false;
-        this.$notify.error({
-          title: "提示",
-          message: hrenderw,
-        });
+        console.log("错误 得分", score);
+        // const h = this.$createElement;
+        // const hrenderw = h("p", null, [
+        //   h("div", [
+        //     h("div", "回答错误！"),
+        //     h("div", "您的得分为："),
+        //     h("div", score),
+        //   ]),
+        // ]);
+        // this.correct = false;
+        // this.$notify.error({
+        //   title: "提示",
+        //   message: hrenderw,
+        // });
       }
       this.score = score;
       await this.saveHistory();
@@ -328,7 +343,7 @@ export default {
         position: "top-left",
       });
       var choice = "";
-      for (var i = 0; i < this.choice.length; i++) {
+      for (let i = 0; i < this.choice.length; i++) {
         choice += this.choice[i];
       }
       console.log(choice);
@@ -344,7 +359,7 @@ export default {
         });
       } else {
         var j = 0;
-        for (var i = 0; i < choice.length; i++) {
+        for (let i = 0; i < choice.length; i++) {
           for (j = 0; j < choice.length; j++) {
             if (choice[i] === this.answer[j]) {
               break;
