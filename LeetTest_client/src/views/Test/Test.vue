@@ -153,15 +153,16 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
         style="margin-bottom: 10px"
         v-for="item in testCommentList"
         :key="item.commentid"
-        class="text-view"
       >
-        <el-card>
+        <div>
           <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
           <el-card style="font-size: 20px; font-weight: bold"
             >{{ item.title }}
           </el-card>
-          <MarkDown :text="item.commenttext" class="content" />
-        </el-card>
+          <div>
+            <MarkDown :text="item.commenttext" class="content" />
+          </div>
+        </div>
       </li>
     </ul>
   </el-dialog>
