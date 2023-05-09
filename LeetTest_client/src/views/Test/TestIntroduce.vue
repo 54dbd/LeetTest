@@ -108,34 +108,34 @@
             </el-descriptions-item>
           </el-descriptions>
         </el-card>
-        <!--        <el-button-->
-        <!--          v-if="atype == 1"-->
-        <!--          type="success"-->
-        <!--          class="submit"-->
-        <!--          @click="submitChoice"-->
-        <!--          >提交</el-button-->
-        <!--        >-->
-        <!--        <el-button-->
-        <!--          v-if="atype == 0"-->
-        <!--          type="success"-->
-        <!--          class="submit"-->
-        <!--          @click="submitText"-->
-        <!--          >提交</el-button-->
-        <!--        >-->
+        <el-button
+          v-if="atype == 1"
+          type="success"
+          class="submit"
+          @click="submitChoice"
+          >提交</el-button
+        >
+        <el-button
+          v-if="atype == 0"
+          type="success"
+          class="submit"
+          @click="submitText"
+          >提交</el-button
+        >
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-// import MarkDown from '@/components/MarkDown/MarkDown'
+import MarkDown from "@/components/MarkDown/MarkDown.vue";
 
 export default {
   name: "index",
   props: ["testIntroduce"],
-  // components: {
-  //   MarkDown,
-  // },
+  components: {
+    MarkDown,
+  },
   data() {
     return {
       question: "",
@@ -194,7 +194,7 @@ export default {
         this.wronganswer = this.textarea;
       }
       console.log("before SAVE request" + this.wronganswer);
-      const result = await this.$API.reqSaveHistory({
+      const result = await api.reqSaveHistory({
         tid: this.tid,
         sname: this.sname,
         userid: this.$store.state.user.userInfo.userId,
@@ -266,7 +266,7 @@ export default {
       this.score = score;
       await this.saveHistory();
       this.accuracy = ((this.correctnum * 100) / this.num).toFixed(2);
-      const result = await this.$API.setNumByAid({
+      const result = await api.setNumByAid({
         num: this.num,
         sname: this.sname,
         correctnum: this.correctnum,
@@ -283,7 +283,7 @@ export default {
     async submitChoice() {
       this.num += 1;
       console.log(this.num);
-      const result = await this.$API.setNumByAid({
+      const result = await api.setNumByAid({
         num: this.num,
         sname: this.sname,
       });
@@ -332,7 +332,7 @@ export default {
         } else {
           this.correct = true;
           this.correctnum += 1;
-          const result = await this.$API.setNumByAid({
+          const result = await api.setNumByAid({
             correctnum: this.correctnum,
             sname: this.sname,
           });
