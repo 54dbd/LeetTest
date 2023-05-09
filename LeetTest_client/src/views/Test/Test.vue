@@ -26,7 +26,7 @@ import image from "@/assets/img/city-profile.jpg";
     <div>
       <!--这里是测试测试详细页面传入的参数 -->
       <test-introduce
-        v-if="page == 'checkQuestion'"
+        v-if="page === 'checkQuestion'"
         :testIntroduce="{
           question: test.question,
           answer: test.answer,
@@ -45,6 +45,7 @@ import image from "@/assets/img/city-profile.jpg";
           atype: test.atype,
           tid: this.$route.query.tid,
         }"
+        @flush="flush"
       ></test-introduce>
 
       <div v-if="page == 'comment'">
@@ -255,8 +256,9 @@ export default {
       }
     },
 
-    flush: function () {
-      this.$router.go(0);
+    flush: async function (num) {
+      console.log(parseInt(this.$route.query.tid) + num);
+      await this.getTestDetail(parseInt(this.$route.query.tid) + num);
     },
     async comment() {
       if (!getToken()) {
@@ -428,7 +430,10 @@ export default {
     },
   },
   async mounted() {
-    this.getTestDetail(this.$route.query.tid);
+    await this.getTestDetail(this.$route.query.tid);
+  },
+  async activated() {
+    await this.getTestDetail(this.$route.query.tid);
   },
 };
 </script>

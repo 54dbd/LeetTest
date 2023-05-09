@@ -44,13 +44,13 @@
         </el-card>
         <el-row class="changePage">
           <router-link
-            @click.native="flush"
+            @click="flush(-1)"
             :to="{ path: '/test', query: { tid: parseInt(this.tid) - 1 } }"
           >
             <el-button type="primary" plain>上一题</el-button>
           </router-link>
           <router-link
-            @click.native="flush"
+            @click="flush(1)"
             :to="{ path: '/test', query: { tid: parseInt(this.tid) + 1 } }"
           >
             <el-button type="primary" plain>下一题</el-button>
@@ -133,6 +133,7 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
 export default {
   name: "index",
   props: ["testIntroduce"],
+  emits: ["flush"],
   components: {
     MarkDown,
   },
@@ -348,8 +349,9 @@ export default {
     select: function () {
       console.log("您的选项是" + this.choice);
     },
-    flush: function () {
-      this.$router.go(0);
+    flush: function (num) {
+      // location.reload();
+      this.$emit("flush", num);
     },
     //相似度匹配
     strSimilarity2Number(s, t) {
