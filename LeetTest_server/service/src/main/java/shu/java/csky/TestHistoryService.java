@@ -15,7 +15,9 @@ import java.util.List;
 public interface TestHistoryService {
     List<TestHistory> getProblemCollectionBySnameAndUserid(TestHistoryParam testHistoryParam);
 
-    ResultVO insertHistory(TestHistoryParam testHistoryParam);
+    TestHistory submitChoice(TestHistoryParam testHistoryParam);
+
+    TestHistory submitText(TestHistoryParam testHistoryParam);
 
     ResultVO getNumById(Integer userId);
 

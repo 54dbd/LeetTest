@@ -196,6 +196,20 @@ export const reqSaveHistory = (data) =>
     method: "post",
     data,
   });
+//提交选择题
+export const reqSubmitChoice = (data) =>
+  requests({
+    url: "/test/history/submit_choice",
+    method: "post",
+    data,
+  });
+//提交文字题
+export const reqSubmitText = (data) =>
+  requests({
+    url: "/test/history/submit_text",
+    method: "post",
+    data,
+  });
 
 //获取评论列表
 export const reqGetTestCommentList = (data) =>

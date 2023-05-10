@@ -1,7 +1,6 @@
 package shu.java.csky.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import shu.java.csky.TestCommentService;
 import shu.java.csky.TestHistoryService;
@@ -11,11 +10,9 @@ import shu.java.csky.entity.TestComment;
 import shu.java.csky.entity.TestHistory;
 import shu.java.csky.vo.ResStatus;
 import shu.java.csky.vo.ResultVO;
-import shu.java.csky.vo.TestVo;
 import shu.java.csky.vo.param.*;
 
 import javax.annotation.Resource;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -35,46 +32,46 @@ public class TestController {
     TestHistoryService testHistoryService;
 
     @PostMapping("/list")
-    public ResultVO testList(@RequestBody Page<Test> pageParam){
-        if (pageParam == null){
-            return new ResultVO(400,"参数不能为空", null);
+    public ResultVO testList(@RequestBody Page<Test> pageParam) {
+        if (pageParam == null) {
+            return new ResultVO(400, "参数不能为空", null);
         }
-        return testService. getTestVoList(pageParam);
+        return testService.getTestVoList(pageParam);
     }
 
     @PostMapping("/comment/list")
-    public ResultVO testCommentList(@RequestBody Page<TestComment> pageParam){
-        if (pageParam == null){
-            return new ResultVO(400,"参数不能为空", null);
+    public ResultVO testCommentList(@RequestBody Page<TestComment> pageParam) {
+        if (pageParam == null) {
+            return new ResultVO(400, "参数不能为空", null);
         }
         return testCommentService.getCommentVoList(pageParam);
     }
 
     @GetMapping("/detail/{tid}")
-    public ResultVO getTestDetail(@PathVariable Integer tid){
-        if (tid == null || tid == 0){
-            return new ResultVO(400,"参数不能为空", null);
+    public ResultVO getTestDetail(@PathVariable Integer tid) {
+        if (tid == null || tid == 0) {
+            return new ResultVO(400, "参数不能为空", null);
         }
         Test test = testService.getTestDetailByTid(tid);
-        return new ResultVO(200,"成功",test);
+        return new ResultVO(200, "成功", test);
     }
 
     @GetMapping("/comment/{questionid}")
-    public ResultVO getTestCommentByQuestionid(@PathVariable String questionid){
-        if (questionid == null){
-            return new ResultVO(400,"参数不能为空", null);
+    public ResultVO getTestCommentByQuestionid(@PathVariable String questionid) {
+        if (questionid == null) {
+            return new ResultVO(400, "参数不能为空", null);
         }
         List<TestComment> comment = testCommentService.getTestCommentByQuestionid(questionid);
-        return new ResultVO(200,"成功",comment);
+        return new ResultVO(200, "成功", comment);
     }
 
     @GetMapping("/testNameList")
-    public ResultVO getTestNameList(){
-        return new ResultVO(ResStatus.OK, "成功",testService.getTestNameList());
+    public ResultVO getTestNameList() {
+        return new ResultVO(ResStatus.OK, "成功", testService.getTestNameList());
     }
 
     @PostMapping("/query")
-    public ResultVO fuzzyQueryTest(@RequestBody QueryPageParam queryPageParam){
+    public ResultVO fuzzyQueryTest(@RequestBody QueryPageParam queryPageParam) {
         return testService.fuzzyQueryTest(queryPageParam);
     }
 
@@ -85,27 +82,33 @@ public class TestController {
 
     @PostMapping("addNum")
     public ResultVO addNum(@RequestBody TestParam testParam) {
-        return new ResultVO(200, "成功",testService.setNumByAid(testParam));
+        return new ResultVO(200, "成功", testService.setNumByAid(testParam));
 
     }
 
     @GetMapping("/history/{sname}/{userid}")
-    public ResultVO getProblemCollectionBySname(@PathVariable("sname") String sname, @PathVariable("userid") String userid){
-        if (sname == null){
-            return new ResultVO(400,"参数不能为空", null);
+    public ResultVO getProblemCollectionBySname(@PathVariable("sname") String sname, @PathVariable("userid") String userid) {
+        if (sname == null) {
+            return new ResultVO(400, "参数不能为空", null);
         }
         Integer userID = Integer.valueOf(userid);
         TestHistoryParam testHistoryParam = new TestHistoryParam();
         testHistoryParam.setSname(sname);
         testHistoryParam.setUserid(userID);
         List<TestHistory> history = testHistoryService.getProblemCollectionBySnameAndUserid(testHistoryParam);
-        return new ResultVO(200,"成功",history);
+        return new ResultVO(200, "成功", history);
     }
 
-    @PostMapping("/history/add")
-    public ResultVO saveHistory(@RequestBody TestHistoryParam testHistoryParam){
-        return new ResultVO(200, "成功", testHistoryService.insertHistory(testHistoryParam));
+    @PostMapping("/history/submit_choice")
+    public ResultVO submitChoice(@RequestBody TestHistoryParam testHistoryParam) {
+        TestHistory history = testHistoryService.submitChoice(testHistoryParam);
+        return new ResultVO(200, "成功", history);
     }
 
+    @PostMapping("/history/submit_text")
+    public ResultVO submitText(@RequestBody TestHistoryParam testHistoryParam) {
+        TestHistory history = testHistoryService.submitText(testHistoryParam);
+        return new ResultVO(200, "成功", history);
+    }
 
 }
