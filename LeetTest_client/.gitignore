@@ -28,5 +28,4 @@ coverage
 *.sln
 *.sw?
 
-
-src/api/openai.js
+.env

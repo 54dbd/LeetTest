@@ -83,6 +83,14 @@
               {{ answer }}
             </div>
           </el-card>
+          <el-card v-if="openaiAnswer">
+            <h2>分析:</h2>
+            <MarkDown
+              :text="openaiAnswer"
+              class="content"
+              v-if="qtype !== '图片题'"
+            />
+          </el-card>
         </el-row>
       </el-col>
       <el-col class="elCol2" :span="6">
@@ -170,6 +178,7 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
 import MaterialButton from "@/components/MaterialButton.vue";
 import * as api from "@/api";
 import MaterialTextArea from "@/components/MaterialTextArea.vue";
+import { Configuration, OpenAIApi } from "openai";
 
 export default {
   name: "index",
@@ -204,6 +213,7 @@ export default {
       textarea: "",
       wronganswer: "",
       score: "",
+      openaiAnswer: "",
     };
   },
   computed: {
@@ -278,6 +288,7 @@ export default {
             title: "回答错误！",
             message: h.innerHTML,
           });
+          await this.getOpenAIAnswer();
         }
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
@@ -316,14 +327,29 @@ export default {
       }
       this.$emit("flush", parseInt(this.tid));
     },
-    select: function () {
-      console.log("您的选项是" + this.choice);
-    },
     flush: function (num) {
       this.correct = false;
       this.choice = [];
       this.textarea = "";
+      this.openaiAnswer = "";
       this.$emit("flush", num);
+    },
+    async getOpenAIAnswer() {
+      const configuration = new Configuration({
+        apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+      });
+      const openai = new OpenAIApi(configuration);
+
+      const completion = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "user",
+            content: `我现在有一个道问答题，他的题目是${this.question}，现在他的标准答案是${this.answer}，我的答案是${this.textarea}，请分析一下我错在哪里了？`,
+          },
+        ],
+      });
+      this.openaiAnswer = completion.data.choices[0].message.content;
     },
   },
 };
