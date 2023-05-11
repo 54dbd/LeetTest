@@ -1,11 +1,10 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { ref, watch } from "vue";
-import { useWindowsWidth } from "../../assets/js/useWindowsWidth";
+import { useWindowsWidth } from "@/assets/js/useWindowsWidth";
 
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
-import downArrow from "@/assets/img/down-arrow.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 import logo from "@/assets/img/logo_noText.png";
 import store from "@/stores"; // 引入store实例
@@ -79,18 +78,14 @@ const { type } = useWindowsWidth();
 
 if (type.value === "mobile") {
   textDark.value = true;
-} else if (type.value === "desktop" && textDark.value == false) {
+} else if (type.value === "desktop" && textDark.value === false) {
   textDark.value = false;
 }
 
 watch(
   () => type.value,
   (newValue) => {
-    if (newValue === "mobile") {
-      textDark.value = true;
-    } else {
-      textDark.value = false;
-    }
+    textDark.value = newValue === "mobile";
   }
 );
 </script>
@@ -113,7 +108,7 @@ watch(
           : 'container-fluid px-0'
       "
     >
-      <img :src="logo" style="width: 3%" />
+      <img :src="logo" style="width: 3%" alt="" />
 
       <RouterLink
         class="navbar-brand d-none d-md-block"
@@ -520,18 +515,14 @@ watch(
                         用户
                       </div>
                       <RouterLink
-                        :to="{ name: 'contactus' }"
+                        :to="{ name: 'userCenter' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span>个人中心</span>
                       </RouterLink>
-                      <a
-                          class="dropdown-item border-radius-md"
-                          @click="logout"
-                      >
+                      <a class="dropdown-item border-radius-md" @click="logout">
                         <span>注销</span>
                       </a>
-
                     </div>
                   </div>
                 </div>
@@ -598,68 +589,67 @@ watch(
 export default {
   data() {
     return {
-      keyWord: '',
-      centerDialogVisible: false
-    }
+      keyWord: "",
+      centerDialogVisible: false,
+    };
   },
   methods: {
     goSearch() {
-      if (this.keyWord.trim() === '') {
-        this.$message.warning('输入框不能为空~')
-        return
+      if (this.keyWord.trim() === "") {
+        this.$message.warning("输入框不能为空~");
+        return;
       }
       let location = {
-        name: 'search',
+        name: "search",
         params: {
           keyWord: this.keyWord,
-          fromRouter: this.$route.path
-        }
-      }
+          fromRouter: this.$route.path,
+        },
+      };
       //如果带有query参数也传过去
       if (this.$route.query) {
-        location.query = this.$route.query
+        location.query = this.$route.query;
       }
-      this.$router.push(location)
-      this.keyWord = ''
+      this.$router.push(location);
+      this.keyWord = "";
     },
     //退出登录
     async logout() {
-      this.$confirm('即将退出登录, 是否继续?', '警告', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        const result = await store.dispatch('user/logout')
-        if (result) {
+      this.$confirm("即将退出登录, 是否继续?", "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const result = await store.dispatch("user/logout");
+          if (result) {
+            this.$message({
+              type: "success",
+              message: "已退出登录!",
+            });
+            await this.$router.push("/login");
+          }
+        })
+        .catch(() => {
           this.$message({
-            type: 'success',
-            message: '已退出登录!'
-          })
-          await this.$router.push('/login')
-        }
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
+            type: "info",
+            message: "已取消",
+          });
         });
-      });
-
     },
     register() {
-      this.$router.push('/register')
-    }
+      this.$router.push("/register");
+    },
   },
   computed: {
     username() {
-      if (store.state.user.userInfo)
-        return store.state.user.userInfo.username
-      return ''
+      if (store.state.user.userInfo) return store.state.user.userInfo.username;
+      return "";
     },
     userImg() {
-      if (store.state.user.userInfo)
-        return store.state.user.userInfo.userImg
-      return ''
-    }
-  }
-}
+      if (store.state.user.userInfo) return store.state.user.userInfo.userImg;
+      return "";
+    },
+  },
+};
 </script>

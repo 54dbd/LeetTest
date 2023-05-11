@@ -31,7 +31,7 @@ import Article from "@/views/Article/Article.vue";
 import Test from "@/views/Test/Test.vue";
 import TestList from "@/views/Testlist/TestList.vue";
 import store from "@/stores"; // 引入store实例
-
+import UserCenter from "@/views/UserCenter/UserCenter.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -41,6 +41,14 @@ const router = createRouter({
       component: PresentationView,
       meta: {
         keepAlive: true,
+      },
+    },
+    {
+      path: "/userCenter",
+      name: "userCenter",
+      component: UserCenter,
+      meta: {
+        keepAlive: false,
       },
     },
     {
@@ -268,7 +276,6 @@ const router = createRouter({
 });
 
 import { getToken } from "@/utils/token";
-
 // 配置全局前置路由守卫
 router.beforeEach(async (to, from, next) => {
   if (getToken()) {
