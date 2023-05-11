@@ -482,7 +482,7 @@ watch(
                 size="sm"
                 border-radius="0.2px"
                 class="shadow-xl position-relative z-index-2"
-                :image="profilePic"
+                :image="store.state.user.userInfo.userImg"
                 alt="Avatar"
               />
               <div

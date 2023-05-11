@@ -8,9 +8,10 @@ import Footer from "@/examples/footers/FooterDefault.vue";
 
 // image
 import image from "@/assets/img/city-profile.jpg";
-import profilePic from "@/assets/img/bruce-mars.jpg";
 import MaterialAvatar from "@/components/MaterialAvatar.vue";
 import UserPanel from "@/views/UserCenter/UserPanel.vue";
+import store from "@/stores"; // 引入store实例
+const userName = store.state.user.userInfo.username;
 </script>
 <template>
   <DefaultNavbar transparent />
@@ -22,17 +23,20 @@ import UserPanel from "@/views/UserCenter/UserPanel.vue";
       <span class="mask bg-gradient-dark opacity-8"></span>
     </div>
   </Header>
-  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-    <section
-      class="py-sm-7 py-5 position-relative mt-n8 mt-md-n9 text-center blur-shadow-avatar"
+  <div class="card card-body blur shadow-blur mx-3 mt-n6">
+    <el-col
+      class="py-5 position-relative mt-n8 text-center blur-shadow-avatar"
     >
       <MaterialAvatar
         size="xxl"
         class="shadow-xl position-relative z-index-2"
-        :image="profilePic"
+        :image="store.state.user.userInfo.userImg"
         alt="Avatar"
       />
-    </section>
+      <h2>
+        {{ userName }}
+      </h2>
+    </el-col>
     <UserPanel />
     <div id="lineChart"></div>
   </div>
@@ -75,8 +79,12 @@ export default {
   },
   mounted() {
     const chartDom = document.getElementById("lineChart");
-    const myChart = echarts.init(chartDom);
-    let option;
+    var myChart = echarts.init(chartDom, null, {
+      renderer: "canvas",
+      useDirtyRect: false,
+    });
+
+    var option;
 
     option = {
       xAxis: {
@@ -96,12 +104,20 @@ export default {
       ],
     };
 
-    option && myChart.setOption(option);
+    if (option && typeof option === "object") {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener("resize", myChart.resize);
   },
 };
 </script>
 
 <style lang="scss" scoped>
+#lineChart {
+  width: 80%;
+  height: 30rem;
+}
 .dashboard-editor-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);

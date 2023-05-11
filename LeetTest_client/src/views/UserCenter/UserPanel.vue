@@ -3,10 +3,7 @@
     <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('num')">
         <div class="card-panel-icon-wrapper icon-people">
-          <i
-            class="el-icon-s-order"
-            style="width: 40px; height: 40px; font-size: 40px"
-          />
+          <font-awesome-icon icon="fa-solid fa-file-invoice" size="2xl" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">做题数</div>
@@ -22,10 +19,7 @@
     <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('accuracy')">
         <div class="card-panel-icon-wrapper icon-message">
-          <i
-            class="el-icon-s-marketing"
-            style="width: 40px; height: 40px; font-size: 40px"
-          />
+          <font-awesome-icon icon="fa-solid fa-circle-check" size="2xl" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">正确数</div>
@@ -41,10 +35,7 @@
     <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
       <div class="card-panel" @click="set">
         <div class="card-panel-icon-wrapper icon-message">
-          <i
-            class="el-icon-s-data"
-            style="width: 40px; height: 40px; font-size: 40px"
-          />
+          <font-awesome-icon :icon="['fas', 'magnifying-glass-chart']" size="2xl" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">正确率</div>
@@ -65,6 +56,7 @@
 <script>
 import CountTo from "vue-count-to/src";
 import * as api from "@/api";
+
 export default {
   components: {
     CountTo,

@@ -55,12 +55,12 @@ public class UserServiceImpl implements UserService {
 
         //2.如果没有被注册则进行保存操作
         String md5Pwd = MD5Utils.md5(pwd);
+        String md5Email = MD5Utils.md5(email);
         User u = new User();
         u.setUsername(name);
         u.setPassword(md5Pwd);
-        //3. 设置随机头像
-        List<Avatar> avatarList = avatarMapper.selectList(null);
-        u.setUserImg(avatarList.get(new Random().nextInt(avatarList.size())).getSrc());
+        //3. 设置Gravatar头像
+        u.setUserImg("https://www.gravatar.com/avatar/" + md5Email + "?s=200&d=identicon&r=PG");
         u.setUserEmail(email);
         u.setUserRegtime(new Date());
         u.setUserModtime(new Date());
