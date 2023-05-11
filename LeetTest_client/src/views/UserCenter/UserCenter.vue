@@ -5,12 +5,12 @@ import Header from "@/examples/Header.vue";
 
 // sections
 import Footer from "@/examples/footers/FooterDefault.vue";
-import Profile from "./Sections/AuthorProfile.vue";
-import Posts from "./Sections/AuthorPosts.vue";
-import Contact from "./Sections/AuthorContact.vue";
 
 // image
 import image from "@/assets/img/city-profile.jpg";
+import profilePic from "@/assets/img/bruce-mars.jpg";
+import MaterialAvatar from "@/components/MaterialAvatar.vue";
+import UserPanel from "@/views/UserCenter/UserPanel.vue";
 </script>
 <template>
   <DefaultNavbar transparent />
@@ -23,11 +23,19 @@ import image from "@/assets/img/city-profile.jpg";
     </div>
   </Header>
   <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6 mb-4">
-    <Profile />
+    <section
+      class="py-sm-7 py-5 position-relative mt-n8 mt-md-n9 text-center blur-shadow-avatar"
+    >
+      <MaterialAvatar
+        size="xxl"
+        class="shadow-xl position-relative z-index-2"
+        :image="profilePic"
+        alt="Avatar"
+      />
+    </section>
+    <UserPanel />
     <div id="lineChart"></div>
-    <Posts />
   </div>
-  <Contact />
   <Footer />
 </template>
 
@@ -110,5 +118,10 @@ export default {
   .chart-wrapper {
     padding: 8px;
   }
+}
+
+#lineChart {
+  width: 100%;
+  height: 360px;
 }
 </style>
