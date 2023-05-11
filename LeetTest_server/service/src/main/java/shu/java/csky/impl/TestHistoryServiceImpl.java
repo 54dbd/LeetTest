@@ -60,8 +60,8 @@ public class TestHistoryServiceImpl implements TestHistoryService {
         if (userAnswer.length() != answer.length()) {
             correct = false;
         } else {
-            List<String> answerList =  new ArrayList<>(Arrays.asList(answer.split("")));
-            List<String> userAnswerList =  new ArrayList<>(Arrays.asList(userAnswer.split("")));
+            List<String> answerList = new ArrayList<>(Arrays.asList(answer.split("")));
+            List<String> userAnswerList = new ArrayList<>(Arrays.asList(userAnswer.split("")));
             answerList.removeAll(userAnswerList);
             correct = answerList.size() == 0;
         }
@@ -99,6 +99,21 @@ public class TestHistoryServiceImpl implements TestHistoryService {
         BeanUtils.copyProperties(testHistoryParam, history);
         testHistoryMapper.insert(history);
         return history;
+    }
+
+    @Override
+    public List<Test> queryTestByID(int userid) {
+        QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
+        wrapper.eq("userid", userid).eq("iscorrect", 0);
+        wrapper.select("sname, count(sname) as count").groupBy("sname").orderByDesc("count");
+        List<TestHistory> testHistories = testHistoryMapper.selectList(wrapper);
+        List<Test> tests = new ArrayList<>();
+        for (TestHistory testHistory : testHistories) {
+            QueryWrapper<Test> testWrapper = new QueryWrapper<>();
+            testWrapper.eq("sname", testHistory.getSname());
+            tests.add(testMapper.selectOne(testWrapper));
+        }
+        return tests;
     }
 
     @Override

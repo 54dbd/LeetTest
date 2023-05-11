@@ -111,4 +111,11 @@ public class TestController {
         return new ResultVO(200, "成功", history);
     }
 
+    @PostMapping("/query/{userid}")
+    public ResultVO queryTestByID(@PathVariable("userid") int userid) {
+        List<Test> history = testHistoryService.queryTestByID(userid);
+        return new ResultVO(200, "成功", history);
+    }
+
+
 }

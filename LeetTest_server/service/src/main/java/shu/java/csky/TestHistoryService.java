@@ -1,5 +1,6 @@
 package shu.java.csky;
 
+import shu.java.csky.entity.Test;
 import shu.java.csky.entity.TestHistory;
 import shu.java.csky.vo.ResultVO;
 import shu.java.csky.vo.param.TestCommentParam;
@@ -18,6 +19,8 @@ public interface TestHistoryService {
     TestHistory submitChoice(TestHistoryParam testHistoryParam);
 
     TestHistory submitText(TestHistoryParam testHistoryParam);
+
+    List<Test> queryTestByID(int userid);
 
     ResultVO getNumById(Integer userId);
 
