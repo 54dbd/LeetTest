@@ -96,7 +96,7 @@ import wavesWhite from "@/assets/img/waves-white.svg";
                         ? '正在努力分析中...'
                         : openaiAnswer
                         ? openaiAnswer
-                        : '我将为你提供详细的错误分析，快来做题吧！'
+                        : hint
                     "
                     class="content"
                     style="color: ghostwhite"
@@ -259,6 +259,7 @@ export default {
       openaiAnswer: "",
       waiting: false,
       container: null,
+      hint:"我将为你提供详细的错误分析，快来做题吧！",
     };
   },
   computed: {
@@ -297,8 +298,12 @@ export default {
     //点击AI标志
     touch() {
       rotateSpeed = 0.1;
+      this.hint = "别点了！快做题！";
+      coreColor = 0xf36011;
       setTimeout(() => {
         rotateSpeed = 0.01;
+        this.hint = "我将为你提供详细的错误分析，快来做题吧！";
+        coreColor = 0xffeb57;
       }, 1000);
     },
     //提交答案
@@ -445,9 +450,8 @@ export default {
       transparent: true,
       opacity: 0.8,
     });
-    let material2 = new THREE.MeshBasicMaterial({
+    let material2 = new THREE.MeshPhongMaterial({
       color: coreColor, // 红色
-      metalness: 1,
       roughness: 0.05,
     });
     let torus = new THREE.Mesh(ring, material);
@@ -477,6 +481,7 @@ export default {
       });
       torus.rotation.y += rotateSpeed;
       torus2.rotation.x += rotateSpeed;
+      torus3.material.color.setHex(coreColor);
       renderer.render(scene, camera);
     }
 
@@ -545,7 +550,8 @@ h3 {
   width: 100%;
 }
 
-#three {
+#three{
+  cursor: pointer;
   width: 100px;
   height: 100px;
   position: fixed;
