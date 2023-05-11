@@ -1,4 +1,5 @@
 <template>
+  <div ref="container"></div>
   <div>
     <el-row :gutter="20">
       <el-col class="elCol1" :span="16">
@@ -179,8 +180,87 @@ import MaterialButton from "@/components/MaterialButton.vue";
 import * as api from "@/api";
 import MaterialTextArea from "@/components/MaterialTextArea.vue";
 import { Configuration, OpenAIApi } from "openai";
+import * as THREE from "three";
+import { onMounted, ref } from "vue";
 
 export default {
+  setup() {
+    const container = ref(null);
+    onMounted(() => {
+      console.log(container);
+      let scene = new THREE.Scene();
+
+      // 创建一个相机
+      let camera = new THREE.PerspectiveCamera(
+        75,
+        container.value.clientWidth / container.value.clientHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 5;
+
+      // 创建一个渲染器
+      let renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        gammaFactor: 2.2, // 设置gammaFactor属性为2.2
+      });
+
+      renderer.setSize(
+        container.value.clientWidth,
+        container.value.clientHeight
+      );
+      container.value.appendChild(renderer.domElement);
+
+      // 创建一个圆环
+      let ring = new THREE.TorusGeometry(2, 0.1, 16, 100);
+      let ring2 = new THREE.TorusGeometry(2, 0.1, 16, 100);
+      let sphere = new THREE.SphereGeometry(0.5, 32, 16);
+
+      // 创建一个材质
+      let material = new THREE.MeshPhongMaterial({
+        color: 0xf1c40f,
+        metalness: 1,
+        roughness: 0.2,
+        transparent: true,
+        opacity: 0.8,
+      });
+      let material2 = new THREE.MeshPhongMaterial({
+        color: 0xffeb57, // 红色
+        metalness: 1,
+        roughness: 0.05,
+      });
+      let torus = new THREE.Mesh(ring, material);
+      let torus2 = new THREE.Mesh(ring2, material);
+      let torus3 = new THREE.Mesh(sphere, material2);
+      let torus4 = new THREE.Mesh(ring2, material);
+      let light = new THREE.PointLight(0xffffff, 1, 100);
+      light.position.set(0, 5, 0);
+      let ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+      scene.add(light);
+      scene.add(torus);
+      scene.add(torus2);
+      scene.add(torus3);
+      scene.add(torus4);
+      torus.rotation.y = 90;
+      torus2.rotation.x = 90;
+
+      // 定义每帧渲染时的处理函数，让圆环自动旋转
+      function animate() {
+        requestAnimationFrame(animate);
+        torus.rotation.y += 0.01;
+        torus2.rotation.x += 0.01;
+        renderer.render(scene, camera);
+      }
+
+      // 开始渲染动画
+      animate();
+    });
+    return {
+      container,
+    };
+  },
+
   name: "index",
   props: ["testIntroduce"],
   emits: ["flush"],
@@ -356,6 +436,9 @@ export default {
 </script>
 
 <style scoped>
+canvas {
+  display: block;
+}
 .elCol1 {
   margin: 14px 0;
   /*width: 700px;*/
