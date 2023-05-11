@@ -1,5 +1,4 @@
 <template>
-  <div ref="container"></div>
   <div>
     <el-row :gutter="20">
       <el-col class="elCol1" :span="16">
@@ -69,9 +68,8 @@
           </router-link>
         </el-row>
         <el-row class="analysis">
-          <el-card v-if="correct === true">
+          <el-card v-if="done">
             <h2>解析:</h2>
-
             <div v-if="analysis">
               <MarkDown
                 :text="analysis"
@@ -83,14 +81,6 @@
             <div v-else>
               {{ answer }}
             </div>
-          </el-card>
-          <el-card v-if="openaiAnswer">
-            <h2>分析:</h2>
-            <MarkDown
-              :text="openaiAnswer"
-              class="content"
-              v-if="qtype !== '图片题'"
-            />
           </el-card>
         </el-row>
       </el-col>
@@ -136,9 +126,9 @@
             justify-content: center;
             margin: 5px auto;
           "
+          v-if="atype === 1"
         >
           <MaterialButton
-            v-if="atype === 1"
             variant="gradient"
             color="success"
             size="sm"
@@ -156,9 +146,9 @@
             justify-content: center;
             margin: 5px auto;
           "
+          v-if="atype === 0"
         >
           <MaterialButton
-            v-if="atype === 0"
             variant="gradient"
             color="success"
             size="sm"
@@ -168,6 +158,20 @@
             @click="submitText"
             >提交
           </MaterialButton>
+        </div>
+        <div>
+          <div id="three"></div>
+          <el-card
+            :class="qtype === '简述题' ? '' : 'disappear'"
+            style="margin: 5px auto"
+          >
+            <h2>分析:</h2>
+            <MarkDown
+              :text="openaiAnswer"
+              class="content"
+              v-if="qtype !== '图片题' && openaiAnswer != null"
+            />
+          </el-card>
         </div>
       </el-col>
     </el-row>
@@ -181,86 +185,9 @@ import * as api from "@/api";
 import MaterialTextArea from "@/components/MaterialTextArea.vue";
 import { Configuration, OpenAIApi } from "openai";
 import * as THREE from "three";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 
 export default {
-  setup() {
-    const container = ref(null);
-    onMounted(() => {
-      console.log(container);
-      let scene = new THREE.Scene();
-
-      // 创建一个相机
-      let camera = new THREE.PerspectiveCamera(
-        75,
-        container.value.clientWidth / container.value.clientHeight,
-        0.1,
-        1000
-      );
-      camera.position.z = 5;
-
-      // 创建一个渲染器
-      let renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        gammaFactor: 2.2, // 设置gammaFactor属性为2.2
-      });
-
-      renderer.setSize(
-        container.value.clientWidth,
-        container.value.clientHeight
-      );
-      container.value.appendChild(renderer.domElement);
-
-      // 创建一个圆环
-      let ring = new THREE.TorusGeometry(2, 0.1, 16, 100);
-      let ring2 = new THREE.TorusGeometry(2, 0.1, 16, 100);
-      let sphere = new THREE.SphereGeometry(0.5, 32, 16);
-
-      // 创建一个材质
-      let material = new THREE.MeshPhongMaterial({
-        color: 0xf1c40f,
-        metalness: 1,
-        roughness: 0.2,
-        transparent: true,
-        opacity: 0.8,
-      });
-      let material2 = new THREE.MeshPhongMaterial({
-        color: 0xffeb57, // 红色
-        metalness: 1,
-        roughness: 0.05,
-      });
-      let torus = new THREE.Mesh(ring, material);
-      let torus2 = new THREE.Mesh(ring2, material);
-      let torus3 = new THREE.Mesh(sphere, material2);
-      let torus4 = new THREE.Mesh(ring2, material);
-      let light = new THREE.PointLight(0xffffff, 1, 100);
-      light.position.set(0, 5, 0);
-      let ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-      scene.add(ambientLight);
-      scene.add(light);
-      scene.add(torus);
-      scene.add(torus2);
-      scene.add(torus3);
-      scene.add(torus4);
-      torus.rotation.y = 90;
-      torus2.rotation.x = 90;
-
-      // 定义每帧渲染时的处理函数，让圆环自动旋转
-      function animate() {
-        requestAnimationFrame(animate);
-        torus.rotation.y += 0.01;
-        torus2.rotation.x += 0.01;
-        renderer.render(scene, camera);
-      }
-
-      // 开始渲染动画
-      animate();
-    });
-    return {
-      container,
-    };
-  },
-
   name: "index",
   props: ["testIntroduce"],
   emits: ["flush"],
@@ -288,12 +215,13 @@ export default {
       sname: "",
       radio: "",
       choice: [],
-      correct: "",
+      done: false,
       tid: "",
       textarea: "",
       wronganswer: "",
       score: "",
       openaiAnswer: "",
+      container: null,
     };
   },
   computed: {
@@ -353,7 +281,7 @@ export default {
             message: h.innerHTML,
             type: "success",
           });
-          this.correct = true;
+          this.done = true;
         } else {
           const h = document.createElement("p");
           const newContent = document.createElement("div");
@@ -362,7 +290,7 @@ export default {
           );
           newContent.appendChild(newContentText);
           h.appendChild(newContent);
-          this.correct = false;
+          this.done = true;
           this.$notify.error({
             dangerouslyUseHTMLString: true,
             title: "回答错误！",
@@ -395,12 +323,13 @@ export default {
             message: "选择正确！",
             type: "success",
           });
-          this.correct = true;
+          this.done = true;
         } else {
           this.$notify.error({
             title: "提示",
             message: "选择错误！",
           });
+          this.done = true;
         }
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
@@ -408,7 +337,7 @@ export default {
       this.$emit("flush", parseInt(this.tid));
     },
     flush: function (num) {
-      this.correct = false;
+      this.done = false;
       this.choice = [];
       this.textarea = "";
       this.openaiAnswer = "";
@@ -431,6 +360,80 @@ export default {
       });
       this.openaiAnswer = completion.data.choices[0].message.content;
     },
+  },
+  mounted() {
+    this.container = document.getElementById("three");
+    let scene = new THREE.Scene();
+
+    // 创建一个相机
+    let camera = new THREE.PerspectiveCamera(
+      75,
+      this.container.clientWidth / this.container.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 5;
+
+    // 创建一个渲染器
+    let renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      gammaFactor: 2.2, // 设置gammaFactor属性为2.2
+    });
+
+    renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+    this.container.appendChild(renderer.domElement);
+
+    // 创建一个圆环
+    let ring = new THREE.TorusGeometry(2, 0.1, 16, 100);
+    let ring2 = new THREE.TorusGeometry(2, 0.1, 16, 100);
+    let sphere = new THREE.SphereGeometry(0.5, 32, 16);
+
+    // 创建一个材质
+    let material = new THREE.MeshPhongMaterial({
+      color: 0xf1c40f,
+      metalness: 1,
+      roughness: 0.2,
+      transparent: true,
+      opacity: 0.8,
+    });
+    let material2 = new THREE.MeshPhongMaterial({
+      color: 0xffeb57, // 红色
+      metalness: 1,
+      roughness: 0.05,
+    });
+    let torus = new THREE.Mesh(ring, material);
+    let torus2 = new THREE.Mesh(ring2, material);
+    let torus3 = new THREE.Mesh(sphere, material2);
+    let torus4 = new THREE.Mesh(ring2, material);
+    let mesh = [torus, torus2, torus3, torus4];
+    let light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(0, 5, 0);
+    let ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    scene.add(light);
+    scene.add(torus);
+    scene.add(torus2);
+    scene.add(torus3);
+    scene.add(torus4);
+    torus.rotation.y = 90;
+    torus2.rotation.x = 90;
+    console.log(this.done);
+    let that = this;
+
+    // 定义每帧渲染时的处理函数，让圆环自动旋转
+    function animate() {
+      requestAnimationFrame(animate);
+      mesh.forEach((item) => {
+        item.visible = that.qtype === "简述题";
+      });
+      torus.rotation.y += 0.01;
+      torus2.rotation.x += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    // 开始渲染动画
+    animate();
   },
 };
 </script>
@@ -492,5 +495,15 @@ h3 {
 .analysis {
   margin: 50px 0;
   width: 100%;
+}
+
+#three {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+}
+
+.disappear {
+  display: none;
 }
 </style>

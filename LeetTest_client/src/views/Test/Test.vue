@@ -10,8 +10,6 @@ import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 import image from "@/assets/img/city-profile.jpg";
 import MaterialButton from "@/components/MaterialButton.vue";
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
-// import PostMainBody from "@/views/LandingPages/PostArticle/Sections/PostMainBody.vue";
-// import MarkDown from "@/components/MarkDown/MarkDown";
 </script>
 <template>
   <DefaultNavbar transparent />
@@ -108,112 +106,110 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
     </div>
   </div>
   <DefaultFooter />
-  <el-dialog width="80%" v-model="commentDialogVisible" title="发表心得">
-    <div id="editor" class="el-dialog-div">
-      <el-row :gutter="20" class="head">
-        <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
+  <el-dialog width="80%" v-model="commentDialogVisible">
+    <div>
+      <div
+        class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
+      >
+        <div
+          class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
+        >
+          <div class="bg-gradient-success shadow-success border-radius-lg p-3">
+            <h3 class="text-white text-success mb-0">发表心得</h3>
+          </div>
           <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2">
           <h1 style="font-size: 20px">评论标题</h1>
-        </el-col>
-        <el-col :xs="10" :sm="14" :md="14" :lg="14" :xl="14">
           <el-input v-model="title" placeholder="请输入内容"></el-input>
-        </el-col>
-        <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5">
           <el-button type="success" @click="saveComment">发布评论 </el-button>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="20">
           <mavon-editor
             v-model="mdText"
             class="me-editor"
             ref="md"
             @imgAdd="$imgAdd"
           ></mavon-editor>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
   </el-dialog>
   <el-dialog
     width="80%"
     v-model="checkCommentDialogVisible"
-    title="做题心得"
     class="commentList"
   >
-    <ul style="margin-top: 7px">
-      <h2
-        v-if="testCommentList.length == 0"
-        style="color: grey; margin-left: 50%"
-      >
-        暂无评论！
-      </h2>
-      <li
+    <div>
+      <p v-if="testCommentList.length === 0">暂无评论！</p>
+      <div
         style="margin-bottom: 10px"
         v-for="item in testCommentList"
         :key="item.commentid"
       >
-        <div>
-          <!--<router-link :to="{path: '/test/comment',query: {commentid: item.commentid}}" style="color: #5cb87a; text-decoration: none; font-weight: bold;">{{item.title}}</router-link>-->
-          <el-card style="font-size: 20px; font-weight: bold"
-            >{{ item.title }}
-          </el-card>
-          <div>
+        <div
+          class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
+        >
+          <div
+            class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
+          >
+            <div
+              class="bg-gradient-success shadow-success border-radius-lg p-3"
+            >
+              <h3 class="text-white text-success mb-0">{{ item.title }}</h3>
+            </div>
             <MarkDown :text="item.commenttext" class="content" />
           </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </el-dialog>
-  <el-dialog width="80%" v-model="checkHistoryDialogVisible" title="错题记录">
-    <h1>错题记录</h1>
-    <ul style="margin-top: 7px">
-      <h2 v-if="problemList.length == 0" style="color: grey; margin-left: 40%">
-        暂无错题！
-      </h2>
-      <li
-        style="margin-bottom: 10px"
-        v-for="item in problemList"
-        :key="item.id"
-        class="text-view"
+
+  <el-dialog width="80%" v-model="checkHistoryDialogVisible">
+    <div
+      class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
+    >
+      <div
+        class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
       >
-        <div v-if="item.iscorrect == true">
-          <el-card
-            style="
-              width: 80%;
-              font-size: 20px;
-              font-weight: bold;
-              background-color: #e5f3ed !important;
-              border: #e1f3d8 1px solid;
-            "
-          >
-            <h1 v-if="item.score != null">
-              <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
-            </h1>
-            <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-            <h3>{{ item.createdate }}</h3>
-          </el-card>
+        <div class="bg-gradient-success shadow-success border-radius-lg p-3">
+          <h3 class="text-white text-success mb-0">错题记录</h3>
         </div>
-        <div v-else>
-          <el-card
-            style="
-              width: 80%;
-              font-size: 20px;
-              font-weight: bold;
-              background-color: #fef0f0 !important;
-              border: #fde2e2 1px solid;
-            "
-          >
-            <h1 v-if="item.score != null">
-              <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
-            </h1>
-            <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-            <h3>{{ item.createdate }}</h3>
-          </el-card>
+        <p v-if="problemList.length === 0">暂无错题！</p>
+        <div v-for="item in problemList" :key="item.id" class="text-view">
+          <div v-if="item.iscorrect === true">
+            <el-card
+              style="
+                width: 80%;
+                font-size: 20px;
+                font-weight: bold;
+                background-color: #e5f3ed !important;
+                border: #e1f3d8 1px solid;
+              "
+            >
+              <h1 v-if="item.score != null">
+                <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
+              </h1>
+              <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+              <h3>{{ item.createdate }}</h3>
+            </el-card>
+          </div>
+          <div v-else>
+            <el-card
+              style="
+                width: 80%;
+                font-size: 20px;
+                font-weight: bold;
+                background-color: #fef0f0 !important;
+                border: #fde2e2 1px solid;
+              "
+            >
+              <h1 v-if="item.score != null">
+                <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
+              </h1>
+              <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
+              <h3>{{ item.createdate }}</h3>
+            </el-card>
+          </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </el-dialog>
 </template>
 <script>
@@ -498,5 +494,19 @@ export default {
 .el-dialog-div {
   max-height: 60vh;
   overflow: auto;
+}
+</style>
+<style>
+.el-dialog__header {
+  background: rgba(0, 0, 0, 0);
+
+  padding: 0;
+}
+.el-dialog {
+  background-color: rgba(0, 0, 0, 0);
+}
+.el-dialog__body {
+  padding: 0;
+  background: rgba(0, 0, 0, 0);
 }
 </style>
