@@ -1,7 +1,3 @@
-<script setup>
-import CountTo from "vue-count-to/src";
-</script>
-
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
@@ -65,6 +61,43 @@ import CountTo from "vue-count-to/src";
     </el-col>
   </el-row>
 </template>
+
+<script>
+import CountTo from "vue-count-to/src";
+import * as api from "@/api";
+export default {
+  components: {
+    CountTo,
+  },
+  data() {
+    return {
+      userid: "",
+      num: "0",
+      correct: "0",
+      accuracy: 40,
+      suffix: "%",
+    };
+  },
+  methods: {
+    set() {
+      this.accuracy = ((this.correct * 100) / this.num).toFixed(2);
+    },
+    async getNumById() {
+      const result = await api.reqGetNumById(this.userid);
+      this.num = result.data.data.data;
+    },
+    async getCorrectById() {
+      const result = await api.reqGetCorrectById(this.userid);
+      this.correct = result.data.data.data;
+    },
+  },
+  mounted() {
+    this.userid = this.$store.state.user.userInfo.userId;
+    this.getNumById();
+    this.getCorrectById();
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .panel-group {
