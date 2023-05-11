@@ -8,8 +8,9 @@ import DefaultFooter from "../../examples/footers/FooterDefault.vue";
 
 // image
 import image from "@/assets/img/city-profile.jpg";
-import MaterialButton from "@/components/MaterialButton.vue";
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
+import GreenHeaderBox from "@/components/myComponents/GreenHeaderBox.vue";
+import OtherOption from "@/views/Test/OtherOption.vue";
 </script>
 <template>
   <DefaultNavbar transparent />
@@ -32,48 +33,11 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
               <h3 v-if="test.qtype !== 0">{{ test.qtype }}</h3>
             </el-col>
             <el-col :span="1">
-              <div class="dropdown" style="margin-top: 10px">
-                <MaterialButton
-                  variant="gradient"
-                  color="success"
-                  class="dropdown-toggle"
-                  :class="{ show: showDropdown }"
-                  @focusout="showDropdown = false"
-                  id="dropdownMenuButton"
-                  data-bs-toggle="dropdown"
-                  :area-expanded="showDropdown"
-                  @click="showDropdown = !showDropdown"
-                >
-                  更多功能
-                </MaterialButton>
-                <ul
-                  class="dropdown-menu px-2 py-3"
-                  :class="{ show: showDropdown }"
-                  aria-labelledby="dropdownMenuButton"
-                >
-                  <li @click="comment">
-                    <a
-                      class="dropdown-item border-radius-md"
-                      href="javascript:;"
-                      >发表心得</a
-                    >
-                  </li>
-                  <li @click="checkComment">
-                    <a
-                      class="dropdown-item border-radius-md"
-                      href="javascript:;"
-                      >查看心得</a
-                    >
-                  </li>
-                  <li @click="checkHistory">
-                    <a
-                      class="dropdown-item border-radius-md"
-                      href="javascript:;"
-                      >错题记录</a
-                    >
-                  </li>
-                </ul>
-              </div>
+              <OtherOption
+                @comment="comment"
+                @check-comment="checkComment"
+                @check-history="checkHistory"
+              ></OtherOption>
             </el-col>
           </el-row>
         </el-col>
@@ -107,29 +71,17 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
   </div>
   <DefaultFooter />
   <el-dialog width="80%" v-model="commentDialogVisible">
-    <div>
-      <div
-        class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
-      >
-        <div
-          class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
-        >
-          <div class="bg-gradient-success shadow-success border-radius-lg p-3">
-            <h3 class="text-white text-success mb-0">发表心得</h3>
-          </div>
-          <div class="grid-content bg-purple"></div>
-          <h1 style="font-size: 20px">评论标题</h1>
-          <el-input v-model="title" placeholder="请输入内容"></el-input>
-          <el-button type="success" @click="saveComment">发布评论 </el-button>
-          <mavon-editor
-            v-model="mdText"
-            class="me-editor"
-            ref="md"
-            @imgAdd="$imgAdd"
-          ></mavon-editor>
-        </div>
-      </div>
-    </div>
+    <GreenHeaderBox title="发表心得">
+      <h1 style="font-size: 20px">评论标题</h1>
+      <el-input v-model="title" placeholder="请输入内容"></el-input>
+      <el-button type="success" @click="saveComment">发布评论 </el-button>
+      <mavon-editor
+        v-model="mdText"
+        class="me-editor"
+        ref="md"
+        @imgAdd="$imgAdd"
+      ></mavon-editor>
+    </GreenHeaderBox>
   </el-dialog>
   <el-dialog
     width="80%"
@@ -137,79 +89,32 @@ import MarkDown from "@/components/MarkDown/MarkDown.vue";
     class="commentList"
   >
     <div>
-      <p v-if="testCommentList.length === 0">暂无评论！</p>
-      <div
-        style="margin-bottom: 10px"
-        v-for="item in testCommentList"
-        :key="item.commentid"
-      >
-        <div
-          class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
-        >
-          <div
-            class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
-          >
-            <div
-              class="bg-gradient-success shadow-success border-radius-lg p-3"
-            >
-              <h3 class="text-white text-success mb-0">{{ item.title }}</h3>
-            </div>
-            <MarkDown :text="item.commenttext" class="content" />
-          </div>
-        </div>
+      <div v-if="testCommentList.length === 0">
+        <GreenHeaderBox title="暂无心得"> &nbsp; </GreenHeaderBox>
+      </div>
+      <div v-for="item in testCommentList" :key="item.commentid">
+        <GreenHeaderBox :title="item.title">
+          <MarkDown :text="item.commenttext" class="content" />
+        </GreenHeaderBox>
       </div>
     </div>
   </el-dialog>
 
   <el-dialog width="80%" v-model="checkHistoryDialogVisible">
-    <div
-      class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5"
-    >
-      <div
-        class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent"
+    <GreenHeaderBox title="答题记录">
+      <p v-if="problemList.length === 0">暂无记录</p>
+      <el-card
+        v-for="item in problemList"
+        :key="item.id"
+        :class="[item.iscorrect ? rightAnswerCls : wrongAnswerCls]"
       >
-        <div class="bg-gradient-success shadow-success border-radius-lg p-3">
-          <h3 class="text-white text-success mb-0">错题记录</h3>
+        <div v-if="item.score != null">
+          {{ "得分为：" + item.score }}
         </div>
-        <p v-if="problemList.length === 0">暂无错题！</p>
-        <div v-for="item in problemList" :key="item.id" class="text-view">
-          <div v-if="item.iscorrect === true">
-            <el-card
-              style="
-                width: 80%;
-                font-size: 20px;
-                font-weight: bold;
-                background-color: #e5f3ed !important;
-                border: #e1f3d8 1px solid;
-              "
-            >
-              <h1 v-if="item.score != null">
-                <i class="el-icon-success"></i>{{ "得分为：" + item.score }}
-              </h1>
-              <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-              <h3>{{ item.createdate }}</h3>
-            </el-card>
-          </div>
-          <div v-else>
-            <el-card
-              style="
-                width: 80%;
-                font-size: 20px;
-                font-weight: bold;
-                background-color: #fef0f0 !important;
-                border: #fde2e2 1px solid;
-              "
-            >
-              <h1 v-if="item.score != null">
-                <i class="el-icon-warning"></i>{{ "得分为：" + item.score }}
-              </h1>
-              <h2 style="white-space: normal">{{ item.wronganswer }}</h2>
-              <h3>{{ item.createdate }}</h3>
-            </el-card>
-          </div>
-        </div>
-      </div>
-    </div>
+        <div style="white-space: normal">{{ item.wronganswer }}</div>
+        <div>{{ item.createdate }}</div>
+      </el-card>
+    </GreenHeaderBox>
   </el-dialog>
 </template>
 <script>
@@ -259,6 +164,9 @@ export default {
       commentDialogVisible: false,
       checkCommentDialogVisible: false,
       checkHistoryDialogVisible: false,
+      // cls
+      wrongAnswerCls: "wrong_answer_box",
+      rightAnswerCls: "right_answer_box",
     };
   },
   methods: {
@@ -508,5 +416,13 @@ export default {
 .el-dialog__body {
   padding: 0;
   background: rgba(0, 0, 0, 0);
+}
+.wrong_answer_box {
+  background-color: #fef0f0;
+  border: #fde2e2 1px solid;
+}
+.right_answer_box {
+  background-color: #e5f3ed;
+  border: #e1f3d8 1px solid;
 }
 </style>
