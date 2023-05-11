@@ -1,3 +1,6 @@
+<script setup>
+import wavesWhite from "@/assets/img/waves-white.svg";
+</script>
 <template>
   <div>
     <el-row :gutter="20">
@@ -67,22 +70,65 @@
             </MaterialButton>
           </router-link>
         </el-row>
-        <el-row class="analysis">
-          <el-card v-if="done">
-            <h2>解析:</h2>
-            <div v-if="analysis">
-              <MarkDown
-                :text="analysis"
-                class="content"
-                v-if="qtype !== '图片题'"
-              />
-              <el-image :src="analysis" fit="fill" v-else></el-image>
+        <!--        用来把3d模型的位置固定在这里-->
+        <div ref="target">
+          <div ref="positioned" id="three" @click="touch"></div>
+          <el-row
+            class="analysis"
+            :class="qtype === '简述题' ? '' : 'disappear'"
+          >
+            <div style="width: 100%">
+              <div
+                class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
+                :style="{
+                  backgroundImage: `url(${wavesWhite})`,
+                }"
+                loading="lazy"
+              >
+                <span class="mask bg-gradient-dark"></span>
+                <div class="container">
+                  <h2 style="color: white">
+                    {{ openaiAnswer ? "分析" : "智能解题小助手" }}
+                  </h2>
+                  <MarkDown
+                    :text="
+                      waiting
+                        ? '正在努力分析中...'
+                        : openaiAnswer
+                        ? openaiAnswer
+                        : '我将为你提供详细的错误分析，快来做题吧！'
+                    "
+                    class="content"
+                    style="color: ghostwhite"
+                    v-if="qtype !== '图片题' && openaiAnswer != null"
+                  />
+                </div>
+              </div>
             </div>
-            <div v-else>
-              {{ answer }}
-            </div>
-          </el-card>
-        </el-row>
+
+            <el-card
+              class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
+              v-if="done"
+            >
+              <h2>解析:</h2>
+              <div v-if="analysis">
+                <MarkDown
+                  :text="analysis"
+                  class="content"
+                  v-show="qtype !== '图片题'"
+                />
+                <el-image
+                  :src="analysis"
+                  fit="fill"
+                  v-show="qtype === '图片题'"
+                ></el-image>
+              </div>
+              <div v-else>
+                {{ answer }}
+              </div>
+            </el-card>
+          </el-row>
+        </div>
       </el-col>
       <el-col class="elCol2" :span="6">
         <el-card shadow="always">
@@ -159,20 +205,6 @@
             >提交
           </MaterialButton>
         </div>
-        <div>
-          <div id="three"></div>
-          <el-card
-            :class="qtype === '简述题' ? '' : 'disappear'"
-            style="margin: 5px auto"
-          >
-            <h2>分析:</h2>
-            <MarkDown
-              :text="openaiAnswer"
-              class="content"
-              v-if="qtype !== '图片题' && openaiAnswer != null"
-            />
-          </el-card>
-        </div>
       </el-col>
     </el-row>
   </div>
@@ -185,7 +217,11 @@ import * as api from "@/api";
 import MaterialTextArea from "@/components/MaterialTextArea.vue";
 import { Configuration, OpenAIApi } from "openai";
 import * as THREE from "three";
-import { onMounted } from "vue";
+var rotateSpeed = 0.01;
+var coreColor = 0xffeb57;
+// import { ref } from "vue";
+// const target = ref(null);
+// const positioned = ref(null);
 
 export default {
   name: "index",
@@ -221,6 +257,7 @@ export default {
       wronganswer: "",
       score: "",
       openaiAnswer: "",
+      waiting: false,
       container: null,
     };
   },
@@ -257,6 +294,13 @@ export default {
     },
   },
   methods: {
+    //点击AI标志
+    touch() {
+      rotateSpeed = 0.1;
+      setTimeout(() => {
+        rotateSpeed = 0.01;
+      }, 1000);
+    },
     //提交答案
     async submitText() {
       const result = await api.reqSubmitText({
@@ -296,6 +340,8 @@ export default {
             title: "回答错误！",
             message: h.innerHTML,
           });
+          this.waiting = true;
+          rotateSpeed = 0.1;
           await this.getOpenAIAnswer();
         }
       } else {
@@ -354,11 +400,13 @@ export default {
         messages: [
           {
             role: "user",
-            content: `我现在有一个道问答题，他的题目是${this.question}，现在他的标准答案是${this.answer}，我的答案是${this.textarea}，请分析一下我错在哪里了？`,
+            content: `我现在有一个道问答题，他的题目是"${this.question}"，现在他的标准答案是"${this.answer}"，我的答案是"${this.textarea}"，请分析一下我错在哪里了？`,
           },
         ],
       });
       this.openaiAnswer = completion.data.choices[0].message.content;
+      this.waiting = false;
+      rotateSpeed = 0.01;
     },
   },
   mounted() {
@@ -390,15 +438,15 @@ export default {
     let sphere = new THREE.SphereGeometry(0.5, 32, 16);
 
     // 创建一个材质
-    let material = new THREE.MeshPhongMaterial({
+    let material = new THREE.MeshBasicMaterial({
       color: 0xf1c40f,
       metalness: 1,
       roughness: 0.2,
       transparent: true,
       opacity: 0.8,
     });
-    let material2 = new THREE.MeshPhongMaterial({
-      color: 0xffeb57, // 红色
+    let material2 = new THREE.MeshBasicMaterial({
+      color: coreColor, // 红色
       metalness: 1,
       roughness: 0.05,
     });
@@ -427,8 +475,8 @@ export default {
       mesh.forEach((item) => {
         item.visible = that.qtype === "简述题";
       });
-      torus.rotation.y += 0.01;
-      torus2.rotation.x += 0.01;
+      torus.rotation.y += rotateSpeed;
+      torus2.rotation.x += rotateSpeed;
       renderer.render(scene, camera);
     }
 
@@ -500,7 +548,10 @@ h3 {
 #three {
   width: 100px;
   height: 100px;
-  position: absolute;
+  position: fixed;
+  top: 35rem;
+  right: 30%;
+  z-index: 1000;
 }
 
 .disappear {
