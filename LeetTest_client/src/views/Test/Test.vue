@@ -11,6 +11,8 @@ import image from "@/assets/img/city-profile.jpg";
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
 import GreenHeaderBox from "@/components/myComponents/GreenHeaderBox.vue";
 import OtherOption from "@/views/Test/OtherOption.vue";
+import MaterialButton from "@/components/MaterialButton.vue";
+import MaterialInput from "@/components/MaterialInput.vue";
 </script>
 <template>
   <DefaultNavbar transparent />
@@ -72,9 +74,33 @@ import OtherOption from "@/views/Test/OtherOption.vue";
   <DefaultFooter />
   <el-dialog width="80%" v-model="commentDialogVisible">
     <GreenHeaderBox title="发表心得">
-      <h1 style="font-size: 20px">评论标题</h1>
-      <el-input v-model="title" placeholder="请输入内容"></el-input>
-      <el-button type="success" @click="saveComment">发布评论 </el-button>
+      <el-row style="padding: 10px 5px 0 5px">
+        <el-col :span="2">
+          <h1 style="font-size: 20px; margin-top: 10px">评论标题</h1>
+        </el-col>
+        <el-col :span="19">
+          <MaterialInput
+            v-model="title"
+            style="margin: 5px"
+            class="input-group-static mb-4"
+            type="message"
+          />
+          <!--          <el-input v-model="title" placeholder="请输入内容"></el-input>-->
+        </el-col>
+        <el-col :span="3">
+          <MaterialButton
+            variant="gradient"
+            color="success"
+            size="md"
+            style="width: 90%; margin: 10px"
+            type="button"
+            @click="saveComment"
+            >发布评论
+          </MaterialButton>
+          <!--          <el-button type="success">发布评论 </el-button>-->
+        </el-col>
+      </el-row>
+
       <mavon-editor
         v-model="mdText"
         class="me-editor"
@@ -108,11 +134,16 @@ import OtherOption from "@/views/Test/OtherOption.vue";
         :key="item.id"
         :class="[item.iscorrect ? rightAnswerCls : wrongAnswerCls]"
       >
-        <div v-if="item.score != null">
-          {{ "得分为：" + item.score }}
+        <div
+          style="font-size: larger; font-weight: bolder"
+          v-if="item.score != null"
+        >
+          {{ "得分：" + item.score }}
         </div>
-        <div style="white-space: normal">{{ item.wronganswer }}</div>
-        <div>{{ item.createdate }}</div>
+        <div style="">{{ item.wronganswer }}</div>
+        <div style="color: #7a7a7a; font-size: small">
+          {{ item.createdate }}
+        </div>
       </el-card>
     </GreenHeaderBox>
   </el-dialog>
@@ -389,11 +420,9 @@ export default {
 }
 
 .me-editor {
-  white-space: normal;
   display: flex;
-  z-index: 6 !important;
-  margin: 20px 0;
   flex-wrap: wrap;
+  margin: 10px auto;
 }
 
 .commentList {
@@ -419,10 +448,10 @@ export default {
 }
 .wrong_answer_box {
   background-color: #fef0f0;
-  border: #fde2e2 1px solid;
+  margin: 10px;
 }
 .right_answer_box {
   background-color: #e5f3ed;
-  border: #e1f3d8 1px solid;
+  margin: 10px;
 }
 </style>

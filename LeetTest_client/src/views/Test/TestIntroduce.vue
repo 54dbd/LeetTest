@@ -172,7 +172,6 @@ import wavesWhite from "@/assets/img/waves-white.svg";
             justify-content: center;
             margin: 5px auto;
           "
-          v-if="atype === 1"
         >
           <MaterialButton
             variant="gradient"
@@ -180,28 +179,7 @@ import wavesWhite from "@/assets/img/waves-white.svg";
             size="sm"
             class="submit"
             type="button"
-            @click="submitChoice"
-            >提交
-          </MaterialButton>
-        </div>
-        <div
-          style="
-            width: 80%;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            margin: 5px auto;
-          "
-          v-if="atype === 0"
-        >
-          <MaterialButton
-            variant="gradient"
-            color="success"
-            size="sm"
-            class="submit"
-            style="width: 80%; height: 60px"
-            type="button"
-            @click="submitText"
+            @click="atype === 1 ? submitChoice() : submitText()"
             >提交
           </MaterialButton>
         </div>
@@ -259,7 +237,7 @@ export default {
       openaiAnswer: "",
       waiting: false,
       container: null,
-      hint:"我将为你提供详细的错误分析，快来做题吧！",
+      hint: "我将为你提供详细的错误分析，快来做题吧！",
     };
   },
   computed: {
@@ -550,7 +528,7 @@ h3 {
   width: 100%;
 }
 
-#three{
+#three {
   cursor: pointer;
   width: 100px;
   height: 100px;
