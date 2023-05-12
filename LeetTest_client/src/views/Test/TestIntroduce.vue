@@ -6,7 +6,7 @@ import wavesWhite from "@/assets/img/waves-white.svg";
     <el-row :gutter="20">
       <el-col class="elCol1" :span="16">
         <el-card shadow="always">
-          <div>
+          <div v-if="question">
             <MarkDown
               :text="question"
               class="content"
@@ -44,8 +44,11 @@ import wavesWhite from "@/assets/img/waves-white.svg";
 
         <el-row class="changePage">
           <router-link
-            @click="flush(lastPage)"
-            :to="{ path: '/test', query: { tid: lastPage } }"
+            @click="flush(lastPage, false)"
+            :to="{
+              path: '/test',
+              query: { tid: lastPage, corrected: corrected },
+            }"
           >
             <MaterialButton
               variant="gradient"
@@ -56,9 +59,13 @@ import wavesWhite from "@/assets/img/waves-white.svg";
               >上一题
             </MaterialButton>
           </router-link>
+
           <router-link
-            @click="flush(nextPage)"
-            :to="{ path: '/test', query: { tid: nextPage } }"
+            @click="flush(nextPage, true)"
+            :to="{
+              path: '/test',
+              query: { tid: nextPage, corrected: corrected },
+            }"
           >
             <MaterialButton
               variant="gradient"
@@ -203,7 +210,7 @@ var coreColor = 0xffeb57;
 
 export default {
   name: "index",
-  props: ["testIntroduce"],
+  props: ["testIntroduce", "corrected", "corrrectedNext", "corrrectedLast"],
   emits: ["flush"],
   components: {
     MaterialButton,
@@ -242,14 +249,22 @@ export default {
   },
   computed: {
     nextPage() {
-      let tid = parseInt(this.tid) + 1;
-      if (tid <= 302) return tid;
-      else return 302;
+      if (this.corrected === true) {
+        return this.corrrectedNext;
+      } else {
+        let tid = parseInt(this.tid) + 1;
+        if (tid <= 302) return tid;
+        else return 302;
+      }
     },
     lastPage() {
-      let tid = parseInt(this.tid) - 1;
-      if (tid >= 1) return tid;
-      else return 1;
+      if (this.corrected === true) {
+        return this.corrrectedLast;
+      } else {
+        let tid = parseInt(this.tid) - 1;
+        if (tid >= 1) return tid;
+        else return 1;
+      }
     },
   },
   watch: {
@@ -365,12 +380,24 @@ export default {
       }
       this.$emit("flush", parseInt(this.tid));
     },
-    flush: function (num) {
+    flush: function (num, forward = true) {
       this.done = false;
       this.choice = [];
       this.textarea = "";
       this.openaiAnswer = "";
-      this.$emit("flush", num);
+      console.log(this.lastPage, this.tid, this.nextPage);
+      if (parseInt(this.tid) === num && forward === true) {
+        this.$notify.warning({
+          title: "提示",
+          message: "已经是最后一题了！",
+        });
+      } else if (parseInt(this.tid) === num && forward === false) {
+        this.$notify.warning({
+          title: "提示",
+          message: "已经是第一题了！",
+        });
+      }
+      this.$emit("flush", num, forward);
     },
     async getOpenAIAnswer() {
       const configuration = new Configuration({
@@ -448,7 +475,6 @@ export default {
     scene.add(torus4);
     torus.rotation.y = 90;
     torus2.rotation.x = 90;
-    console.log(this.done);
     let that = this;
 
     // 定义每帧渲染时的处理函数，让圆环自动旋转

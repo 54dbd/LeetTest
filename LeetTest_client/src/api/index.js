@@ -362,3 +362,10 @@ export const reqGetCorrectById = (userid) =>
     url: `/user/correct/${userid}`,
     method: "get",
   });
+
+// 获取用户错题列表
+export const reqGetCorrectedTestById = (userid) =>
+  requests({
+    url: `/test/query/${userid}`,
+    method: "get",
+  });

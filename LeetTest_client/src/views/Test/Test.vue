@@ -66,6 +66,9 @@ import MaterialInput from "@/components/MaterialInput.vue";
             atype: test.atype,
             tid: this.$route.query.tid,
           }"
+          :corrected="correctedMode"
+          :corrrectedNext="correctedNextId"
+          :corrrectedLast="correctedLastId"
           @flush="flush"
         ></test-introduce>
       </div>
@@ -164,7 +167,7 @@ export default {
   },
   data() {
     return {
-      userid: 0,
+      userid: this.$store.state.user.userInfo.userId,
       test: {},
       testCommentList: [],
       problemList: [],
@@ -198,6 +201,11 @@ export default {
       // cls
       wrongAnswerCls: "wrong_answer_box",
       rightAnswerCls: "right_answer_box",
+      correctedMode: this.$route.query.corrected === "true",
+      correctedTestNumber: 0,
+      correctedTestList: {},
+      correctedNextId: 0,
+      correctedLastId: 0,
     };
   },
   methods: {
@@ -210,9 +218,47 @@ export default {
         this.$message.warning("系统异常~ " + result.data.msg);
       }
     },
+    updateNextAndLastPage() {
+      if (this.correctedTestNumber < this.correctedTestList.length - 1)
+        this.correctedNextId =
+          this.correctedTestList[this.correctedTestNumber + 1].tid;
+      else {
+        this.correctedNextId =
+          this.correctedTestList[this.correctedTestNumber].tid;
+      }
+      if (this.correctedTestNumber > 1)
+        this.correctedLastId =
+          this.correctedTestList[this.correctedTestNumber - 1].tid;
+      else
+        this.correctedLastId =
+          this.correctedTestList[this.correctedTestNumber].tid;
+    },
+    async getCorrectedTestList() {
+      const result = await api.reqGetCorrectedTestById(this.userid);
 
-    flush: async function (num) {
-      if (num >= 1 && num <= 302) await this.getTestDetail(num);
+      if (result.data.code === 200) {
+        this.correctedTestList = result.data.data;
+      } else {
+        this.$message.warning("系统异常~ " + result.data.msg);
+      }
+      this.updateNextAndLastPage();
+    },
+    flush: async function (num, forward = true) {
+      if (this.correctedMode === true && num !== this.tid) {
+        if (forward) this.correctedTestNumber++;
+        else this.correctedTestNumber--;
+        if (this.correctedTestNumber >= this.correctedTestList.length) {
+          this.correctedTestNumber = this.correctedTestList.length - 1;
+        } else if (this.correctedTestNumber <= 0) {
+          this.correctedTestNumber = 0;
+        }
+        this.updateNextAndLastPage();
+        await this.getTestDetail(
+          this.correctedTestList[this.correctedTestNumber].tid
+        );
+      } else {
+        if (num >= 1 && num <= 302) await this.getTestDetail(num);
+      }
     },
     async comment() {
       if (!getToken()) {
@@ -221,7 +267,6 @@ export default {
         return;
       }
       this.commentDialogVisible = true;
-      //this.flush();
     },
     async checkComment() {
       this.testCommentList = await this.getTestCommentByQuestionid(
@@ -379,9 +424,11 @@ export default {
     },
   },
   async mounted() {
+    await this.getCorrectedTestList();
     await this.getTestDetail(this.$route.query.tid);
   },
   async activated() {
+    await this.getCorrectedTestList();
     await this.getTestDetail(this.$route.query.tid);
   },
 };

@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useWindowsWidth } from "@/assets/js/useWindowsWidth";
 
 // images
@@ -8,6 +8,9 @@ import ArrDark from "@/assets/img/down-arrow-dark.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
 import logo from "@/assets/img/logo_noText.png";
 import store from "@/stores"; // 引入store实例
+import * as api from "@/api";
+import { getToken } from "@/utils/token";
+import { ElMessage } from "element-plus";
 import MaterialAvatar from "@/components/MaterialAvatar.vue";
 import profilePic from "@/assets/img/bruce-mars.jpg";
 const userName = store.state.user.userInfo.username;
@@ -71,6 +74,24 @@ const getTextColor = () => {
   return color;
 };
 
+const firstCorrectedQuestion = ref();
+
+const getFirstCorrectedAnswerTid = async () => {
+  if (getToken()) {
+    let result = await api.reqGetCorrectedTestById(
+      store.state.user.userInfo.userId
+    );
+
+    if (result.data.code === 200) {
+      result = result.data.data[0].tid;
+    } else {
+      ElMessage.warning("系统异常~ " + result.data.msg);
+    }
+
+    firstCorrectedQuestion.value = result;
+  }
+};
+
 // set nav color on mobile && desktop
 
 let textDark = ref(props.darkText);
@@ -88,6 +109,10 @@ watch(
     textDark.value = newValue === "mobile";
   }
 );
+
+onMounted(() => {
+  getFirstCorrectedAnswerTid();
+});
 </script>
 <template>
   <nav
@@ -520,6 +545,18 @@ watch(
                       >
                         <span>个人中心</span>
                       </RouterLink>
+                      <RouterLink
+                        :to="{
+                          name: 'test',
+                          query: {
+                            tid: firstCorrectedQuestion,
+                            corrected: true,
+                          },
+                        }"
+                        class="dropdown-item border-radius-md"
+                      >
+                        <span>错题集</span>
+                      </RouterLink>
                       <a class="dropdown-item border-radius-md" @click="logout">
                         <span>注销</span>
                       </a>
@@ -534,32 +571,29 @@ watch(
                       <div
                         class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
                       >
-                        考研信息
+                        用户
                       </div>
                       <RouterLink
-                        :to="{ name: 'contactus' }"
+                        :to="{ name: 'userCenter' }"
                         class="dropdown-item border-radius-md"
                       >
-                        <span>信息中心</span>
+                        <span>个人中心</span>
                       </RouterLink>
                       <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{
+                          name: 'test',
+                          query: {
+                            tid: firstCorrectedQuestion,
+                            corrected: true,
+                          },
+                        }"
                         class="dropdown-item border-radius-md"
                       >
-                        <span>34所高校</span>
+                        <span>错题集</span>
                       </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'author' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span> 考研分数线</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'author' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>考研时间线</span>
-                      </RouterLink>
+                      <a class="dropdown-item border-radius-md" @click="logout">
+                        <span>注销</span>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -591,6 +625,7 @@ export default {
     return {
       keyWord: "",
       centerDialogVisible: false,
+      firstCorrectedQuestion: null,
     };
   },
   methods: {
