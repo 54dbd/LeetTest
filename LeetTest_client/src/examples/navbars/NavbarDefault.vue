@@ -83,7 +83,8 @@ const getFirstCorrectedAnswerTid = async () => {
     );
 
     if (result.data.code === 200) {
-      result = result.data.data[0].tid;
+      if (result.data.data.length > 0) result = result.data.data[0].tid;
+      else result = -1;
     } else {
       ElMessage.warning("系统异常~ " + result.data.msg);
     }
@@ -546,6 +547,7 @@ onMounted(() => {
                         <span>个人中心</span>
                       </RouterLink>
                       <RouterLink
+                        v-if="firstCorrectedQuestion !== -1"
                         :to="{
                           name: 'test',
                           query: {
@@ -557,6 +559,13 @@ onMounted(() => {
                       >
                         <span>错题集</span>
                       </RouterLink>
+                      <div
+                        v-else
+                        class="dropdown-item border-radius-md"
+                        @click="noCorrectedTestHandle"
+                      >
+                        <span>错题集</span>
+                      </div>
                       <a class="dropdown-item border-radius-md" @click="logout">
                         <span>注销</span>
                       </a>
@@ -580,6 +589,7 @@ onMounted(() => {
                         <span>个人中心</span>
                       </RouterLink>
                       <RouterLink
+                        v-if="firstCorrectedQuestion !== -1"
                         :to="{
                           name: 'test',
                           query: {
@@ -591,6 +601,13 @@ onMounted(() => {
                       >
                         <span>错题集</span>
                       </RouterLink>
+                      <div
+                        v-else
+                        class="dropdown-item border-radius-md"
+                        @click="noCorrectedTestHandle"
+                      >
+                        <span>错题集</span>
+                      </div>
                       <a class="dropdown-item border-radius-md" @click="logout">
                         <span>注销</span>
                       </a>
@@ -674,6 +691,12 @@ export default {
     },
     register() {
       this.$router.push("/register");
+    },
+    noCorrectedTestHandle() {
+      this.$notify.warning({
+        title: "提示",
+        message: "您还没有做过题哦~",
+      });
     },
   },
   computed: {

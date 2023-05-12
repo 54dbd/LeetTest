@@ -33,9 +33,12 @@
       </div>
     </el-col>
     <el-col :xs="24" :sm="24" :lg="8" class="card-panel-col">
-      <div class="card-panel" @click="set">
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-message">
-          <font-awesome-icon :icon="['fas', 'magnifying-glass-chart']" size="2xl" />
+          <font-awesome-icon
+            :icon="['fas', 'magnifying-glass-chart']"
+            size="2xl"
+          />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">正确率</div>
@@ -66,14 +69,10 @@ export default {
       userid: "",
       num: "0",
       correct: "0",
-      accuracy: 40,
       suffix: "%",
     };
   },
   methods: {
-    set() {
-      this.accuracy = ((this.correct * 100) / this.num).toFixed(2);
-    },
     async getNumById() {
       const result = await api.reqGetNumById(this.userid);
       this.num = result.data.data.data;
@@ -81,6 +80,12 @@ export default {
     async getCorrectById() {
       const result = await api.reqGetCorrectById(this.userid);
       this.correct = result.data.data.data;
+    },
+  },
+  computed: {
+    accuracy() {
+      if (this.num !== 0) return ((this.correct * 100) / this.num).toFixed(2);
+      else return 0;
     },
   },
   mounted() {

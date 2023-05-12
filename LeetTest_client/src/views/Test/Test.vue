@@ -219,19 +219,21 @@ export default {
       }
     },
     updateNextAndLastPage() {
-      if (this.correctedTestNumber < this.correctedTestList.length - 1)
-        this.correctedNextId =
-          this.correctedTestList[this.correctedTestNumber + 1].tid;
-      else {
-        this.correctedNextId =
-          this.correctedTestList[this.correctedTestNumber].tid;
+      if (this.correctedTestList.length > 0) {
+        if (this.correctedTestNumber < this.correctedTestList.length - 1)
+          this.correctedNextId =
+            this.correctedTestList[this.correctedTestNumber + 1].tid;
+        else {
+          this.correctedNextId =
+            this.correctedTestList[this.correctedTestNumber].tid;
+        }
+        if (this.correctedTestNumber > 1)
+          this.correctedLastId =
+            this.correctedTestList[this.correctedTestNumber - 1].tid;
+        else
+          this.correctedLastId =
+            this.correctedTestList[this.correctedTestNumber].tid;
       }
-      if (this.correctedTestNumber > 1)
-        this.correctedLastId =
-          this.correctedTestList[this.correctedTestNumber - 1].tid;
-      else
-        this.correctedLastId =
-          this.correctedTestList[this.correctedTestNumber].tid;
     },
     async getCorrectedTestList() {
       const result = await api.reqGetCorrectedTestById(this.userid);

@@ -310,7 +310,8 @@ router.beforeEach(async (to, from, next) => {
     //未登录状态下
     if (
       to.path.indexOf("/post-article") !== -1 ||
-      to.path.indexOf("/testlist") !== -1
+      to.path.indexOf("/testlist") !== -1 ||
+      to.path.indexOf("/userCenter") !== -1
     ) {
       ElMessage({
         duration: 1000,
