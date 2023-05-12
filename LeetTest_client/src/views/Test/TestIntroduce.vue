@@ -33,6 +33,7 @@ import wavesWhite from "@/assets/img/waves-white.svg";
         <div v-if="atype === 0" style="margin: 10px 0">
           <el-card class="input-group-static mb-4">
             <textarea
+              style="resize:none;"
               name="message"
               class="form-control"
               id="message"

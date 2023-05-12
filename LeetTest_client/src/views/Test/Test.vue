@@ -123,7 +123,9 @@ import MaterialInput from "@/components/MaterialInput.vue";
       </div>
       <div v-for="item in testCommentList" :key="item.commentid">
         <GreenHeaderBox :title="item.title">
-          <MarkDown :text="item.commenttext" class="content" />
+          <MarkDown
+            :text="item.commenttext" class="content"
+          />
         </GreenHeaderBox>
       </div>
     </div>
@@ -472,6 +474,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: 10px auto;
+  height: 40rem;
 }
 
 .commentList {
