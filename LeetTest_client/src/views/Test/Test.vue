@@ -248,7 +248,7 @@ export default {
     flush: async function (num, forward = true) {
       if (this.correctedMode === true && num !== this.tid) {
         if (forward) this.correctedTestNumber++;
-        else this.correctedTestNumber--;
+        else if (forward === false) this.correctedTestNumber--;
         if (this.correctedTestNumber >= this.correctedTestList.length) {
           this.correctedTestNumber = this.correctedTestList.length - 1;
         } else if (this.correctedTestNumber <= 0) {

@@ -316,7 +316,6 @@ export default {
           );
           newContent.appendChild(newContentText);
           h.appendChild(newContent);
-          console.log(h);
           this.$notify({
             dangerouslyUseHTMLString: true,
             title: "回答正确！",
@@ -385,7 +384,6 @@ export default {
       this.choice = [];
       this.textarea = "";
       this.openaiAnswer = "";
-      console.log(this.lastPage, this.tid, this.nextPage);
       if (parseInt(this.tid) === num && forward === true) {
         this.$notify.warning({
           title: "提示",
