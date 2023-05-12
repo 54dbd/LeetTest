@@ -345,7 +345,7 @@ export default {
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
       }
-      this.$emit("flush", parseInt(this.tid));
+      this.$emit("flush", parseInt(this.tid), null);
     },
     //选择题判题系统
     async submitChoice() {
@@ -378,7 +378,7 @@ export default {
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
       }
-      this.$emit("flush", parseInt(this.tid));
+      this.$emit("flush", parseInt(this.tid), null);
     },
     flush: function (num, forward = true) {
       this.done = false;
