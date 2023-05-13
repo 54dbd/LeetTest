@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     accuracy() {
-      if (this.num !== 0) return ((this.correct * 100) / this.num).toFixed(2);
+      if (this.num !== 0) return (this.correct * 100) / this.num;
       else return 0;
     },
   },
