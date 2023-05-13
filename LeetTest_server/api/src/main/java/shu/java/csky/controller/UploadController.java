@@ -12,6 +12,7 @@ import shu.java.csky.utils.QiniuUtils;
 import shu.java.csky.vo.ResultVO;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -23,34 +24,34 @@ public class UploadController {
     private MyFileMapper fileMapper;
 
     @PostMapping("/image")
-    public ResultVO upload(@RequestParam("image")MultipartFile file) {
+    public ResultVO upload(@RequestParam("image")MultipartFile file) throws IOException {
         if(file == null) {
             return new ResultVO(400, "文件不能为空", null);
         }
         String fileName = UUID.randomUUID() + "." + StringUtils.substringAfterLast(file.getOriginalFilename(), ".");
         // 上传到七牛云
-        boolean upload = qiniuUtils.upload(file, fileName);
-        if (upload){
-            return new ResultVO(200, "成功", QiniuUtils.url + fileName);
+        String upload = qiniuUtils.upload(file, fileName);
+        if (upload != null){
+            return new ResultVO(200, "成功", upload);
         }
         return new ResultVO(400, "失败", null);
     }
 
     @PostMapping("/uploadFile")
-    public ResultVO uploadFile(@RequestParam("file")MultipartFile file) {
+    public ResultVO uploadFile(@RequestParam("file")MultipartFile file) throws IOException {
         if(file == null) {
             return new ResultVO(400, "文件不能为空", null);
         }
         String originalFilename = file.getOriginalFilename();
         String fileName = UUID.randomUUID() + "." + StringUtils.substringAfterLast(originalFilename, ".");
         // 上传到七牛云
-        boolean upload = qiniuUtils.upload(file, fileName);
+        String upload = qiniuUtils.upload(file, fileName);
         MyFile myFile = new MyFile();
-        myFile.setUrl(QiniuUtils.url + fileName);
+        myFile.setUrl(QiniuUtils.API_URL + fileName);
         myFile.setYear(getYear(originalFilename));
         fileMapper.insert(myFile);
-        if (upload){
-            return new ResultVO(200, "成功", QiniuUtils.url + fileName);
+        if (upload != null){
+            return new ResultVO(200, "成功", upload);
         }
         return new ResultVO(400, "失败", null);
     }

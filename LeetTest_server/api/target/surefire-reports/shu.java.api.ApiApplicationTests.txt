@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 Test set: shu.java.api.ApiApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.219 s <<< FAILURE! - in shu.java.api.ApiApplicationTests
-shu.java.api.ApiApplicationTests  Time elapsed: 0.218 s  <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.195 s <<< FAILURE! - in shu.java.api.ApiApplicationTests
+shu.java.api.ApiApplicationTests  Time elapsed: 0.194 s  <<< ERROR!
 java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test
 
