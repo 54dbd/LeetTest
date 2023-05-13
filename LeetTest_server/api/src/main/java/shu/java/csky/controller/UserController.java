@@ -78,7 +78,14 @@ public class UserController {
 
     @GetMapping("/correct/{userid}")
     public ResultVO getCorrectById(@PathVariable Integer userid){
-
         return new ResultVO(200,"获取正确题数成功",testHistoryService.getCorrectById(userid));
+    }
+    @GetMapping("/dayNum/{userid}")
+    public ResultVO getDayNumById(@PathVariable Integer userid){
+        return new ResultVO(200,"获取每日做题数量成功",testHistoryService.getDayNumById(userid));
+    }
+    @GetMapping("/dayCorrectNum/{userid}")
+    public ResultVO getDayCorrectNumById(@PathVariable Integer userid){
+        return new ResultVO(200,"获取每日做题正确数量成功",testHistoryService.getDayCorrectNumById(userid));
     }
 }

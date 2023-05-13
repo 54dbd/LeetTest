@@ -436,7 +436,6 @@ export default {
   width: 90%;
   margin: 20px 200px;
 }
-
 .right_fbox {
   width: 250px;
   height: 360px;
@@ -447,29 +446,24 @@ export default {
   z-index: 999;
   margin-left: 530px;
 }
-
 .right_button_list {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .right_button {
   margin: 20px 0 !important;
 }
-
 #editor {
   height: 100px;
   margin: 20px 30px;
 }
-
 .me-editor {
   display: flex;
   flex-wrap: wrap;
   margin: 10px auto;
   height: 40rem;
 }
-
 .commentList {
   width: 80%;
 }
@@ -481,7 +475,6 @@ export default {
 <style>
 .el-dialog__header {
   background: rgba(0, 0, 0, 0);
-
   padding: 0;
 }
 .el-dialog {

@@ -24,9 +24,7 @@ const userName = store.state.user.userInfo.username;
     </div>
   </Header>
   <div class="card card-body blur shadow-blur mx-3 mt-n6">
-    <el-col
-      class="py-5 position-relative mt-n8 text-center blur-shadow-avatar"
-    >
+    <el-col class="py-5 position-relative mt-n8 text-center blur-shadow-avatar">
       <MaterialAvatar
         size="xxl"
         class="shadow-xl position-relative z-index-2"
@@ -44,6 +42,8 @@ const userName = store.state.user.userInfo.username;
 </template>
 
 <script>
+import * as api from "@/api";
+
 const lineChartData = {
   newVisitis: {
     expectedData: [0, 0, 0, 0, 2, 22, 0],
@@ -70,45 +70,99 @@ export default {
     return {
       lineChartData: lineChartData.newVisitis,
       userid: "",
+      dayNumList: [],
+      dayCorrectNumList: [],
+      dayList: [],
     };
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type];
+    async getDayNumById() {
+      const result = await api.getDayNumById(this.userid);
+      if (result.data.code === 200) {
+        let temp = result.data.data;
+        temp.forEach((item) => {
+          const [time, value] = Object.entries(item)[0];
+          this.dayList.push(time);
+          this.dayNumList.push({
+            value: value,
+            time: time,
+          });
+        });
+      } else {
+        this.$message.warning("获取失败~ " + result.msg);
+      }
+    },
+    async getDayCorrectNumById() {
+      const result = await api.getDayCorrectNumById(this.userid);
+
+      if (result.data.code === 200) {
+        let temp = result.data.data;
+        console.log(temp);
+        temp.forEach((item) => {
+          const [time, value] = Object.entries(item)[0];
+          this.dayCorrectNumList.push({
+            value: value,
+            time: time,
+          });
+        });
+        console.log(this.dayCorrectNumList);
+      } else {
+        this.$message.warning("获取失败~ " + result.msg);
+      }
+    },
+    async initEchart() {
+      await this.getDayNumById();
+      await this.getDayCorrectNumById();
+      const chartDom = document.getElementById("lineChart");
+      let myChart = echarts.init(chartDom, null, {
+        renderer: "canvas",
+        useDirtyRect: false,
+      });
+      let option;
+
+      option = {
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: this.dayList,
+        },
+        yAxis: {
+          type: "value",
+        },
+        legend: {
+          show: true,
+          data: ["做题数", "正确数"],
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        series: [
+          {
+            name: "做题数",
+            data: this.dayNumList,
+            type: "line",
+            areaStyle: {},
+          },
+          {
+            name: "正确数",
+            data: this.dayCorrectNumList,
+            type: "line",
+            areaStyle: {},
+          },
+        ],
+      };
+
+      if (option && typeof option === "object") {
+        myChart.setOption(option);
+      }
+
+      window.addEventListener("resize", myChart.resize);
     },
   },
+
   mounted() {
-    const chartDom = document.getElementById("lineChart");
-    var myChart = echarts.init(chartDom, null, {
-      renderer: "canvas",
-      useDirtyRect: false,
-    });
-
-    var option;
-
-    option = {
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: "line",
-          areaStyle: {},
-        },
-      ],
-    };
-
-    if (option && typeof option === "object") {
-      myChart.setOption(option);
-    }
-
-    window.addEventListener("resize", myChart.resize);
+    this.userid = this.$store.state.user.userInfo.userId;
+    this.initEchart();
   },
 };
 </script>

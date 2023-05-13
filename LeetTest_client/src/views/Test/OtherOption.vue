@@ -16,6 +16,7 @@ const checkHistoryEmit = () => {
   <div class="dropdown" style="margin-top: 10px">
     <MaterialButton
       variant="gradient"
+      size="lg"
       color="success"
       class="dropdown-toggle"
       :class="{ show: showDropdown }"
