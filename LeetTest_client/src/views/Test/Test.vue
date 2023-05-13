@@ -123,9 +123,7 @@ import MaterialInput from "@/components/MaterialInput.vue";
       </div>
       <div v-for="item in testCommentList" :key="item.commentid">
         <GreenHeaderBox :title="item.title">
-          <MarkDown
-            :text="item.commenttext" class="content"
-          />
+          <MarkDown :text="item.commenttext" class="content" />
         </GreenHeaderBox>
       </div>
     </div>
@@ -362,12 +360,7 @@ export default {
       console.log("after request");
       if (result.data.code === 200) {
         this.$notify.success("发布成功~");
-        await this.$router.push({
-          path: "/test",
-          query: {
-            id: result.data.data.data.commentid,
-          },
-        });
+        await this.flush(this.tid, null);
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
       }
