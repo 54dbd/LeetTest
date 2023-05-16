@@ -5,6 +5,8 @@ import ContactView from "../views/LandingPages/ContactUs/ContactView.vue";
 import AuthorView from "../views/LandingPages/Author/AuthorView.vue";
 import SignInBasicView from "../views/LandingPages/SignIn/BasicView.vue";
 import SignUpBasicView from "../views/LandingPages/SignUp/SingUpView.vue";
+import SchoolBasicView from "../views/LandingPages/Schools/SchoolView.vue";
+import TimeBasicView from "../views/LandingPages/Time/TimeView.vue";
 
 import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
 import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
@@ -117,6 +119,22 @@ const router = createRouter({
       name: "signup-basic",
       component: SignUpBasicView,
       meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path:"/school",
+      name:"school-basic",
+      component:SchoolBasicView,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path:"/time",
+      name:"time-basic",
+      component:TimeBasicView,
+      meta:{
         keepAlive: false,
       },
     },
