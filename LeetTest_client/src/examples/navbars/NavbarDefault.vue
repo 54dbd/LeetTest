@@ -308,12 +308,6 @@ onMounted(() => {
                         考研信息
                       </div>
                       <RouterLink
-                        :to="{ name: 'contactus' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>信息中心</span>
-                      </RouterLink>
-                      <RouterLink
                         :to="{ name: 'school-basic' }"
                         class="dropdown-item border-radius-md"
                       >
@@ -344,12 +338,6 @@ onMounted(() => {
                       >
                         考研信息
                       </div>
-                      <RouterLink
-                        :to="{ name: 'contactus' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>信息中心</span>
-                      </RouterLink>
                       <RouterLink
                         :to="{ name: 'school-basic' }"
                         class="dropdown-item border-radius-md"

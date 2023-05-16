@@ -5,16 +5,13 @@ import { ElMessage } from "element-plus";
 // example components
 import image from "@/assets/img/city-profile.jpg";
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
-import {reqGetSchoolList, reqSearchSchool} from "@/api";
+import { reqGetSchoolList, reqSearchSchool } from "@/api";
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 import Header from "@/examples/Header.vue";
-
-
 </script>
 
 <template>
-
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
@@ -25,9 +22,9 @@ import Header from "@/examples/Header.vue";
 
   <Header>
     <div
-        class="page-header min-height-200"
-        :style="{ backgroundImage: `url(${image})` }"
-        loading="lazy"
+      class="page-header min-height-200"
+      :style="{ backgroundImage: `url(${image})` }"
+      loading="lazy"
     >
       <span class="mask bg-gradient-dark opacity-8"></span>
     </div>
@@ -36,119 +33,128 @@ import Header from "@/examples/Header.vue";
   <el-row :gutter="20">
     <el-col :span="20" :offset="2">
       <div>
-        <el-input v-model="keyWord" placeholder="请输入内容" class="input" clearable size="small"></el-input>
+        <el-input
+          v-model="keyWord"
+          placeholder="请输入内容"
+          class="input"
+          clearable
+          size="small"
+        ></el-input>
       </div>
       <div>
         <el-row class="elRow">
-          <el-empty :image-size="200" v-if="total===0"></el-empty>
-          <el-col class="elCol" v-for="(school) in schoolList" :key="school.sid">
+          <el-empty :image-size="200" v-if="total === 0"></el-empty>
+          <el-col class="elCol" v-for="school in schoolList" :key="school.sid">
             <el-card shadow="hover" class="elCard" v-loading="loading">
-              <img :src='school.badgeImg' alt="校徽">
-              <router-link :to="{
-                path: '/schoolDetail',
-                query: {
-                  sid: school.sid
-                }
-              }">
+              <img
+                :src="school.badgeImg"
+                referrerpolicy="no-referrer"
+                alt="校徽"
+              />
+              <router-link
+                :to="{
+                  path: '/schoolDetail',
+                  query: {
+                    sid: school.sid,
+                  },
+                }"
+              >
                 {{ school.sname }}
               </router-link>
               <div>
-                <MarkDown :text="school.shortIntroduction"/>
+                <MarkDown :text="school.shortIntroduction" />
               </div>
             </el-card>
           </el-col>
           <el-col style="text-align: center">
             <el-pagination
-                background
-                layout="prev, pager, next"
-                :page-size="pageParam.size"
-                :current-page="pageParam.current"
-                :pager-count="5"
-                @current-change="currentChange"
-                :total="total">
+              background
+              layout="prev, pager, next"
+              :page-size="pageParam.size"
+              :current-page="pageParam.current"
+              :pager-count="5"
+              @current-change="currentChange"
+              :total="total"
+            >
             </el-pagination>
           </el-col>
         </el-row>
       </div>
     </el-col>
   </el-row>
-
 </template>
 
 <script>
-
-
 export default {
   name: "Schools",
   components: {
-    MarkDown
+    MarkDown,
   },
   data() {
     return {
       schoolList: [],
       pageParam: {
         current: 1,
-        size: 5
+        size: 5,
       },
       // 总页数
       pages: 0,
       // 总条数
       total: 0,
-      keyWord: '',
-      loading: true
-    }
+      keyWord: "",
+      loading: true,
+    };
   },
   methods: {
     async getSchoolList(pageParam) {
-      const result = await reqGetSchoolList(pageParam)
+      const result = await reqGetSchoolList(pageParam);
       if (result.data.code === 200) {
-        this.schoolList = result.data.data.schoolVoList
-        this.pages = result.data.data.pages
-        this.total = result.data.data.total
-        this.loading = false
+        this.schoolList = result.data.data.schoolVoList;
+        this.pages = result.data.data.pages;
+        this.total = result.data.data.total;
+        this.loading = false;
       } else {
-        this.$message.error('系统异常~ ' + result.data.msg)
+        this.$message.error("系统异常~ " + result.data.msg);
       }
     },
     currentChange(val) {
-      this.pageParam.current = val
+      this.pageParam.current = val;
       if (this.keyWord) {
-        this.searchSchool()
+        this.searchSchool();
       } else {
-        this.getSchoolList(this.pageParam)
+        this.getSchoolList(this.pageParam);
       }
     },
     async searchSchool(current) {
       if (current) {
-        this.pageParam.current = current
+        this.pageParam.current = current;
       }
       const result = await reqSearchSchool({
         text: this.keyWord,
         current: this.pageParam.current,
         size: this.pageParam.size,
-        uid: this.$store.state.user.userInfo.userId
-      })
+        uid: this.$store.state.user.userInfo.userId,
+      });
       if (result.data.code === 200) {
-        this.schoolList = result.data.data.schoolVoList
-        this.pages = result.data.data.pages
-        this.total = result.data.data.total
-        this.loading = false
+        this.schoolList = result.data.data.schoolVoList;
+        this.pages = result.data.data.pages;
+        this.total = result.data.data.total;
+        this.loading = false;
       } else {
-        this.$message.error('系统异常~ ' + result.data.msg)
+        this.$message.error("系统异常~ " + result.data.msg);
       }
-    }
+    },
   },
   mounted() {
-    this.getSchoolList(this.pageParam)
+    this.getSchoolList(this.pageParam);
   },
   watch: {
     keyWord() {
-      this.searchSchool(1)
-    }
-  }
-}
+      this.searchSchool(1);
+    },
+  },
+};
 </script>
-
 
 <style scoped>
 .input {
@@ -158,7 +164,7 @@ export default {
 }
 .elRow {
   margin: 20px 30px;
-  border-radius: 4px
+  border-radius: 4px;
 }
 .elCol {
   margin: 5px auto;
