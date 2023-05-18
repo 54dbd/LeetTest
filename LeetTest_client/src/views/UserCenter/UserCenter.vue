@@ -139,15 +139,36 @@ export default {
         series: [
           {
             name: "做题数",
+            smooth: true,
             data: this.dayNumList,
             type: "line",
-            areaStyle: {},
+            itemStyle: {
+              normal: {
+                color: "#FF005A",
+                lineStyle: {
+                  color: "#FF005A",
+                  width: 2,
+                },
+              },
+            },
           },
           {
             name: "正确数",
+            smooth: true,
             data: this.dayCorrectNumList,
             type: "line",
-            areaStyle: {},
+            itemStyle: {
+              normal: {
+                color: "#3888fa",
+                lineStyle: {
+                  color: "#3888fa",
+                  width: 2,
+                },
+                areaStyle: {
+                  color: "#f3f8ff",
+                },
+              },
+            },
           },
         ],
       };
