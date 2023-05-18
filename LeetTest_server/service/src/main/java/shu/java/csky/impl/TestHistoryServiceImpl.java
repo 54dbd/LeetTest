@@ -137,7 +137,6 @@ public class TestHistoryServiceImpl implements TestHistoryService {
     public List<Map.Entry<LocalDate, Integer>> getDayNumById(Integer userId) {
         QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
         wrapper.eq("userid", userId);
-//        System.out.println(testHistoryMapper.selectCount(wrapper));
 
         List<TestHistory> testHistories = testHistoryMapper.selectList(wrapper);
 
@@ -158,6 +157,8 @@ public class TestHistoryServiceImpl implements TestHistoryService {
 
         return testCountsByDay;
     }
+
+    @Override
     public List<Map.Entry<LocalDate, Integer>> getDayCorrectNumById(Integer userId) {
         QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
         wrapper.eq("userid", userId);
@@ -171,7 +172,6 @@ public class TestHistoryServiceImpl implements TestHistoryService {
         for (LocalDate date : allDates) {
             testCounts.put(date, 0);
         }
-//        System.out.println(testCounts);
 
         wrapper.eq("iscorrect", 1);
         testHistories = testHistoryMapper.selectList(wrapper);
@@ -189,5 +189,36 @@ public class TestHistoryServiceImpl implements TestHistoryService {
                 .collect(Collectors.toList());
 
         return testCountsByDay;
+    }
+
+    @Override
+    public List<Map.Entry<String, Integer>> getPointNumById(Integer userId) {
+        QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
+        wrapper.eq("userid", userId).eq("iscorrect", 0);
+        wrapper.select("sname, count(sname) as count").groupBy("sname").orderByDesc("count");
+        List<TestHistory> testHistories = testHistoryMapper.selectList(wrapper);
+
+        List<Test> tests = new ArrayList<>();
+        for (TestHistory testHistory : testHistories) {
+            QueryWrapper<Test> testWrapper = new QueryWrapper<>();
+            testWrapper.eq("sname", testHistory.getSname());
+            tests.add(testMapper.selectOne(testWrapper));
+        }
+
+
+        // 统计每个知识点的错误次数
+        Map<String, Integer> testCounts = new HashMap<>();
+        for (Test item : tests) {
+            String points = item.getPoints();
+            if (points != null) {
+                Integer count = testCounts.getOrDefault(points, 0);
+                count++;
+                testCounts.put(points, count);
+            }
+        }
+
+        return testCounts.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toList());
     }
 }

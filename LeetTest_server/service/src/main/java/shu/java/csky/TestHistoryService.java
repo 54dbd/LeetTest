@@ -29,5 +29,8 @@ public interface TestHistoryService {
     ResultVO getCorrectById(Integer userId);
 
     List<Map.Entry<LocalDate, Integer>> getDayNumById(Integer userId);
+
     List<Map.Entry<LocalDate, Integer>> getDayCorrectNumById(Integer userId);
+
+    List<Map.Entry<String, Integer>> getPointNumById(Integer userId);
 }
