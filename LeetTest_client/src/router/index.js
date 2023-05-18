@@ -6,7 +6,9 @@ import AuthorView from "../views/LandingPages/Author/AuthorView.vue";
 import SignInBasicView from "../views/LandingPages/SignIn/BasicView.vue";
 import SignUpBasicView from "../views/LandingPages/SignUp/SingUpView.vue";
 import SchoolBasicView from "../views/LandingPages/Schools/SchoolView.vue";
+import SchoolDetailBasicView from "../views/LandingPages/SchoolDetail/SchoolDetailView.vue";
 import TimeBasicView from "../views/LandingPages/Time/TimeView.vue";
+import TeacherDetailBasicView from"../views/LandingPages/Teachers/TeacherDetailView.vue";
 
 import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
 import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
@@ -126,6 +128,22 @@ const router = createRouter({
       path:"/school",
       name:"school-basic",
       component:SchoolBasicView,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path:"/schoolDetail",
+      name:"schoolDetail-basic",
+      component:SchoolDetailBasicView,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path:"/teacherDetail",
+      name:"teacherDetail-basic",
+      component:TeacherDetailBasicView,
       meta: {
         keepAlive: false,
       },
