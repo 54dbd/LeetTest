@@ -382,3 +382,10 @@ export const reqGetCorrectedTestById = (userid) =>
     url: `/test/query/${userid}`,
     method: "get",
   });
+
+// 获取用户错题知识点统计
+export const reqGetCorrectedPointById = (userid) =>
+  requests({
+    url: `/user/point/${userid}`,
+    method: "get",
+  });
