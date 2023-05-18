@@ -37,6 +37,7 @@ const userName = store.state.user.userInfo.username;
     </el-col>
     <UserPanel />
     <div id="lineChart"></div>
+    <div id="pieChart"></div>
   </div>
   <Footer />
 </template>
@@ -73,6 +74,8 @@ export default {
       dayNumList: [],
       dayCorrectNumList: [],
       dayList: [],
+      correctedPointList: [],
+      correctedPointNameList: [],
     };
   },
   methods: {
@@ -110,7 +113,25 @@ export default {
         this.$message.warning("获取失败~ " + result.msg);
       }
     },
-    async initEchart() {
+    async getCorrectedPointById() {
+      const result = await api.reqGetCorrectedPointById(this.userid);
+
+      if (result.data.code === 200) {
+        let temp = result.data.data;
+        console.log(temp);
+        temp.forEach((item) => {
+          const [point, num] = Object.entries(item)[0];
+          this.correctedPointList.push({
+            value: num,
+            name: point,
+          });
+          this.correctedPointNameList.push(point);
+        });
+      } else {
+        this.$message.warning("获取失败~ " + result.msg);
+      }
+    },
+    async initLine() {
       await this.getDayNumById();
       await this.getDayCorrectNumById();
       const chartDom = document.getElementById("lineChart");
@@ -179,11 +200,50 @@ export default {
 
       window.addEventListener("resize", myChart.resize);
     },
+    async initPie() {
+      await this.getCorrectedPointById();
+      const chartDom = document.getElementById("pieChart");
+      let myChart = echarts.init(chartDom, null, {
+        renderer: "canvas",
+        useDirtyRect: false,
+      });
+      let option;
+
+      option = {
+        tooltip: {
+          trigger: "item",
+          // formatter: "{a} <br/>{b} : {c} ({d}%)",
+        },
+        legend: {
+          left: "center",
+          bottom: "10",
+          data: this.correctedPointNameList,
+        },
+        series: [
+          {
+            name: "错题分布",
+            type: "pie",
+            roseType: "radius",
+            radius: [15, 95],
+            center: ["50%", "38%"],
+            data: this.correctedPointList,
+            animationEasing: "cubicInOut",
+            animationDuration: 2600,
+          },
+        ],
+      };
+      if (option && typeof option === "object") {
+        myChart.setOption(option);
+      }
+
+      window.addEventListener("resize", myChart.resize);
+    },
   },
 
   mounted() {
     this.userid = this.$store.state.user.userInfo.userId;
-    this.initEchart();
+    this.initLine();
+    this.initPie();
   },
 };
 </script>
@@ -212,6 +272,10 @@ export default {
 }
 
 #lineChart {
+  width: 100%;
+  height: 360px;
+}
+#pieChart {
   width: 100%;
   height: 360px;
 }
