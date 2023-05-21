@@ -1,13 +1,10 @@
 <script setup>
-import { ref } from "vue";
-import { ElMessage } from "element-plus";
-
 // example components
 import image from "@/assets/img/city-profile.jpg";
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import { reqGetSchoolList, reqSearchSchool } from "@/api";
+import MaterialInput from "@/components/MaterialInput.vue";
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
-import { defineComponent } from "vue";
 import Header from "@/examples/Header.vue";
 </script>
 
@@ -32,17 +29,19 @@ import Header from "@/examples/Header.vue";
 
   <el-row :gutter="20">
     <el-col :span="20" :offset="2">
-      <div>
-        <el-input
-          v-model="keyWord"
+      <el-row style="line-height: 50px; margin-left: 30px; align-items: flex-start">
+        <MaterialInput
+          class="input-group-dynamic mt-4"
+          icon="search"
+          type="text"
           placeholder="请输入内容"
-          class="input"
-          clearable
-          size="small"
-        ></el-input>
-      </div>
+          v-model="keyWord"
+          style="width: 15rem;"
+          
+        ></MaterialInput>
+      </el-row>
       <div>
-        <el-row class="elRow">
+        <el-col class="elRow">
           <el-empty :image-size="200" v-if="total === 0"></el-empty>
           <el-col class="elCol" v-for="school in schoolList" :key="school.sid">
             <el-card shadow="hover" class="elCard" v-loading="loading">
@@ -66,7 +65,7 @@ import Header from "@/examples/Header.vue";
               </div>
             </el-card>
           </el-col>
-          <el-col style="text-align: center">
+          <el-row>
             <el-pagination
               background
               layout="prev, pager, next"
@@ -77,8 +76,8 @@ import Header from "@/examples/Header.vue";
               :total="total"
             >
             </el-pagination>
-          </el-col>
-        </el-row>
+          </el-row>
+        </el-col>
       </div>
     </el-col>
   </el-row>
@@ -157,17 +156,22 @@ export default {
 </script>
 
 <style scoped>
-.input {
+.el-pagination {
+  margin: 20px auto;
+}
+.MaterialInput{
   width: 238px;
-  height: 10px;
-  margin: 6px 0 0 29px;
+  height: 40px;
+  margin: 6px;
 }
 .elRow {
   margin: 20px 30px;
   border-radius: 4px;
+  align-items: center;
+  justify-content: center;
 }
 .elCol {
-  margin: 5px auto;
+  margin: 5px;
 }
 .elCard {
 }
