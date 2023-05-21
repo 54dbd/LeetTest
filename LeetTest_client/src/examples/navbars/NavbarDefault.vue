@@ -308,13 +308,7 @@ onMounted(() => {
                         考研信息
                       </div>
                       <RouterLink
-                        :to="{ name: 'contactus' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>信息中心</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{ name: 'school-basic' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span>34所高校</span>
@@ -326,7 +320,7 @@ onMounted(() => {
                         <span> 考研分数线</span>
                       </RouterLink>
                       <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{ name: 'time-basic' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span>考研时间线</span>
@@ -345,13 +339,7 @@ onMounted(() => {
                         考研信息
                       </div>
                       <RouterLink
-                        :to="{ name: 'contactus' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>信息中心</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{ name: 'school-basic' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span>34所高校</span>
@@ -363,7 +351,7 @@ onMounted(() => {
                         <span> 考研分数线</span>
                       </RouterLink>
                       <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{ name: 'time-basic' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span>考研时间线</span>

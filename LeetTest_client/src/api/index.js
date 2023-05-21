@@ -363,9 +363,29 @@ export const reqGetCorrectById = (userid) =>
     method: "get",
   });
 
+// 获取用户每日「正确」题目数量
+export const getDayCorrectNumById = (userid) =>
+  requests({
+    url: `/user/dayCorrectNum/${userid}`,
+    method: "get",
+  });
+// 获取用户每日题目数量
+export const getDayNumById = (userid) =>
+  requests({
+    url: `/user/dayNum/${userid}`,
+    method: "get",
+  });
+
 // 获取用户错题列表
 export const reqGetCorrectedTestById = (userid) =>
   requests({
     url: `/test/query/${userid}`,
+    method: "get",
+  });
+
+// 获取用户错题知识点统计
+export const reqGetCorrectedPointById = (userid) =>
+  requests({
+    url: `/user/point/${userid}`,
     method: "get",
   });

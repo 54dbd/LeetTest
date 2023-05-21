@@ -123,9 +123,7 @@ import MaterialInput from "@/components/MaterialInput.vue";
       </div>
       <div v-for="item in testCommentList" :key="item.commentid">
         <GreenHeaderBox :title="item.title">
-          <MarkDown
-            :text="item.commenttext" class="content"
-          />
+          <MarkDown :text="item.commenttext" class="content" />
         </GreenHeaderBox>
       </div>
     </div>
@@ -362,12 +360,7 @@ export default {
       console.log("after request");
       if (result.data.code === 200) {
         this.$notify.success("发布成功~");
-        await this.$router.push({
-          path: "/test",
-          query: {
-            id: result.data.data.data.commentid,
-          },
-        });
+        await this.flush(this.tid, null);
       } else {
         this.$message.error("系统异常~ " + result.data.data.msg);
       }
@@ -443,7 +436,6 @@ export default {
   width: 90%;
   margin: 20px 200px;
 }
-
 .right_fbox {
   width: 250px;
   height: 360px;
@@ -454,29 +446,24 @@ export default {
   z-index: 999;
   margin-left: 530px;
 }
-
 .right_button_list {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 .right_button {
   margin: 20px 0 !important;
 }
-
 #editor {
   height: 100px;
   margin: 20px 30px;
 }
-
 .me-editor {
   display: flex;
   flex-wrap: wrap;
   margin: 10px auto;
   height: 40rem;
 }
-
 .commentList {
   width: 80%;
 }
@@ -488,7 +475,6 @@ export default {
 <style>
 .el-dialog__header {
   background: rgba(0, 0, 0, 0);
-
   padding: 0;
 }
 .el-dialog {

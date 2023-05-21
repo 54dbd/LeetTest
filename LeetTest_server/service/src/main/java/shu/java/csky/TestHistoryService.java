@@ -6,7 +6,9 @@ import shu.java.csky.vo.ResultVO;
 import shu.java.csky.vo.param.TestCommentParam;
 import shu.java.csky.vo.param.TestHistoryParam;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 54dbd
@@ -25,4 +27,10 @@ public interface TestHistoryService {
     ResultVO getNumById(Integer userId);
 
     ResultVO getCorrectById(Integer userId);
+
+    List<Map.Entry<LocalDate, Integer>> getDayNumById(Integer userId);
+
+    List<Map.Entry<LocalDate, Integer>> getDayCorrectNumById(Integer userId);
+
+    List<Map.Entry<String, Integer>> getPointNumById(Integer userId);
 }

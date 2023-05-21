@@ -15,9 +15,10 @@ import shu.java.csky.vo.param.TestHistoryParam;
 import shu.java.csky.utils.TextUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author 54dbd
@@ -120,7 +121,7 @@ public class TestHistoryServiceImpl implements TestHistoryService {
     public ResultVO getNumById(Integer userId) {
         QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
         wrapper.eq("userid", userId);
-        System.out.println(testHistoryMapper.selectCount(wrapper));
+//        System.out.println(testHistoryMapper.selectCount(wrapper));
         return new ResultVO(200, "获取做题数成功", testHistoryMapper.selectCount(wrapper));
     }
 
@@ -128,7 +129,96 @@ public class TestHistoryServiceImpl implements TestHistoryService {
     public ResultVO getCorrectById(Integer userId) {
         QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
         wrapper.eq("userid", userId).eq("iscorrect", true);
-        System.out.println(testHistoryMapper.selectCount(wrapper));
+//        System.out.println(testHistoryMapper.selectCount(wrapper));
         return new ResultVO(200, "获取正确题数成功", testHistoryMapper.selectCount(wrapper));
+    }
+
+    @Override
+    public List<Map.Entry<LocalDate, Integer>> getDayNumById(Integer userId) {
+        QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
+        wrapper.eq("userid", userId);
+
+        List<TestHistory> testHistories = testHistoryMapper.selectList(wrapper);
+
+        Map<LocalDate, Integer> testCounts = new HashMap<>();
+
+        for (TestHistory testHistory : testHistories) {
+            LocalDateTime dateTime = testHistory.getCreatedate().toLocalDateTime();
+            LocalDate date = dateTime.toLocalDate();
+
+            Integer count = testCounts.getOrDefault(date, 0);
+
+            count++;
+            testCounts.put(date, count);
+        }
+        List<Map.Entry<LocalDate, Integer>> testCountsByDay = testCounts.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toList());
+
+        return testCountsByDay;
+    }
+
+    @Override
+    public List<Map.Entry<LocalDate, Integer>> getDayCorrectNumById(Integer userId) {
+        QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
+        wrapper.eq("userid", userId);
+        List<TestHistory> testHistories = testHistoryMapper.selectList(wrapper);
+
+        Map<LocalDate, Integer> testCounts = new HashMap<>();
+        List<LocalDate> allDates = testHistories.stream()
+                .map(testHistory -> testHistory.getCreatedate().toLocalDateTime().toLocalDate())
+                .distinct()
+                .collect(Collectors.toList());
+        for (LocalDate date : allDates) {
+            testCounts.put(date, 0);
+        }
+
+        wrapper.eq("iscorrect", 1);
+        testHistories = testHistoryMapper.selectList(wrapper);
+        for (TestHistory testHistory : testHistories) {
+            LocalDateTime dateTime = testHistory.getCreatedate().toLocalDateTime();
+            LocalDate date = dateTime.toLocalDate();
+
+            Integer count = testCounts.getOrDefault(date, 0);
+
+            count++;
+            testCounts.put(date, count);
+        }
+        List<Map.Entry<LocalDate, Integer>> testCountsByDay = testCounts.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toList());
+
+        return testCountsByDay;
+    }
+
+    @Override
+    public List<Map.Entry<String, Integer>> getPointNumById(Integer userId) {
+        QueryWrapper<TestHistory> wrapper = new QueryWrapper<>();
+        wrapper.eq("userid", userId).eq("iscorrect", 0);
+        wrapper.select("sname, count(sname) as count").groupBy("sname").orderByDesc("count");
+        List<TestHistory> testHistories = testHistoryMapper.selectList(wrapper);
+
+        List<Test> tests = new ArrayList<>();
+        for (TestHistory testHistory : testHistories) {
+            QueryWrapper<Test> testWrapper = new QueryWrapper<>();
+            testWrapper.eq("sname", testHistory.getSname());
+            tests.add(testMapper.selectOne(testWrapper));
+        }
+
+
+        // 统计每个知识点的错误次数
+        Map<String, Integer> testCounts = new HashMap<>();
+        for (Test item : tests) {
+            String points = item.getPoints();
+            if (points != null) {
+                Integer count = testCounts.getOrDefault(points, 0);
+                count++;
+                testCounts.put(points, count);
+            }
+        }
+
+        return testCounts.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toList());
     }
 }
