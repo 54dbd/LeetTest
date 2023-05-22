@@ -1,6 +1,7 @@
 <script setup>
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import Header from "@/examples/Header.vue";
+import DefaultFooter from "@/examples/footers/FooterDefault.vue";
 </script>
 
 <template>
@@ -204,6 +205,7 @@ import Header from "@/examples/Header.vue";
       </el-timeline>
     </div>
   </div>
+  <DefaultFooter />
 </template>
 
 <style lang="less" scoped>

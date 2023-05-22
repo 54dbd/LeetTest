@@ -80,6 +80,9 @@ export default {
   mounted() {
     this.getSchoolDetail(this.$route.query.sid);
   },
+  activated() {
+    this.getSchoolDetail(this.$route.query.sid);
+  },
 };
 </script>
 

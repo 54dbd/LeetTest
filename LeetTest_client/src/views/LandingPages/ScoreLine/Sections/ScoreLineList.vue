@@ -80,7 +80,7 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
         </el-table-column>
         <el-table-column fixed prop="collegeName" label="学院名称" width="110">
         </el-table-column>
-        <el-table-column label="专业编码" width="80">
+        <el-table-column label="专业编码" width="90">
           <template v-slot:default="scope">
             <el-tag type="warning">{{ scope.row.majorCode }}</el-tag>
           </template>
@@ -103,7 +103,10 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
           width="90"
         >
           <template v-slot:default="scope">
-            <el-tag type="success">{{ scope.row.score21 }}</el-tag>
+            <el-tag v-if="scope.row.score21" type="success">{{
+              scope.row.score21
+            }}</el-tag>
+            <el-tag v-else type="success">暂无</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -113,7 +116,8 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
           width="90"
         >
           <template v-slot:default="scope">
-            <el-tag>{{ scope.row.score20 }}</el-tag>
+            <el-tag v-if="scope.row.score20">{{ scope.row.score20 }}</el-tag>
+            <el-tag v-else>暂无</el-tag>
           </template>
         </el-table-column>
         <el-table-column
@@ -123,7 +127,10 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
           width="90"
         >
           <template v-slot:default="scope">
-            <el-tag type="danger">{{ scope.row.score19 }}</el-tag>
+            <el-tag type="danger" v-if="scope.row.score19">{{
+              scope.row.score19
+            }}</el-tag>
+            <el-tag type="danger" v-else>暂无</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="politicsSubject" label="政治科目" width="90">
@@ -135,7 +142,9 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
         <el-table-column prop="computerSubject" label="专业课" width="180">
         </el-table-column>
       </el-table>
-      <div class="row mx-auto">
+      <el-row
+        style="align-items: center; justify-content: center; display: flex"
+      >
         <el-pagination
           style="text-align: center; margin-top: 10px; margin-bottom: 20px"
           background
@@ -146,7 +155,7 @@ import DefaultFooter from "@/examples/footers/FooterDefault.vue";
           :total="total"
         >
         </el-pagination>
-      </div>
+      </el-row>
     </div>
   </div>
   <DefaultFooter />
