@@ -19,70 +19,79 @@ import Header from "@/examples/Header.vue";
 
   <Header>
     <div
-      class="page-header min-height-200"
+      class="page-header min-vh-70"
       :style="{ backgroundImage: `url(${image})` }"
-      loading="lazy"
     >
-      <span class="mask bg-gradient-dark opacity-8"></span>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center mx-auto my-auto">
+            <h1 class="text-white">34所高校<span class="text-white"></span></h1>
+          </div>
+        </div>
+      </div>
     </div>
   </Header>
 
-  <el-row :gutter="20">
-    <el-col :span="20" :offset="2">
-      <el-row
-          class="mx-12"
-          style="line-height: 50px; align-items: flex-start">
-        <MaterialInput
-          class="input-group-dynamic mt-4 mx-12"
-          style="left: -28rem;"
-          icon="search"
-          type="text"
-          placeholder="请输入内容"
-          v-model="keyWord"
-
-        ></MaterialInput>
-      </el-row>
-      <div>
-        <el-col class="elRow">
-          <el-empty :image-size="200" v-if="total === 0"></el-empty>
-          <el-col class="elCol" v-for="school in schoolList" :key="school.sid">
-            <el-card shadow="hover" class="elCard" v-loading="loading">
-              <img
-                :src="school.badgeImg"
-                referrerpolicy="no-referrer"
-                alt="校徽"
-              />
-              <router-link
-                :to="{
-                  path: '/schoolDetail',
-                  query: {
-                    sid: school.sid,
-                  },
-                }"
-              >
-                {{ school.sname }}
-              </router-link>
-              <div>
-                <MarkDown :text="school.shortIntroduction" />
-              </div>
-            </el-card>
-          </el-col>
-          <el-row>
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :page-size="pageParam.size"
-              :current-page="pageParam.current"
-              :pager-count="5"
-              @current-change="currentChange"
-              :total="total"
-            >
-            </el-pagination>
+  <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+    <div class="row mx-md-6">
+      <el-row :gutter="20">
+        <el-col :span="20" :offset="2">
+          <el-row class="mx-12">
+            <MaterialInput
+              class="input-group-dynamic"
+              icon="search"
+              type="text"
+              placeholder="请输入内容"
+              v-model="keyWord"
+            ></MaterialInput>
           </el-row>
+          <div>
+            <el-col class="elRow">
+              <el-empty :image-size="200" v-if="total === 0"></el-empty>
+              <el-col
+                class="elCol"
+                v-for="school in schoolList"
+                :key="school.sid"
+              >
+                <el-card shadow="hover" class="elCard" v-loading="loading">
+                  <img
+                    :src="school.badgeImg"
+                    referrerpolicy="no-referrer"
+                    alt="校徽"
+                  />
+                  <router-link
+                    :to="{
+                      path: '/schoolDetail',
+                      query: {
+                        sid: school.sid,
+                      },
+                    }"
+                  >
+                    {{ school.sname }}
+                  </router-link>
+                  <div>
+                    <MarkDown :text="school.shortIntroduction" />
+                  </div>
+                </el-card>
+              </el-col>
+              <el-row>
+                <el-pagination
+                  background
+                  layout="prev, pager, next"
+                  :page-size="pageParam.size"
+                  :current-page="pageParam.current"
+                  :pager-count="5"
+                  @current-change="currentChange"
+                  :total="total"
+                >
+                </el-pagination>
+              </el-row>
+            </el-col>
+          </div>
         </el-col>
-      </div>
-    </el-col>
-  </el-row>
+      </el-row>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -161,7 +170,7 @@ export default {
 .el-pagination {
   margin: 20px auto;
 }
-.MaterialInput{
+.MaterialInput {
   width: 238px;
   height: 40px;
   margin: 6px;
