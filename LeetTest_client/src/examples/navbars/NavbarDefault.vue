@@ -314,7 +314,7 @@ onMounted(() => {
                         <span>34所高校</span>
                       </RouterLink>
                       <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{ name: 'scoreline-basic' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span> 考研分数线</span>
@@ -345,7 +345,7 @@ onMounted(() => {
                         <span>34所高校</span>
                       </RouterLink>
                       <RouterLink
-                        :to="{ name: 'author' }"
+                        :to="{ name: 'scoreline-basic' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span> 考研分数线</span>

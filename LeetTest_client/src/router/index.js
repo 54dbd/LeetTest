@@ -6,9 +6,11 @@ import AuthorView from "../views/LandingPages/Author/AuthorView.vue";
 import SignInBasicView from "../views/LandingPages/SignIn/BasicView.vue";
 import SignUpBasicView from "../views/LandingPages/SignUp/SingUpView.vue";
 import SchoolBasicView from "../views/LandingPages/Schools/SchoolView.vue";
+import ScoreLineBasicView from "../views/LandingPages/ScoreLine/ScoreLineView.vue";
 import SchoolDetailBasicView from "../views/LandingPages/SchoolDetail/SchoolDetailView.vue";
 import TimeBasicView from "../views/LandingPages/Time/TimeView.vue";
 import TeacherDetailBasicView from"../views/LandingPages/Teachers/TeacherDetailView.vue";
+import ScoreLineDetailBasicView from"../views/LandingPages/ScoreLine/Sections/ScoreLineList.vue";
 
 import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
 import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
@@ -120,6 +122,22 @@ const router = createRouter({
       path: "/register",
       name: "signup-basic",
       component: SignUpBasicView,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path:"/scoreline",
+      name:"scoreline-basic",
+      component:ScoreLineBasicView,
+      meta: {
+        keepAlive: false,
+      },
+    },
+    {
+      path:"/scorelinedetail",
+      name:"scorelinedetail-basic",
+      component:ScoreLineDetailBasicView,
       meta: {
         keepAlive: false,
       },
