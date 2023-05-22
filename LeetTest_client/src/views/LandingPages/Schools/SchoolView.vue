@@ -29,15 +29,17 @@ import Header from "@/examples/Header.vue";
 
   <el-row :gutter="20">
     <el-col :span="20" :offset="2">
-      <el-row style="line-height: 50px; margin-left: 30px; align-items: flex-start">
+      <el-row
+          class="mx-12"
+          style="line-height: 50px; align-items: flex-start">
         <MaterialInput
-          class="input-group-dynamic mt-4"
+          class="input-group-dynamic mt-4 mx-12"
+          style="left: -28rem;"
           icon="search"
           type="text"
           placeholder="请输入内容"
           v-model="keyWord"
-          style="width: 15rem;"
-          
+
         ></MaterialInput>
       </el-row>
       <div>

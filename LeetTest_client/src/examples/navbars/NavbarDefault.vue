@@ -229,10 +229,8 @@ onMounted(() => {
                   <div class="position-relative">
                     <RouterLink
                       role="button"
-                      class="border-radius-md nav-link ps-2 d-flex cursor-pointer align-items-center"
-                      :class="getTextColor()"
+                      class="border-radius-md nav-link ps-2 d-flex cursor-pointer align-items-center text-dark"
                       id="dropdownMenuPages"
-                      data-bs-toggle="dropdown"
                       aria-expanded="true"
                       v-for="(article, index) in articleList"
                       :key="index"
@@ -422,95 +420,6 @@ onMounted(() => {
               </div>
             </div>
           </li>
-          <!--          关于我们-->
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <a
-              role="button"
-              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
-              :class="getTextColor()"
-              id="dropdownMenuPages"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i
-                class="material-icons opacity-6 me-2 text-md"
-                :class="getTextColor()"
-                >dashboard</i
-              >
-              关于我们
-              <img
-                :src="getArrowColor()"
-                alt="down-arrow"
-                class="arrow ms-2 d-lg-block d-none"
-              />
-              <img
-                :src="getArrowColor()"
-                alt="down-arrow"
-                class="arrow ms-1 d-lg-none d-block ms-auto"
-              />
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
-              aria-labelledby="dropdownMenuPages"
-            >
-              <div class="row d-none d-lg-block">
-                <div class="col-12 px-4 py-2">
-                  <div class="row">
-                    <div class="position-relative">
-                      <div
-                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
-                      >
-                        相关信息
-                      </div>
-                      <RouterLink
-                        :to="{ name: 'about' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>关于我们</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'contactus' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>联系我们</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'author' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>作者</span>
-                      </RouterLink>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="d-lg-none">
-                <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
-                >
-                  相关信息
-                </div>
-                <RouterLink
-                  :to="{ name: 'about' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>关于我们</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'contactus' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>联系我们</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'author' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>作者</span>
-                </RouterLink>
-              </div>
-            </div>
-          </li>
           <!--          github-->
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a
@@ -532,15 +441,6 @@ onMounted(() => {
               </svg>
               Github
             </a>
-          </li>
-          <!--          发布文章-->
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <RouterLink
-              :to="{ name: 'post-article' }"
-              class="nav-link d-flex cursor-pointer align-items-center"
-            >
-              发布文章
-            </RouterLink>
           </li>
           <!--            用户头像-->
           <li class="nav-item dropdown dropdown-hover mx-2" v-if="userName">

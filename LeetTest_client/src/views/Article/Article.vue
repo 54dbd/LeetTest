@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onActivated, onMounted, onUnmounted, ref } from "vue";
+import { onActivated, onMounted, onUnmounted, ref } from "vue";
 import MarkDown from "@/views/Article/Sections/MarkDown/MarkDown.vue";
 import { getToken } from "@/utils/token";
 import store from "@/stores";
@@ -35,25 +35,16 @@ const repostCount = ref(0);
 const favoriteCount = ref(0);
 const isFavorite = ref(false);
 const historyCount = ref(1);
-const commentCount = ref(0);
-const commentList = ref([]);
 const tagList = ref([]);
 const author = ref({});
 const create_time = ref("");
 const model_time = ref("");
-const page = ref({
-  current: 1,
-  size: 10,
-});
-const pages = ref(0);
-const total = ref(0);
 const moreArticle = ref([]);
 const tagNameList = ref([]);
 
 
 onActivated(async () => {
   getArticle();
-  getComment();
   getMoreArticle();
   getTagNameList();
 });
@@ -100,22 +91,6 @@ const getAUCondition = async () => {
   }
 };
 
-const getComment = async () => {
-  const result = await api.reqGetCommentById({
-    articleId: route.query.id,
-    page: page,
-    userId: store.state.user.userInfo.userId,
-  });
-  if (result.data.code === 200) {
-    commentCount.value = result.data.data.commentCount;
-    commentList.value = result.data.data.commentVoList;
-    pages.value = result.data.data.pages;
-    total.value = result.data.data.total;
-  } else {
-    ElMessage.error("系统异常~ " + result.data.msg);
-  }
-};
-
 const addLikes = async () => {
   if (!getToken()) {
     ElMessage.warning("当前尚未登录，请先登录");
@@ -140,6 +115,7 @@ const addLikes = async () => {
         title: "错误",
         message: "点赞失败~ " + result.data.msg,
       });
+      isLiked.value = false;
     }
   } else {
     const result = await api.revokeLikes({
@@ -229,7 +205,6 @@ const body = document.getElementsByTagName("body")[0];
 onMounted(() => {
   getArticle();
   getAUCondition();
-  getComment();
   api.reqAddHistory({
     aid: route.query.id,
     uid: store.state.user.userInfo.userId,
@@ -277,12 +252,12 @@ onUnmounted(() => {
             <h1 class="text-white">
               {{ title }}
             </h1>
-            <p class="lead mb-4 text-white opacity-8 letter-spacing-5">
-              <i class="fas fa-comment"></i>
-              <span>{{ commentCount }}</span>
-              <i class="fas fa-eye"></i>
-              <span>{{ commentCount }}</span>
-            </p>
+            <div class="row text-white opacity-8">
+              <p>
+                {{ likesCount }}人点赞了 &nbsp;
+                {{ favoriteCount }}人收藏了
+              </p>
+            </div>
             <p class="lead mb-4 text-white opacity-8">
               作者:
               {{ author.username }}<br />
