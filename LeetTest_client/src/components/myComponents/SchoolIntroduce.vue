@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="20" :offset="2">
-        <h1>学校介绍</h1>
+        <h1 style="font-size: 3rem">学校介绍</h1>
       </el-col>
     </el-row>
     <el-row :gutter="20">
@@ -13,7 +13,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col class="elCol2" :span="10" :push="2">
+      <el-col class="elCol2" :span="5" :push="2">
         <el-card shadow="always">
           <el-descriptions title="学校信息" direction="vertical" :column="1" size="medium">
             <el-descriptions-item label="学校地址"><span style="color: #77b72c">{{address}}</span></el-descriptions-item>

@@ -32,7 +32,7 @@ import {reqGetRecruitInfo} from "@/api";
           </el-pagination>
         </el-card>
       </el-col>
-      <el-col class="elCol2" :span="10" :push="2">
+      <el-col class="elCol2" :span="5" :push="2">
         <el-card shadow="always">
           <el-descriptions direction="vertical" :column="1" size="medium" :colon="false">
             <el-descriptions-item>

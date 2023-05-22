@@ -215,8 +215,8 @@ onMounted(() => {
           prepend-icon="search"
           type="text"
           icon="search"
-          class="input-group-dynamic nav-item dropdown dropdown-hover mx-7"
-          style="left: -6rem"
+          class="input-group-dynamic nav-item dropdown dropdown-hover mx-9"
+          style="left: -9rem"
           aria-labelledby="dropdownMenuPages"
         >
           <div

@@ -52,7 +52,7 @@ import {reqGetTeacherList, reqSearchTeacher} from "@/api";
           </el-table-column>
         </el-table>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="20" style="display: flex; align-items: center; justify-content: center">
         <el-pagination
             style="text-align: center; margin-top: 10px;"
             :page-size="5"
