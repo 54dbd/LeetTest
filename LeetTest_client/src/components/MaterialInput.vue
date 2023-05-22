@@ -72,7 +72,7 @@ function getClasses(size, success, error) {
 }
 </script>
 <template>
-  <div class="input-group">
+  <div class="input-group col">
     <label v-if="label" :class="label.class">{{
       typeof label == "string" ? label : label.text
     }}</label>
@@ -91,6 +91,7 @@ function getClasses(size, success, error) {
       @input="$emit('update:modelValue', $event.target.value)"
 
     />
+  <slot></slot>
   </div>
 </template>
 <script>

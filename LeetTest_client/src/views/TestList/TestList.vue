@@ -223,7 +223,7 @@ const currentChange = (val) => {
         width: 80%;
       "
     >
-      <el-table-column fixed label="题目" width="150">
+      <el-table-column fixed label="题目">
         <template v-slot="scope">
           <svg
             t="1646188413276"
@@ -249,12 +249,12 @@ const currentChange = (val) => {
           </el-link>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="num" label="做题人数" width="110">
+      <el-table-column sortable prop="num" label="做题人数">
         <template v-slot="scope">
           <el-tag type="success">{{ scope.row.num }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="accuracy" label="准确率" width="100">
+      <el-table-column sortable prop="accuracy" label="准确率">
         <template v-slot="scope">
           <el-tag v-if="scope.row.accuracy">{{
             (scope.row.accuracy * 100).toFixed(2) + "%"
@@ -262,7 +262,7 @@ const currentChange = (val) => {
           <el-tag v-if="!scope.row.accuracy">暂无数据</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="难度" width="100">
+      <el-table-column label="难度">
         <template v-slot="scope">
           <el-tag v-if="scope.row.difficulty" type="warning">{{
             scope.row.difficulty
@@ -270,13 +270,13 @@ const currentChange = (val) => {
           <el-tag v-if="!scope.row.difficulty" type="warning">暂无数据</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="computerSubject" label="题目类型" width="100">
+      <el-table-column prop="computerSubject" label="题目类型">
         <template v-slot="scope">
           <el-tag v-if="scope.row.atype === 0"> {{ "简答题" }} </el-tag>
           <el-tag v-if="scope.row.atype === 1"> {{ "选择题" }} </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="points" label="知识点" width="350">
+      <el-table-column prop="points" label="知识点">
         <template v-slot="scope">
           <el-tag v-if="scope.row.points" type="danger">{{
             scope.row.points
