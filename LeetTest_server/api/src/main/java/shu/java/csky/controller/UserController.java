@@ -88,4 +88,9 @@ public class UserController {
     public ResultVO getDayCorrectNumById(@PathVariable Integer userid){
         return new ResultVO(200,"获取每日做题正确数量成功",testHistoryService.getDayCorrectNumById(userid));
     }
+
+    @GetMapping("/point/{userid}")
+    public ResultVO getPointNumById(@PathVariable Integer userid){
+        return new ResultVO(200,"获取错题知识点统计成功",testHistoryService.getPointNumById(userid));
+    }
 }

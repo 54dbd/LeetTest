@@ -2,7 +2,7 @@
 import { RouterLink } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import { useWindowsWidth } from "@/assets/js/useWindowsWidth";
-
+import MaterialInput from "@/components/MaterialInput.vue";
 // images
 import ArrDark from "@/assets/img/down-arrow-dark.svg";
 import DownArrWhite from "@/assets/img/down-arrow-white.svg";
@@ -12,9 +12,11 @@ import * as api from "@/api";
 import { getToken } from "@/utils/token";
 import { ElMessage } from "element-plus";
 import MaterialAvatar from "@/components/MaterialAvatar.vue";
-import profilePic from "@/assets/img/bruce-mars.jpg";
+import { reqSearchArticle } from "@/api";
 const userName = store.state.user.userInfo.username;
-
+const search = ref("");
+let articleList = ref([]);
+let titleList = ref([]);
 const props = defineProps({
   action: {
     type: Object,
@@ -104,12 +106,30 @@ if (type.value === "mobile") {
   textDark.value = false;
 }
 
+const searchArticle = async function () {
+  const result = await reqSearchArticle({
+    text: search.value,
+    current: 1,
+    size: 20,
+  });
+  if (result.data.code === 200) {
+    articleList.value = result.data.data.articleBriefParams;
+    titleList.value = articleList.value.map((item) => item.title);
+    console.log(titleList.value);
+  } else {
+    ElMessage.warning("系统异常~ " + result.data.msg);
+  }
+};
+
 watch(
   () => type.value,
   (newValue) => {
     textDark.value = newValue === "mobile";
   }
 );
+watch(search, () => {
+  searchArticle();
+});
 
 onMounted(() => {
   getFirstCorrectedAnswerTid();
@@ -189,6 +209,44 @@ onMounted(() => {
         class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0"
         id="navigation"
       >
+        <MaterialInput
+          v-model="search"
+          placeholder="搜索文章"
+          prepend-icon="search"
+          type="text"
+          icon="search"
+          class="input-group-dynamic nav-item dropdown dropdown-hover mx-7"
+          style="left: -6rem"
+          aria-labelledby="dropdownMenuPages"
+        >
+          <div
+            class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3 searchResult"
+            aria-labelledby="dropdownMenuPages"
+          >
+            <div class="row d-none d-lg-block">
+              <div class="col-12 px-4 py-2">
+                <div class="row">
+                  <div class="position-relative">
+                    <RouterLink
+                      role="button"
+                      class="border-radius-md nav-link ps-2 d-flex cursor-pointer align-items-center text-dark"
+                      id="dropdownMenuPages"
+                      aria-expanded="true"
+                      v-for="(article, index) in articleList"
+                      :key="index"
+                      :to="'/article/?id=' + article.id"
+                    >
+                      <span>
+                        {{ article.title }}
+                      </span>
+                    </RouterLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </MaterialInput>
+
         <ul class="navbar-nav navbar-nav-hover ms-auto align-items-center">
           <!--          账号-->
           <li class="nav-item dropdown dropdown-hover mx-2" v-if="!userName">
@@ -362,95 +420,6 @@ onMounted(() => {
               </div>
             </div>
           </li>
-          <!--          关于我们-->
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <a
-              role="button"
-              class="nav-link ps-2 d-flex cursor-pointer align-items-center"
-              :class="getTextColor()"
-              id="dropdownMenuPages"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i
-                class="material-icons opacity-6 me-2 text-md"
-                :class="getTextColor()"
-                >dashboard</i
-              >
-              关于我们
-              <img
-                :src="getArrowColor()"
-                alt="down-arrow"
-                class="arrow ms-2 d-lg-block d-none"
-              />
-              <img
-                :src="getArrowColor()"
-                alt="down-arrow"
-                class="arrow ms-1 d-lg-none d-block ms-auto"
-              />
-            </a>
-            <div
-              class="dropdown-menu dropdown-menu-animation ms-n3 dropdown-md p-3 border-radius-xl mt-0 mt-lg-3"
-              aria-labelledby="dropdownMenuPages"
-            >
-              <div class="row d-none d-lg-block">
-                <div class="col-12 px-4 py-2">
-                  <div class="row">
-                    <div class="position-relative">
-                      <div
-                        class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
-                      >
-                        相关信息
-                      </div>
-                      <RouterLink
-                        :to="{ name: 'about' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>关于我们</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'contactus' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>联系我们</span>
-                      </RouterLink>
-                      <RouterLink
-                        :to="{ name: 'author' }"
-                        class="dropdown-item border-radius-md"
-                      >
-                        <span>作者</span>
-                      </RouterLink>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="d-lg-none">
-                <div
-                  class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1"
-                >
-                  相关信息
-                </div>
-                <RouterLink
-                  :to="{ name: 'about' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>关于我们</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'contactus' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>联系我们</span>
-                </RouterLink>
-                <RouterLink
-                  :to="{ name: 'author' }"
-                  class="dropdown-item border-radius-md"
-                >
-                  <span>作者</span>
-                </RouterLink>
-              </div>
-            </div>
-          </li>
           <!--          github-->
           <li class="nav-item dropdown dropdown-hover mx-2">
             <a
@@ -472,15 +441,6 @@ onMounted(() => {
               </svg>
               Github
             </a>
-          </li>
-          <!--          发布文章-->
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <RouterLink
-              :to="{ name: 'post-article' }"
-              class="nav-link d-flex cursor-pointer align-items-center"
-            >
-              发布文章
-            </RouterLink>
           </li>
           <!--            用户头像-->
           <li class="nav-item dropdown dropdown-hover mx-2" v-if="userName">
@@ -699,3 +659,23 @@ export default {
   },
 };
 </script>
+<style scoped>
+.searchResult {
+  position: absolute;
+  margin-left: 12rem;
+  top: 100%;
+  left: 0;
+  width: 17rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 999;
+  max-height: 300px;
+  overflow-y: auto;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+</style>
