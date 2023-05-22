@@ -1,8 +1,8 @@
 <script setup>
-import {onMounted} from "vue";
+import { onMounted } from "vue";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
-import { inject } from 'vue'
+import { inject } from "vue";
 
 // example components
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
@@ -18,8 +18,8 @@ import setMaterialInput from "@/assets/js/material-input";
 const username = ref();
 const password = ref();
 const loading = ref();
-const store = inject('store')
-const router = inject('router')
+const store = inject("store");
+const router = inject("router");
 
 onMounted(() => {
   setMaterialInput();
@@ -27,29 +27,28 @@ onMounted(() => {
 async function login() {
   try {
     loading.value = true;
-    const response = await store.dispatch("user/login",{
-      username:username.value,
-      password:password.value,
-    })
+    const response = await store.dispatch("user/login", {
+      username: username.value,
+      password: password.value,
+    });
     if (response) {
       await ElMessage({
         duration: 1500,
-        message: '登录成功！',
-        type: 'success'
-      })
-      await router.push('/')
-
+        message: "登录成功！",
+        type: "success",
+      });
+      await router.push("/");
     } else {
-      ElMessage.error(response.data.msg)
-      username.value = ''
-      password.value = ''
+      ElMessage.error(response.data.msg);
+      username.value = "";
+      password.value = "";
     }
     // 跳转到首页
     router.push("/");
   } catch (error) {
-    ElMessage.error(error.message)
-    username.value = ''
-    password.value = ''    // 处理错误
+    ElMessage.error(error.message);
+    username.value = "";
+    password.value = ""; // 处理错误
   } finally {
     loading.value = false;
   }
@@ -82,23 +81,6 @@ async function login() {
                   >
                     登录
                   </h4>
-                  <div class="row mt-3">
-                    <div class="col-2 text-center ms-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-facebook text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center px-1">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-github text-white text-lg"></i>
-                      </a>
-                    </div>
-                    <div class="col-2 text-center me-auto">
-                      <a class="btn btn-link px-3" href="javascript:;">
-                        <i class="fa fa-google text-white text-lg"></i>
-                      </a>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="card-body">
@@ -110,8 +92,8 @@ async function login() {
                     :label="{ text: '用户名', class: 'form-label' }"
                   />
                   <MaterialInput
-                      v-model="password"
-                      id="password"
+                    v-model="password"
+                    id="password"
                     class="input-group-outline mb-3"
                     :label="{ text: '密码', class: 'form-label' }"
                     type="password"
@@ -131,8 +113,7 @@ async function login() {
                       color="success"
                       fullWidth
                       :loading="loading"
-
-                    >登录</MaterialButton
+                      >登录</MaterialButton
                     >
                   </div>
                   <p class="mt-4 text-sm text-center">

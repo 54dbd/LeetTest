@@ -53,7 +53,7 @@ onMounted(() => {
                 >
                   <el-form-item prop="username">
                     <MaterialInput
-                      class="input-group-static mb-4"
+                      class="input-group-static"
                       label="用户名称"
                       type="text"
                       placeholder="请输入你的用户名"
@@ -64,7 +64,7 @@ onMounted(() => {
                     <div class="col-8 text-center ms-auto">
                       <el-form-item prop="email">
                         <MaterialInput
-                          class="input-group-static mb-4"
+                          class="input-group-static"
                           label="邮箱账号"
                           type="text"
                           placeholder="请输入你的邮箱账号"
@@ -88,7 +88,7 @@ onMounted(() => {
                     <div class="col-8 text-center ms-auto">
                       <el-form-item prop="emailCode">
                         <MaterialInput
-                          class="input-group-static mb-4"
+                          class="input-group-static"
                           label="验证码"
                           type="text"
                           placeholder="请输入你的邮箱验证码"
@@ -110,7 +110,7 @@ onMounted(() => {
                   </div>
                   <el-form-item prop="password1">
                     <MaterialInput
-                      class="input-group-static mb-4"
+                      class="input-group-static"
                       label="登陆密码"
                       type="password"
                       placeholder="请输入你的密码"
@@ -119,7 +119,7 @@ onMounted(() => {
                   </el-form-item>
                   <el-form-item prop="password2">
                     <MaterialInput
-                      class="input-group-static mb-4"
+                      class="input-group-static"
                       label="确认密码"
                       type="password"
                       placeholder="请输入你的密码"
@@ -129,7 +129,7 @@ onMounted(() => {
 
                   <div class="text-center">
                     <MaterialButton
-                      class="my-4 mb-2"
+                      class="my-4"
                       variant="gradient"
                       color="success"
                       fullWidth
@@ -164,8 +164,8 @@ onMounted(() => {
 <script>
 import { reqGetCode, reqCheckCode } from "@/api";
 import store from "@/stores";
-import useValidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import useValidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -264,7 +264,7 @@ export default {
     },
     async userRegister() {
       const isValid = await this.v$.$validate();
-      console.log(isValid)
+      console.log(isValid);
       if (this.isShowIcon) {
         ElMessage.warning("请正确填写表单信息");
         return;
@@ -297,21 +297,21 @@ export default {
       }
     },
   },
-  validations(){
+  validations() {
     return {
       register: {
         //用户名
-        username: {required},
+        username: { required },
         //密码
-        password1: {required},
+        password1: { required },
         //确认密码
-        password2:{required},
+        password2: { required },
         // 用户邮箱
-        email: {required},
+        email: { required },
         // 邮箱验证码
-        emailCode: {required},
+        emailCode: { required },
       },
-    }
+    };
   },
 };
 </script>

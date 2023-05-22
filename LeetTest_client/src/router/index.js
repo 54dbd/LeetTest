@@ -4,13 +4,13 @@ import AboutView from "../views/LandingPages/AboutUs/AboutView.vue";
 import ContactView from "../views/LandingPages/ContactUs/ContactView.vue";
 import AuthorView from "../views/LandingPages/Author/AuthorView.vue";
 import SignInBasicView from "../views/LandingPages/SignIn/BasicView.vue";
-import SignUpBasicView from "../views/LandingPages/SignUp/SingUpView.vue";
+import SignUpBasicView from "../views/LandingPages/SignUp/SignUpView.vue";
 import SchoolBasicView from "../views/LandingPages/Schools/SchoolView.vue";
 import ScoreLineBasicView from "../views/LandingPages/ScoreLine/ScoreLineView.vue";
 import SchoolDetailBasicView from "../views/LandingPages/SchoolDetail/SchoolDetailView.vue";
 import TimeBasicView from "../views/LandingPages/Time/TimeView.vue";
-import TeacherDetailBasicView from"../views/LandingPages/Teachers/TeacherDetailView.vue";
-import ScoreLineDetailBasicView from"../views/LandingPages/ScoreLine/Sections/ScoreLineList.vue";
+import TeacherDetailBasicView from "../views/LandingPages/Teachers/TeacherDetailView.vue";
+import ScoreLineDetailBasicView from "../views/LandingPages/ScoreLine/Sections/ScoreLineList.vue";
 
 import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
 import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
@@ -127,50 +127,50 @@ const router = createRouter({
       },
     },
     {
-      path:"/scoreline",
-      name:"scoreline-basic",
-      component:ScoreLineBasicView,
+      path: "/scoreline",
+      name: "scoreline-basic",
+      component: ScoreLineBasicView,
       meta: {
         keepAlive: false,
       },
     },
     {
-      path:"/scorelinedetail",
-      name:"scorelinedetail-basic",
-      component:ScoreLineDetailBasicView,
+      path: "/scorelinedetail",
+      name: "scorelinedetail-basic",
+      component: ScoreLineDetailBasicView,
       meta: {
         keepAlive: false,
       },
     },
     {
-      path:"/school",
-      name:"school-basic",
-      component:SchoolBasicView,
+      path: "/school",
+      name: "school-basic",
+      component: SchoolBasicView,
       meta: {
         keepAlive: false,
       },
     },
     {
-      path:"/schoolDetail",
-      name:"schoolDetail-basic",
-      component:SchoolDetailBasicView,
+      path: "/schoolDetail",
+      name: "schoolDetail-basic",
+      component: SchoolDetailBasicView,
       meta: {
         keepAlive: false,
       },
     },
     {
-      path:"/teacherDetail",
-      name:"teacherDetail-basic",
-      component:TeacherDetailBasicView,
+      path: "/teacherDetail",
+      name: "teacherDetail-basic",
+      component: TeacherDetailBasicView,
       meta: {
         keepAlive: false,
       },
     },
     {
-      path:"/time",
-      name:"time-basic",
-      component:TimeBasicView,
-      meta:{
+      path: "/time",
+      name: "time-basic",
+      component: TimeBasicView,
+      meta: {
         keepAlive: false,
       },
     },
@@ -334,7 +334,7 @@ import { getToken } from "@/utils/token";
 router.beforeEach(async (to, from, next) => {
   if (getToken()) {
     //用户登录了还想去login组件
-    if (to.path === "/login") {
+    if (to.path === "/login" || to.path === "/register") {
       await ElMessage({
         duration: 1000,
         message: "已经登录，不能再重复登录！",
