@@ -34,6 +34,40 @@ import GreenHeaderBox from "@/components/myComponents/GreenHeaderBox.vue";
 
     <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
       <div class="row mx-md-6 mt-6">
+        <el-row v-if="school.recruitment">
+          <el-col :span="16"></el-col>
+          <el-col :span="3">
+            <div class="nav-item">
+              <a
+                class="btn btn-sm mb-0 btn-outline-success"
+                :href="
+                  school.recruitment.indexOf('URL: ') === -1
+                    ? school.recruitment
+                    : school.recruitment.slice(4)
+                "
+                onclick="smoothToPricing('pricing-soft-ui')"
+                style="font-size: 15px"
+                >招生简章</a
+              >
+            </div>
+          </el-col>
+          <el-col :span="3">
+            <div class="nav-item">
+              <router-link
+                style="font-size: 15px"
+                class="btn btn-sm mb-0 btn-outline-success"
+                :to="{
+                  path: '/scorelinedetail',
+                  query: {
+                    sid: school.sid,
+                  },
+                }"
+              >
+                分数线
+              </router-link>
+            </div>
+          </el-col>
+        </el-row>
         <school-introduce
           :schoolIntroduce="{
             introduction: school.introduction,
