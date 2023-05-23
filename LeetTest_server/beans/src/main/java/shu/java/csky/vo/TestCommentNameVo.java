@@ -4,11 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author 54dbd
- * @Classname TestCommentNameVo
- * @date 2022/7/6 13:41
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

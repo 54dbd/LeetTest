@@ -7,11 +7,6 @@ import shu.java.csky.vo.TestCommentVo;
 
 import java.util.List;
 
-/**
- * @author 54dbd
- * @Classname TestCommentPageVo
- * @date 2022/7/6 13:30
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -13,11 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-10-11:16
- * @describe 获取教师的详细信息
- */
 public class getTeacherDetail
 {
     static Connection connection = null;                //连接

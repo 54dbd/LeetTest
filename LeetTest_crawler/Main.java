@@ -8,11 +8,6 @@ import java.sql.SQLException;
 import static src.other.ChangeInfo.change_URL_to_text;
 import static src.other.ChangeInfo.change_collegeInfo_to_schoolID;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-08-12:57
- * @describe
- */
 public class Main
 {
     public static void main(String[] args) throws IOException, SQLException

@@ -15,10 +15,6 @@ import shu.java.csky.vo.param.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * @author 54dbd
- * @date 2022/6/22 20:31
- */
 @RestController
 @RequestMapping("test")
 public class TestController {

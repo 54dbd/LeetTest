@@ -1,10 +1,5 @@
 package src.classes;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-08-13:24
- * @describe 存储导师信息
- */
 public class Teacher
 {
     private int teacher_id;         //同一个学校的导师的teacher_id是相同的，方便查找

@@ -6,11 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import shu.java.csky.entity.TestComment;
 
-/**
- * @author 54dbd
- * @Classname TestCommentVo
- * @date 2022/7/5 20:20
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

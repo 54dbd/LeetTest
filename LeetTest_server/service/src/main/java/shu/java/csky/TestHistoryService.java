@@ -10,11 +10,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author 54dbd
- * @Classname TestHistoryService
- * @date 2022/7/7 14:51
- */
 public interface TestHistoryService {
     List<TestHistory> getProblemCollectionBySnameAndUserid(TestHistoryParam testHistoryParam);
 

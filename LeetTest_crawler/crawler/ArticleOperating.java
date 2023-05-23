@@ -13,11 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-10-19:17
- * @describe 将文章的相关信息存入数据库
- */
 public class ArticleOperating
 {
     static Connection connection;

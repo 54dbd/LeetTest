@@ -6,11 +6,6 @@ import shu.java.csky.vo.SchoolVo;
 import shu.java.csky.vo.TestVo;
 
 import java.util.List;
-/**
- * @author 54dbd
- * @Classname TestPageVo
- * @date 2022/6/22 23:23
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

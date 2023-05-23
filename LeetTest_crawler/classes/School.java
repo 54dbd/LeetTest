@@ -1,10 +1,5 @@
 package src.classes;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-08-13:00
- * @describe 存储学校的基本信息
- */
 public class School
 {
     //所有学校的网页URL开头相同，schoolPageURL + schoolPageID + .shtml 就是对应学校网页
