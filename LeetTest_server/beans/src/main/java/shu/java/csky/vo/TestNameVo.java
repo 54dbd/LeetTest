@@ -2,11 +2,6 @@ package shu.java.csky.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-/**
- * @author 54dbd
- * @Classname TestNameVo
- * @date 2022/6/22 22:34
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

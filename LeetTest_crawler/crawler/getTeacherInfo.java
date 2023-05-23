@@ -15,11 +15,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-08-15:40
- * @describe 获取所有教师的基本信息
- */
 public class getTeacherInfo
 {
     //所有学校的导师信息网页URL开头相同，schoolTeacherPageURL + schoolPageID + .shtml 就是对应导师信息网页

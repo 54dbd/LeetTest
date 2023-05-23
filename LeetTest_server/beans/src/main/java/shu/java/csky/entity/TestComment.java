@@ -11,11 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-/**
- * @author 54dbd
- * @Classname TestComment
- * @date 2022/7/5 20:06
- */
 @Component
 @Data
 @NoArgsConstructor

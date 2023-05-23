@@ -23,11 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author 54dbd
- * @Classname TestCommentServiceImpl
- * @date 2022/7/5 20:13
- */
 @Service
 public class TestCommentServiceImpl implements TestCommentService {
 

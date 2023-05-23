@@ -13,11 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author Liu Yuan
- * @create 2022-02-26-14:21
- * @describe 因后期需求变化对已有数据进行修改
- */
 public class ChangeInfo {
     static Connection connection;
     static String sql_query1;

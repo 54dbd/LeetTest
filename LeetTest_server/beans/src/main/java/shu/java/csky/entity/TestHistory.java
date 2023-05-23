@@ -12,11 +12,6 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-/**
- * @author 54dbd
- * @Classname TestHistory
- * @date 2022/7/7 14:46
- */
 @Component
 @Data
 @NoArgsConstructor

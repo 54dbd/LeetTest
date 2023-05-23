@@ -15,7 +15,7 @@ import MaterialButton from "@/components/MaterialButton.vue";
 import MaterialInput from "@/components/MaterialInput.vue";
 </script>
 <template>
-  <DefaultNavbar transparent />
+  <DefaultNavbar transparent @refresh="handleRefresh" />
   <Header>
     <div
       class="page-header min-height-200"
@@ -418,6 +418,10 @@ export default {
       } else {
         this.$message.error(result.data.msg);
       }
+    },
+    handleRefresh() {
+      this.correctedMode = true;
+      this.flush(this.correctedTestList[0].tid, null);
     },
   },
   async mounted() {

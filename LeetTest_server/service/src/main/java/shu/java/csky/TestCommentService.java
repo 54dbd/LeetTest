@@ -15,11 +15,6 @@ import shu.java.csky.vo.param.IdParam;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * @author 54dbd
- * @Classname TestCommentService
- * @date 2022/7/5 19:59
- */
 public interface TestCommentService {
 
     /**

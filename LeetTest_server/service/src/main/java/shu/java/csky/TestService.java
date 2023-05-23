@@ -12,10 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
-/**
- *@author 54dbd
- *@date 2022/6/22 22:30
- */
 @Service
 public interface TestService {
 

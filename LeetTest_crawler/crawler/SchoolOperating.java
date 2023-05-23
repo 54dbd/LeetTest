@@ -13,11 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-10-16:20
- * @describe 将数据库中schoolID中的信息转存到school中，然后爬取详细的信息
- */
 public class SchoolOperating
 {
     static Connection connection = null;

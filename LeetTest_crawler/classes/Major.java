@@ -1,10 +1,5 @@
 package src.classes;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-08-13:19
- * @describe 储存专业的信息
- */
 public class Major
 {
     private String collegeCode;     //学院代码

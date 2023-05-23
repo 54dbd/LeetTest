@@ -27,10 +27,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author 54dbd
- * @date 2022/6/23 8:40
- */
 @Service
 public class TestServiceImpl implements TestService {
 

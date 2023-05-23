@@ -19,11 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-11-18:08
- * @describe
- */
 public class CS
 {
     private static Connection connection = null;

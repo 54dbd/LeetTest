@@ -11,11 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- * @author Liu Yuan
- * @create 2022-01-08-13:34
- * @describe 爬取学校的网页ID，存到数据库中
- */
 public class getSchoolID
 {
     static Connection connection = null;

@@ -4,11 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-/**
- * @author 54dbd
- * @Classname TestVo
- * @date 2022/6/22 22:35
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

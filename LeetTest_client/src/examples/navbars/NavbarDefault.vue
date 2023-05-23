@@ -496,6 +496,7 @@ onMounted(() => {
                       </RouterLink>
                       <RouterLink
                         v-if="firstCorrectedQuestion !== -1"
+                        @click="handleCorrected"
                         :to="{
                           name: 'test',
                           query: {
@@ -538,6 +539,7 @@ onMounted(() => {
                       </RouterLink>
                       <RouterLink
                         v-if="firstCorrectedQuestion !== -1"
+                        @click="handleCorrected"
                         :to="{
                           name: 'test',
                           query: {
@@ -593,6 +595,7 @@ export default {
       firstCorrectedQuestion: null,
     };
   },
+  emits: ["refresh"],
   methods: {
     goSearch() {
       if (this.keyWord.trim() === "") {
@@ -645,6 +648,9 @@ export default {
         title: "提示",
         message: "您还没有做过题哦~",
       });
+    },
+    handleCorrected() {
+      this.$emit("refresh");
     },
   },
   computed: {
