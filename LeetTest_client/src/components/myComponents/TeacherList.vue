@@ -3,7 +3,7 @@ import { reqGetTeacherList, reqSearchTeacher } from "@/api";
 </script>
 
 <template>
-  <slot>
+  <el-card class="mt-6">
     <el-row :gutter="20">
       <el-col :span="20" :offset="2">
         <h1>师资介绍</h1>
@@ -20,7 +20,7 @@ import { reqGetTeacherList, reqSearchTeacher } from "@/api";
           @cell-click="toTeacherDetail"
           highlight-current-row
           :data="teacherList"
-          style="width: 60%"
+          style="width: 80%"
         >
           <el-table-column prop="id" label="序号" type="index">
           </el-table-column>
@@ -57,7 +57,7 @@ import { reqGetTeacherList, reqSearchTeacher } from "@/api";
         </el-pagination>
       </el-col>
     </el-row>
-  </slot>
+  </el-card>
 </template>
 
 <script>

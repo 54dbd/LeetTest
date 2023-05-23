@@ -1,32 +1,46 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="20" :offset="2">
-        <h1 style="font-size: 3rem">学校介绍</h1>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
       <el-col class="elCol1" :span="14" :push="2">
-        <el-card shadow="always">
+        <div>
           <div>
-            <MarkDown :text="introduce" class="content"/>
+            <MarkDown :text="introduce" class="content" />
           </div>
-        </el-card>
+        </div>
       </el-col>
       <el-col class="elCol2" :span="5" :push="2">
-        <el-card shadow="always">
-          <el-descriptions title="学校信息" direction="vertical" :column="1" size="medium">
-            <el-descriptions-item label="学校地址"><span style="color: #77b72c">{{address}}</span></el-descriptions-item>
-            <el-descriptions-item label="联系电话"><span style="color: #77b72c">{{phone}}</span>
-            </el-descriptions-item>
-            <el-descriptions-item label="学校官网"><a rel="nofollow" :href="officialSite" target="_blank"
-                                                      style="color: #4cb9fc; text-decoration: none;">{{sname}}</a>
-            </el-descriptions-item>
-            <el-descriptions-item label="研究生院"><a rel="nofollow" :href="postgraduateSite" target="_blank"
-                                                      style="color: #4cb9fc; text-decoration: none;">{{sname}}研究生院官网</a>
-            </el-descriptions-item>
-          </el-descriptions>
-        </el-card>
+        <div>
+          <div title="学校信息" direction="vertical" :column="1" size="medium">
+            <div style="margin: 15px auto">
+              <div>学校地址</div>
+              <div style="color: #77b72c">{{ address }}</div>
+            </div>
+            <div style="margin: 15px auto">
+              <div>联系电话</div>
+              <div style="color: #77b72c">{{ phone }}</div>
+            </div>
+            <div style="margin: 15px auto">
+              <div>学校官网</div>
+              <a
+                rel="nofollow"
+                :href="officialSite"
+                target="_blank"
+                style="color: #4cb9fc; text-decoration: none"
+                >{{ sname }}</a
+              >
+            </div>
+            <div style="margin: 15px auto">
+              <div>研究生院</div>
+              <a
+                rel="nofollow"
+                :href="postgraduateSite"
+                target="_blank"
+                style="color: #4cb9fc; text-decoration: none"
+                >{{ sname }}研究生院官网</a
+              >
+            </div>
+          </div>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -36,31 +50,31 @@
 import MarkDown from "@/components/MarkDown/MarkDown.vue";
 export default {
   name: "index",
-  props: ['schoolIntroduce'],
+  props: ["schoolIntroduce"],
   components: {
-    MarkDown
+    MarkDown,
   },
   data() {
     return {
-      introduce: '',
-      postgraduateSite: '',
-      address: '',
-      phone: '',
-      officialSite: '',
-      sname: ''
-    }
+      introduce: "",
+      postgraduateSite: "",
+      address: "",
+      phone: "",
+      officialSite: "",
+      sname: "",
+    };
   },
   watch: {
     schoolIntroduce(sc) {
-      this.introduce = sc.introduction
-      this.postgraduateSite = sc.postgraduateSite
-      this.address = sc.address
-      this.phone = sc.phone
-      this.officialSite = sc.officialSite
-      this.sname = sc.sname
-    }
-  }
-}
+      this.introduce = sc.introduction;
+      this.postgraduateSite = sc.postgraduateSite;
+      this.address = sc.address;
+      this.phone = sc.phone;
+      this.officialSite = sc.officialSite;
+      this.sname = sc.sname;
+    },
+  },
+};
 </script>
 
 <style scoped>

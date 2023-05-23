@@ -3,6 +3,7 @@ import { reqGetSchoolDetailBySid } from "@/api";
 import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import image from "@/assets/img/city-profile.jpg";
 import Header from "@/examples/Header.vue";
+import GreenHeaderBox from "@/components/myComponents/GreenHeaderBox.vue";
 </script>
 
 <template>
@@ -14,39 +15,48 @@ import Header from "@/examples/Header.vue";
         </div>
       </div>
     </div>
-
     <Header>
       <div
-        class="page-header min-height-200"
+        class="page-header min-vh-70"
         :style="{ backgroundImage: `url(${image})` }"
-        loading="lazy"
       >
-        <span class="mask bg-gradient-dark opacity-8"></span>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-8 text-center mx-auto my-auto">
+              <h1 class="text-white">
+                <span class="text-white">学校介绍</span>
+              </h1>
+            </div>
+          </div>
+        </div>
       </div>
     </Header>
-    <div class="all">
-      <school-introduce
-        :schoolIntroduce="{
-          introduction: school.introduction,
-          address: school.address,
-          phone: school.phone,
-          officialSite: school.officialSite,
-          postgraduateSite: school.postgraduateSite,
-          sname: school.sname,
-        }"
-      ></school-introduce>
-      <profession-introduce
-        :schoolIntroduce="{
-          sid: school.sid,
-          sname: school.sname,
-          recruitment: school.recruitment,
-        }"
-      ></profession-introduce>
-      <teacher-list
-        :schoolIntroduce="{
-          sname: school.sname,
-        }"
-      ></teacher-list>
+
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
+      <div class="row mx-md-6 mt-6">
+        <school-introduce
+          :schoolIntroduce="{
+            introduction: school.introduction,
+            address: school.address,
+            phone: school.phone,
+            officialSite: school.officialSite,
+            postgraduateSite: school.postgraduateSite,
+            sname: school.sname,
+          }"
+        ></school-introduce>
+        <profession-introduce
+          :schoolIntroduce="{
+            sid: school.sid,
+            sname: school.sname,
+            recruitment: school.recruitment,
+          }"
+        ></profession-introduce>
+        <teacher-list
+          :schoolIntroduce="{
+            sname: school.sname,
+          }"
+        ></teacher-list>
+      </div>
     </div>
   </div>
 </template>
