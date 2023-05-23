@@ -1,96 +1,18 @@
 <script setup>
 import { reqGetRecruitInfo } from "@/api";
+import BuiltByDevelopers from "@/views/Presentation/Components/BuiltByDevelopers.vue";
 </script>
 
 <template>
   <div class="container mt-sm-5">
-    <div
-      class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
-      :style="{
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80)',
-      }"
-      loading="lazy"
-    >
-      <span class="mask bg-gradient-dark"></span>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 ms-lg-5">
-            <h1 class="text-white">招考信息</h1>
-            <el-row style="height: auto" :gutter="20">
-              <el-col class="elCol1" :span="14" :push="2">
-                <div>
-                  <ul>
-                    <li
-                      class="liLink"
-                      v-for="item in recruitInfoVoList"
-                      :key="item.articleId"
-                    >
-                      <router-link
-                        :to="{
-                          path: '/article',
-                          query: {
-                            id: item.articleId,
-                          },
-                        }"
-                        style="text-decoration: none; color: #049cdb"
-                        >{{ item.title }}</router-link
-                      >
-                    </li>
-                  </ul>
-                  <el-pagination
-                    style="text-align: center"
-                    :page-size="size"
-                    small
-                    layout="prev, pager, next"
-                    @current-change="currentChange"
-                    :total="total"
-                  >
-                  </el-pagination>
-                </div>
-              </el-col>
-              <el-col class="elCol2" :span="5" :push="2">
-                <div>
-                  <el-descriptions
-                    direction="vertical"
-                    :column="1"
-                    size="medium"
-                    :colon="false"
-                  >
-                    <el-descriptions-item>
-                      <a
-                        style="color: #4cb9fc"
-                        :href="
-                          recruitment.indexOf('URL: ') === -1
-                            ? recruitment
-                            : recruitment.slice(4)
-                        "
-                        target="_blank"
-                      >
-                        招生简章
-                      </a>
-                    </el-descriptions-item>
-                    <el-descriptions-item>
-                      <router-link
-                        style="color: #4cb9fc"
-                        :to="{
-                          path: '/scoreLine',
-                          query: {
-                            sid: sid,
-                          },
-                        }"
-                      >
-                        分数线
-                      </router-link>
-                    </el-descriptions-item>
-                  </el-descriptions>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-      </div>
-    </div>
+    <BuiltByDevelopers
+      title="招考信息"
+      :subtitle="sname"
+      :links="recruitInfoVoList"
+      :pagesize="false"
+      id="list4"
+      url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"
+    />
   </div>
 </template>
 
@@ -127,7 +49,7 @@ export default {
         schoolId: this.sid,
         page: {
           current: this.current,
-          size: 10,
+          size: 100,
         },
       });
       if (result.data.code === 200) {

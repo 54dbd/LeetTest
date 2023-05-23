@@ -12,10 +12,14 @@ defineProps({
     type: String,
     required: true,
   },
-  url:{
-    type:String,
-    required:true,
-  }
+  url: {
+    type: String,
+    required: true,
+  },
+  pagesize: {
+    type: Boolean,
+    default: true,
+  },
 });
 </script>
 <template>
@@ -23,8 +27,7 @@ defineProps({
     <div
       class="page-header py-6 py-md-5 my-sm-3 mb-3 border-radius-xl"
       :style="{
-        backgroundImage:
-          'url('+url+')',
+        backgroundImage: 'url(' + url + ')',
       }"
       loading="lazy"
     >
@@ -42,6 +45,13 @@ defineProps({
               >
                 <div class="icon-move-right">
                   <router-link
+                    v-if="pagesize === false"
+                    style="font-size: 15px; color: white"
+                    :to="{ path: '/article', query: { id: item.articleId } }"
+                    >{{ item.title }}</router-link
+                  >
+                  <router-link
+                    v-else
                     style="font-size: 15px; color: white"
                     :to="{ path: '/article', query: { id: item.id } }"
                     >{{ item.title }}</router-link
@@ -60,7 +70,8 @@ defineProps({
 export default {
   computed: {
     displayedLinks() {
-      return this.links.slice(0, 10);
+      if (this.pagesize === false) return this.links;
+      else return this.links.slice(0, 10);
     },
   },
 };
