@@ -1,15 +1,18 @@
 <script setup>
-import {reqGetTeacherDetail} from "@/api";
+import { reqGetTeacherDetail } from "@/api";
 </script>
 
 <template>
   <div>
     <el-row :gutter="20">
       <el-col :span="20" :offset="2">
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 0 20px;">
+        <el-breadcrumb
+          separator-class="el-icon-arrow-right"
+          style="margin: 0 20px"
+        >
           <el-breadcrumb-item></el-breadcrumb-item>
           <el-breadcrumb-item to="/school">院校列表</el-breadcrumb-item>
-          <el-breadcrumb-item>{{$route.query.sname}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ $route.query.sname }}</el-breadcrumb-item>
           <el-breadcrumb-item>教师</el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
@@ -21,26 +24,43 @@ import {reqGetTeacherDetail} from "@/api";
           <el-row class="elCol2">
             <el-col>
               <el-card shadow="always">
-                <el-descriptions title="教师信息" direction="vertical" :column="1" size="medium">
+                <el-descriptions
+                  title="教师信息"
+                  direction="vertical"
+                  :column="1"
+                  size="medium"
+                >
                   <el-descriptions-item label="个人介绍">
-                    <span style="color: #003f81; font-weight: bold;">
-                      {{teacherDetail.tname}}
+                    <span style="color: #003f81; font-weight: bold">
+                      {{ teacherDetail.tname }}
                     </span>
                     <span>
-                      {{teacherDetail.proresume}}
+                      {{ teacherDetail.proresume }}
                     </span>
                   </el-descriptions-item>
                   <el-descriptions-item label="个人主页">
-                    <a rel="nofollow" :href="teacherDetail.turl" v-if="teacherDetail.turl" target="_blank" style="color: #4cb9fc;">
-                      {{teacherDetail.turl}}
+                    <a
+                      rel="nofollow"
+                      :href="teacherDetail.turl"
+                      v-if="teacherDetail.turl"
+                      target="_blank"
+                      style="color: #4cb9fc"
+                    >
+                      {{ teacherDetail.turl }}
                     </a>
-                    <a rel="nofollow" :href="teacherDetail.turl" v-if="!teacherDetail.turl" target="_blank" style="color: #4cb9fc;">
+                    <a
+                      rel="nofollow"
+                      :href="teacherDetail.turl"
+                      v-if="!teacherDetail.turl"
+                      target="_blank"
+                      style="color: #4cb9fc"
+                    >
                       暂无
                     </a>
                   </el-descriptions-item>
                   <el-descriptions-item label="Email">
                     <span style="color: #003f81" v-if="teacherDetail.temail">
-                      {{teacherDetail.temail}}
+                      {{ teacherDetail.temail }}
                     </span>
                     <span style="color: #003f81" v-if="!teacherDetail.temail">
                       暂无
@@ -48,19 +68,22 @@ import {reqGetTeacherDetail} from "@/api";
                   </el-descriptions-item>
                   <el-descriptions-item label="生涯履历">
                     <span style="color: #003f81" v-if="teacherDetail.eduresume">
-                      {{teacherDetail.eduresume}}
+                      {{ teacherDetail.eduresume }}
                     </span>
-                    <span style="color: #003f81" v-if="!teacherDetail.eduresume">
+                    <span
+                      style="color: #003f81"
+                      v-if="!teacherDetail.eduresume"
+                    >
                       暂无
                     </span>
                   </el-descriptions-item>
                   <el-descriptions-item label="研究方向">
-                     <span style="color: #003f81" v-if="teacherDetail.studydir">
-                       {{teacherDetail.studydir}}
-                     </span>
+                    <span style="color: #003f81" v-if="teacherDetail.studydir">
+                      {{ teacherDetail.studydir }}
+                    </span>
                     <span style="color: #003f81" v-if="!teacherDetail.studydir">
-                       暂无
-                     </span>
+                      暂无
+                    </span>
                   </el-descriptions-item>
                 </el-descriptions>
               </el-card>
@@ -77,23 +100,23 @@ export default {
   name: "index",
   data() {
     return {
-      teacherDetail: {}
-    }
+      teacherDetail: {},
+    };
   },
   mounted() {
-    this.getTeacherDetail()
+    this.getTeacherDetail();
   },
   methods: {
     async getTeacherDetail() {
-      const result = await reqGetTeacherDetail(this.$route.query.tid)
+      const result = await reqGetTeacherDetail(this.$route.query.tid);
       if (result.data.code === 200) {
-        this.teacherDetail = result.data.data
+        this.teacherDetail = result.data.data;
       } else {
-        this.$message.error('系统异常~ ' + result.data.msg)
+        this.$message.error("系统异常~ " + result.data.msg);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

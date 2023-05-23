@@ -20,18 +20,18 @@ import { reqGetTeacherList, reqSearchTeacher } from "@/api";
           @cell-click="toTeacherDetail"
           highlight-current-row
           :data="teacherList"
-          style="width: 100%"
+          style="width: 60%"
         >
-          <el-table-column prop="id" label="序号" type="index" width="100">
+          <el-table-column prop="id" label="序号" type="index">
           </el-table-column>
-          <el-table-column prop="tname" label="教师姓名" width="200">
+          <el-table-column prop="tname" label="教师姓名">
             <template v-slot:default="scope">
               <slot>
                 <el-tag size="medium">{{ scope.row.tname }}</el-tag>
               </slot>
             </template>
           </el-table-column>
-          <el-table-column prop="studydir" label="专业方向" width="500">
+          <el-table-column prop="studydir" label="专业方向">
             <template v-slot:default="scope">
               <slot v-if="scope.row.studydir">
                 {{ scope.row.studydir }}
