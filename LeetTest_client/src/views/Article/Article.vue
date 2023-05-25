@@ -18,12 +18,6 @@ import { ElMessage, ElNotification } from "element-plus";
 
 import * as api from "@/api";
 
-// //sections
-// import Information from "./Sections/AboutInformation.vue";
-// import AboutTeam from "./Sections/AboutTeam.vue";
-// import Featuring from "./Sections/AboutFeaturing.vue";
-// import Newsletter from "./Sections/AboutNewsletter.vue";
-
 // Data
 const router = useRouter();
 const route = useRoute();

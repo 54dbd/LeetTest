@@ -15,12 +15,6 @@ import { ElMessage } from "element-plus";
 //pills
 import setNavPills from "@/assets/js/nav-pills.js";
 
-// //sections
-// import Information from "./Sections/AboutInformation.vue";
-// import AboutTeam from "./Sections/AboutTeam.vue";
-// import Featuring from "./Sections/AboutFeaturing.vue";
-// import Newsletter from "./Sections/AboutNewsletter.vue";
-
 const testList = ref([]);
 const pages = ref(0);
 const total = ref(0);
