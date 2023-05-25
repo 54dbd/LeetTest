@@ -1,10 +1,10 @@
 <script setup>
 // example components
-import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
-import Header from "@/examples/Header.vue";
+import DefaultNavbar from "@/ui/navbars/NavbarDefault.vue";
+import Header from "@/ui/Header.vue";
 
 // sections
-import Footer from "@/examples/footers/FooterDefault.vue";
+import Footer from "@/ui/footers/FooterDefault.vue";
 
 // image
 import image from "@/assets/img/city-profile.jpg";

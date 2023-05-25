@@ -2,8 +2,8 @@
 import { onMounted, onUnmounted, ref, watch } from "vue";
 
 //example components
-import DefaultNavbar from "../../examples/navbars/NavbarDefault.vue";
-import DefaultFooter from "../../examples/footers/FooterDefault.vue";
+import DefaultNavbar from "../../ui/navbars/NavbarDefault.vue";
+import DefaultFooter from "../../ui/footers/FooterDefault.vue";
 //image
 import bg0 from "@/assets/img/bg9.jpg";
 

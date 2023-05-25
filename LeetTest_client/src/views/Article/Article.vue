@@ -5,8 +5,8 @@ import { getToken } from "@/utils/token";
 import store from "@/stores";
 
 //example components
-import DefaultNavbar from "../../examples/navbars/NavbarDefault.vue";
-import DefaultFooter from "../../examples/footers/FooterDefault.vue";
+import DefaultNavbar from "../../ui/navbars/NavbarDefault.vue";
+import DefaultFooter from "../../ui/footers/FooterDefault.vue";
 
 //image
 import bg0 from "@/assets/img/bg9.jpg";
@@ -42,7 +42,6 @@ const model_time = ref("");
 const moreArticle = ref([]);
 const tagNameList = ref([]);
 
-
 onActivated(async () => {
   getArticle();
   getMoreArticle();
@@ -50,13 +49,13 @@ onActivated(async () => {
 });
 
 const toggleIconLike = () => {
-  const icon = document.querySelector('.icon-like')
-  icon.classList.toggle('text-warning')
-}
+  const icon = document.querySelector(".icon-like");
+  icon.classList.toggle("text-warning");
+};
 const toggleIconFav = () => {
-  const icon = document.querySelector('.icon-fav')
-  icon.classList.toggle('text-danger')
-}
+  const icon = document.querySelector(".icon-fav");
+  icon.classList.toggle("text-danger");
+};
 
 const getArticle = async () => {
   const result = await api.reqGetArticleById(route.query.id);
@@ -253,10 +252,7 @@ onUnmounted(() => {
               {{ title }}
             </h1>
             <div class="row text-white opacity-8">
-              <p>
-                {{ likesCount }}人点赞了 &nbsp;
-                {{ favoriteCount }}人收藏了
-              </p>
+              <p>{{ likesCount }}人点赞了 &nbsp; {{ favoriteCount }}人收藏了</p>
             </div>
             <p class="lead mb-4 text-white opacity-8">
               作者:
@@ -302,7 +298,9 @@ onUnmounted(() => {
         @click="addLikes"
       >
         <div class="d-flex align-items-center">
-          <i class="material-icons me-2 icon-like" aria-hidden="true">favorite</i>
+          <i class="material-icons me-2 icon-like" aria-hidden="true"
+            >favorite</i
+          >
           点赞
         </div>
       </button>

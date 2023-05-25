@@ -6,7 +6,7 @@ import BaseLayout from "../../components/BaseLayout.vue";
 import View from "../../components/View.vue";
 
 // Breadcrumbs page component
-import Breadcrumbs from "@/examples/Breadcrumbs.vue";
+import Breadcrumbs from "@/ui/Breadcrumbs.vue";
 
 // Breadcrumbs page component code
 import { breadcrumbsCode } from "./code";

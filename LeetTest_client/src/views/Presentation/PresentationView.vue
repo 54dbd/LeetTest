@@ -2,12 +2,12 @@
 import { onMounted, onUnmounted, reactive, ref } from "vue";
 
 //example components
-import NavbarDefault from "../..//examples/navbars/NavbarDefault.vue";
-import DefaultFooter from "../../examples/footers/FooterDefault.vue";
-import Header from "../../examples/Header.vue";
-import RotatingCard from "../../examples/cards/rotatingCards/RotatingCard.vue";
-import RotatingCardFront from "../../examples/cards/rotatingCards/RotatingCardFront.vue";
-import RotatingCardBack from "../../examples/cards/rotatingCards/RotatingCardBack.vue";
+import NavbarDefault from "../../ui/navbars/NavbarDefault.vue";
+import DefaultFooter from "../../ui/footers/FooterDefault.vue";
+import Header from "../../ui/Header.vue";
+import RotatingCard from "../../ui/cards/rotatingCards/RotatingCard.vue";
+import RotatingCardFront from "../../ui/cards/rotatingCards/RotatingCardFront.vue";
+import RotatingCardBack from "../../ui/cards/rotatingCards/RotatingCardBack.vue";
 //Vue Material Kit 2 components
 import MaterialSocialButton from "@/components/MaterialSocialButton.vue";
 
@@ -129,7 +129,6 @@ onUnmounted(() => {
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
             :links="list2"
             id="list2"
-
           />
         </RotatingCard>
       </div>
@@ -146,7 +145,6 @@ onUnmounted(() => {
             image="https://images.unsplash.com/photo-1498889444388-e67ea62c464b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1365&q=80"
             :links="list3"
             id="list3"
-
           />
         </RotatingCard>
       </div>
@@ -185,24 +183,20 @@ onUnmounted(() => {
     </div>
     <div>
       <BuiltByDevelopers
-          title="研招答疑"
-          subtitle="详细内容"
-          :links="list4"
-          id="list4"
-
-          url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"
+        title="研招答疑"
+        subtitle="详细内容"
+        :links="list4"
+        id="list4"
+        url="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/desktop.jpg"
       />
       <BuiltByDevelopers
-          title="考研大纲"
-          subtitle="详细内容"
-          :links="list5"
-          id="list5"
-
-          url="https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80"
+        title="考研大纲"
+        subtitle="详细内容"
+        :links="list5"
+        id="list5"
+        url="https://images.unsplash.com/photo-1505664194779-8beaceb93744?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3870&q=80"
       />
-
     </div>
-
 
     <PresentationTestimonials />
 
@@ -229,38 +223,35 @@ onUnmounted(() => {
 </template>
 
 <script>
-import { defineComponent, onMounted, onUnmounted } from 'vue'
-import {useAppStore} from "@/stores";
+import { defineComponent, onMounted, onUnmounted } from "vue";
+import { useAppStore } from "@/stores";
 
 export default defineComponent({
   setup() {
     // 从本地存储中读取数据并保存到Pinia状态中
     const loadData = () => {
-      const content = localStorage.getItem('content')
+      const content = localStorage.getItem("content");
       if (content) {
-        useAppStore.content = content
+        useAppStore.content = content;
       }
-    }
+    };
 
     // 保存Pinia状态到本地存储中
     const saveData = () => {
-      localStorage.setItem('content', useAppStore.content)
-    }
+      localStorage.setItem("content", useAppStore.content);
+    };
 
     onMounted(() => {
       // 组件挂载时从本地存储中读取数据
-      loadData()
-    })
+      loadData();
+    });
 
     onUnmounted(() => {
       // 组件销毁时保存Pinia状态到本地存储中
-      saveData()
-    })
+      saveData();
+    });
 
-    return { useAppStore }
-  }
-})
-
-
-
+    return { useAppStore };
+  },
+});
 </script>

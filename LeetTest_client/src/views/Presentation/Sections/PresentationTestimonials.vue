@@ -1,5 +1,5 @@
 <script setup>
-import DefaultReviewCard from "@/examples/cards/reviewCards/DefaultReviewCard.vue";
+import DefaultReviewCard from "@/ui/cards/reviewCards/DefaultReviewCard.vue";
 </script>
 <template>
   <section class="py-7">
@@ -7,12 +7,8 @@ import DefaultReviewCard from "@/examples/cards/reviewCards/DefaultReviewCard.vu
       <div class="row">
         <div class="col-lg-6 mx-auto text-center">
           <h2 class="mb-0">被众多学生评价</h2>
-          <h2 class="text-gradient text-success mb-3">
-            好评如潮
-          </h2>
-          <p class="lead">
-            经过同寝室以及隔壁寝室同学体验过后，大家都说好！
-          </p>
+          <h2 class="text-gradient text-success mb-3">好评如潮</h2>
+          <p class="lead">经过同寝室以及隔壁寝室同学体验过后，大家都说好！</p>
         </div>
       </div>
       <div class="row mt-6">
@@ -38,7 +34,6 @@ import DefaultReviewCard from "@/examples/cards/reviewCards/DefaultReviewCard.vu
           :rating="5.0"
         />
       </div>
-
     </div>
   </section>
 </template>

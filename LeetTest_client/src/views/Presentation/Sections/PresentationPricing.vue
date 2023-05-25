@@ -1,5 +1,5 @@
 <script setup>
-import SimplePricingCard from "@/examples/cards/pricingCards/SimplePricingCard.vue";
+import SimplePricingCard from "@/ui/cards/pricingCards/SimplePricingCard.vue";
 </script>
 <template>
   <section class="py-sm-7" id="pricing-soft-ui">

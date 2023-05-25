@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 import PresentationView from "../views/Presentation/PresentationView.vue";
-import AboutView from "../views/LandingPages/AboutUs/AboutView.vue";
-import ContactView from "../views/LandingPages/ContactUs/ContactView.vue";
-import AuthorView from "../views/LandingPages/Author/AuthorView.vue";
-import SignInBasicView from "../views/LandingPages/SignIn/BasicView.vue";
-import SignUpBasicView from "../views/LandingPages/SignUp/SignUpView.vue";
-import SchoolBasicView from "../views/LandingPages/Schools/SchoolView.vue";
-import ScoreLineBasicView from "../views/LandingPages/ScoreLine/ScoreLineView.vue";
-import SchoolDetailBasicView from "../views/LandingPages/SchoolDetail/SchoolDetailView.vue";
-import TimeBasicView from "../views/LandingPages/Time/TimeView.vue";
-import TeacherDetailBasicView from "../views/LandingPages/Teachers/TeacherDetailView.vue";
-import ScoreLineDetailBasicView from "../views/LandingPages/ScoreLine/Sections/ScoreLineList.vue";
+import AboutView from "../views/AboutUs/AboutView.vue";
+import ContactView from "../views/ContactUs/ContactView.vue";
+import AuthorView from "../views/Author/AuthorView.vue";
+import SignInBasicView from "../views/SignIn/BasicView.vue";
+import SignUpBasicView from "../views/SignUp/SignUpView.vue";
+import SchoolBasicView from "../views/Schools/SchoolView.vue";
+import ScoreLineBasicView from "../views/ScoreLine/ScoreLineView.vue";
+import SchoolDetailBasicView from "../views/SchoolDetail/SchoolDetailView.vue";
+import TimeBasicView from "../views/Time/TimeView.vue";
+import TeacherDetailBasicView from "../views/Teachers/TeacherDetailView.vue";
+import ScoreLineDetailBasicView from "../views/ScoreLine/Sections/ScoreLineList.vue";
 
 import PageHeaders from "../layouts/sections/page-sections/page-headers/HeadersView.vue";
 import PageFeatures from "../layouts/sections/page-sections/features/FeaturesView.vue";
@@ -31,7 +31,7 @@ import ElDropdowns from "../layouts/sections/elements/dropdowns/DropdownsView.vu
 import ElProgressBars from "../layouts/sections/elements/progress-bars/ProgressBarsView.vue";
 import ElToggles from "../layouts/sections/elements/toggles/TogglesView.vue";
 import ElTypography from "../layouts/sections/elements/typography/TypographyView.vue";
-import PostArticleView from "@/views/LandingPages/PostArticle/PostArticleView.vue";
+import PostArticleView from "@/views/PostArticle/PostArticleView.vue";
 import { ElMessage } from "element-plus";
 import Article from "@/views/Article/Article.vue";
 import Test from "@/views/Test/Test.vue";
